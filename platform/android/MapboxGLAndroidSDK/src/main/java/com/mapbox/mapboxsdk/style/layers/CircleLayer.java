@@ -1,5 +1,5 @@
-package com.mapbox.mapboxsdk.style.layers;
 // This file is generated. Edit android/platform/scripts/generate-style-code.js, then run `make android-style-code`.
+package com.mapbox.mapboxsdk.style.layers;
 
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -95,7 +95,6 @@ public class CircleLayer extends Layer {
     setFilter(filter);
     return this;
   }
-
 
   /**
    * Set a property or properties.

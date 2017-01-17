@@ -1,10 +1,11 @@
-package com.mapbox.mapboxsdk.testapp.style;
 // This file is generated. Edit android/platform/scripts/generate-style-code.js, then run `make android-style-code`.
+package com.mapbox.mapboxsdk.testapp.style;
 
 import android.graphics.Color;
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import timber.log.Timber;
 
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.style.layers.BackgroundLayer;
@@ -18,16 +19,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import timber.log.Timber;
-
-import static com.mapbox.mapboxsdk.style.layers.Property.NONE;
-import static com.mapbox.mapboxsdk.style.layers.Property.VISIBLE;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.backgroundColor;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.backgroundOpacity;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.backgroundPattern;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.visibility;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
+import static com.mapbox.mapboxsdk.style.layers.Property.*;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.*;
 
 /**
  * Basic smoke tests for BackgroundLayer
@@ -48,17 +42,16 @@ public class BackgroundLayerTest extends BaseStyleTest {
   public void setup() {
     idlingResource = new OnMapReadyIdlingResource(rule.getActivity());
     Espresso.registerIdlingResources(idlingResource);
+    mapboxMap = rule.getActivity().getMapboxMap();
+
+    Timber.i("Retrieving layer");
+    layer = mapboxMap.getLayerAs("background");
   }
 
   @Test
   public void testSetVisibility() {
     checkViewIsDisplayed(R.id.mapView);
-
-    mapboxMap = rule.getActivity().getMapboxMap();
-
-    Timber.i("Retrieving layer");
-    layer = mapboxMap.getLayerAs("background");
-    Timber.i("visibility");
+    Timber.i("Visibility");
     assertNotNull(layer);
 
     //Get initial
@@ -72,11 +65,6 @@ public class BackgroundLayerTest extends BaseStyleTest {
   @Test
   public void testBackgroundColor() {
     checkViewIsDisplayed(R.id.mapView);
-
-    mapboxMap = rule.getActivity().getMapboxMap();
-
-    Timber.i("Retrieving layer");
-    layer = mapboxMap.getLayerAs("background");
     Timber.i("background-color");
     assertNotNull(layer);
 
@@ -88,11 +76,6 @@ public class BackgroundLayerTest extends BaseStyleTest {
   @Test
   public void testBackgroundColorAsInt() {
     checkViewIsDisplayed(R.id.mapView);
-
-    mapboxMap = rule.getActivity().getMapboxMap();
-
-    Timber.i("Retrieving layer");
-    layer = mapboxMap.getLayerAs("background");
     Timber.i("background-color");
     assertNotNull(layer);
 
@@ -104,11 +87,6 @@ public class BackgroundLayerTest extends BaseStyleTest {
   @Test
   public void testBackgroundPattern() {
     checkViewIsDisplayed(R.id.mapView);
-
-    mapboxMap = rule.getActivity().getMapboxMap();
-
-    Timber.i("Retrieving layer");
-    layer = mapboxMap.getLayerAs("background");
     Timber.i("background-pattern");
     assertNotNull(layer);
 
@@ -120,11 +98,6 @@ public class BackgroundLayerTest extends BaseStyleTest {
   @Test
   public void testBackgroundOpacity() {
     checkViewIsDisplayed(R.id.mapView);
-
-    mapboxMap = rule.getActivity().getMapboxMap();
-
-    Timber.i("Retrieving layer");
-    layer = mapboxMap.getLayerAs("background");
     Timber.i("background-opacity");
     assertNotNull(layer);
 

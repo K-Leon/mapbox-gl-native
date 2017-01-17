@@ -1,10 +1,11 @@
-package com.mapbox.mapboxsdk.testapp.style;
 // This file is generated. Edit android/platform/scripts/generate-style-code.js, then run `make android-style-code`.
+package com.mapbox.mapboxsdk.testapp.style;
 
 import android.graphics.Color;
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import timber.log.Timber;
 
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.style.layers.CircleLayer;
@@ -18,25 +19,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import timber.log.Timber;
-
-import static com.mapbox.mapboxsdk.style.layers.Property.CIRCLE_PITCH_SCALE_MAP;
-import static com.mapbox.mapboxsdk.style.layers.Property.CIRCLE_TRANSLATE_ANCHOR_MAP;
-import static com.mapbox.mapboxsdk.style.layers.Property.NONE;
-import static com.mapbox.mapboxsdk.style.layers.Property.VISIBLE;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleBlur;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleColor;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleOpacity;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circlePitchScale;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleRadius;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleStrokeColor;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleStrokeOpacity;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleStrokeWidth;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleTranslate;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleTranslateAnchor;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.visibility;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
+import static com.mapbox.mapboxsdk.style.layers.Property.*;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.*;
 
 /**
  * Basic smoke tests for CircleLayer
@@ -57,12 +42,6 @@ public class CircleLayerTest extends BaseStyleTest {
   public void setup() {
     idlingResource = new OnMapReadyIdlingResource(rule.getActivity());
     Espresso.registerIdlingResources(idlingResource);
-  }
-
-  @Test
-  public void testSetVisibility() {
-    checkViewIsDisplayed(R.id.mapView);
-
     mapboxMap = rule.getActivity().getMapboxMap();
 
     if ((layer = mapboxMap.getLayerAs("my-layer")) == null) {
@@ -73,7 +52,12 @@ public class CircleLayerTest extends BaseStyleTest {
       //Layer reference is now stale, get new reference
       layer = mapboxMap.getLayerAs("my-layer");
     }
-    Timber.i("visibility");
+  }
+
+  @Test
+  public void testSetVisibility() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("Visibility");
     assertNotNull(layer);
 
     //Get initial
@@ -87,17 +71,6 @@ public class CircleLayerTest extends BaseStyleTest {
   @Test
   public void testCircleRadius() {
     checkViewIsDisplayed(R.id.mapView);
-
-    mapboxMap = rule.getActivity().getMapboxMap();
-
-    if ((layer = mapboxMap.getLayerAs("my-layer")) == null) {
-      Timber.i("Adding layer");
-      layer = new CircleLayer("my-layer", "composite");
-      layer.setSourceLayer("composite");
-      mapboxMap.addLayer(layer);
-      //Layer reference is now stale, get new reference
-      layer = mapboxMap.getLayerAs("my-layer");
-    }
     Timber.i("circle-radius");
     assertNotNull(layer);
 
@@ -109,17 +82,6 @@ public class CircleLayerTest extends BaseStyleTest {
   @Test
   public void testCircleColor() {
     checkViewIsDisplayed(R.id.mapView);
-
-    mapboxMap = rule.getActivity().getMapboxMap();
-
-    if ((layer = mapboxMap.getLayerAs("my-layer")) == null) {
-      Timber.i("Adding layer");
-      layer = new CircleLayer("my-layer", "composite");
-      layer.setSourceLayer("composite");
-      mapboxMap.addLayer(layer);
-      //Layer reference is now stale, get new reference
-      layer = mapboxMap.getLayerAs("my-layer");
-    }
     Timber.i("circle-color");
     assertNotNull(layer);
 
@@ -131,17 +93,6 @@ public class CircleLayerTest extends BaseStyleTest {
   @Test
   public void testCircleColorAsInt() {
     checkViewIsDisplayed(R.id.mapView);
-
-    mapboxMap = rule.getActivity().getMapboxMap();
-
-    if ((layer = mapboxMap.getLayerAs("my-layer")) == null) {
-      Timber.i("Adding layer");
-      layer = new CircleLayer("my-layer", "composite");
-      layer.setSourceLayer("composite");
-      mapboxMap.addLayer(layer);
-      //Layer reference is now stale, get new reference
-      layer = mapboxMap.getLayerAs("my-layer");
-    }
     Timber.i("circle-color");
     assertNotNull(layer);
 
@@ -153,17 +104,6 @@ public class CircleLayerTest extends BaseStyleTest {
   @Test
   public void testCircleBlur() {
     checkViewIsDisplayed(R.id.mapView);
-
-    mapboxMap = rule.getActivity().getMapboxMap();
-
-    if ((layer = mapboxMap.getLayerAs("my-layer")) == null) {
-      Timber.i("Adding layer");
-      layer = new CircleLayer("my-layer", "composite");
-      layer.setSourceLayer("composite");
-      mapboxMap.addLayer(layer);
-      //Layer reference is now stale, get new reference
-      layer = mapboxMap.getLayerAs("my-layer");
-    }
     Timber.i("circle-blur");
     assertNotNull(layer);
 
@@ -175,17 +115,6 @@ public class CircleLayerTest extends BaseStyleTest {
   @Test
   public void testCircleOpacity() {
     checkViewIsDisplayed(R.id.mapView);
-
-    mapboxMap = rule.getActivity().getMapboxMap();
-
-    if ((layer = mapboxMap.getLayerAs("my-layer")) == null) {
-      Timber.i("Adding layer");
-      layer = new CircleLayer("my-layer", "composite");
-      layer.setSourceLayer("composite");
-      mapboxMap.addLayer(layer);
-      //Layer reference is now stale, get new reference
-      layer = mapboxMap.getLayerAs("my-layer");
-    }
     Timber.i("circle-opacity");
     assertNotNull(layer);
 
@@ -197,39 +126,17 @@ public class CircleLayerTest extends BaseStyleTest {
   @Test
   public void testCircleTranslate() {
     checkViewIsDisplayed(R.id.mapView);
-
-    mapboxMap = rule.getActivity().getMapboxMap();
-
-    if ((layer = mapboxMap.getLayerAs("my-layer")) == null) {
-      Timber.i("Adding layer");
-      layer = new CircleLayer("my-layer", "composite");
-      layer.setSourceLayer("composite");
-      mapboxMap.addLayer(layer);
-      //Layer reference is now stale, get new reference
-      layer = mapboxMap.getLayerAs("my-layer");
-    }
     Timber.i("circle-translate");
     assertNotNull(layer);
 
     //Set and Get
-    layer.setProperties(circleTranslate(new Float[] {0f, 0f}));
-    assertEquals((Float[]) layer.getCircleTranslate().getValue(), (Float[]) new Float[] {0f, 0f});
+    layer.setProperties(circleTranslate(new Float[]{0f,0f}));
+    assertEquals((Float[]) layer.getCircleTranslate().getValue(), (Float[]) new Float[]{0f,0f});
   }
 
   @Test
   public void testCircleTranslateAnchor() {
     checkViewIsDisplayed(R.id.mapView);
-
-    mapboxMap = rule.getActivity().getMapboxMap();
-
-    if ((layer = mapboxMap.getLayerAs("my-layer")) == null) {
-      Timber.i("Adding layer");
-      layer = new CircleLayer("my-layer", "composite");
-      layer.setSourceLayer("composite");
-      mapboxMap.addLayer(layer);
-      //Layer reference is now stale, get new reference
-      layer = mapboxMap.getLayerAs("my-layer");
-    }
     Timber.i("circle-translate-anchor");
     assertNotNull(layer);
 
@@ -241,17 +148,6 @@ public class CircleLayerTest extends BaseStyleTest {
   @Test
   public void testCirclePitchScale() {
     checkViewIsDisplayed(R.id.mapView);
-
-    mapboxMap = rule.getActivity().getMapboxMap();
-
-    if ((layer = mapboxMap.getLayerAs("my-layer")) == null) {
-      Timber.i("Adding layer");
-      layer = new CircleLayer("my-layer", "composite");
-      layer.setSourceLayer("composite");
-      mapboxMap.addLayer(layer);
-      //Layer reference is now stale, get new reference
-      layer = mapboxMap.getLayerAs("my-layer");
-    }
     Timber.i("circle-pitch-scale");
     assertNotNull(layer);
 
@@ -263,17 +159,6 @@ public class CircleLayerTest extends BaseStyleTest {
   @Test
   public void testCircleStrokeWidth() {
     checkViewIsDisplayed(R.id.mapView);
-
-    mapboxMap = rule.getActivity().getMapboxMap();
-
-    if ((layer = mapboxMap.getLayerAs("my-layer")) == null) {
-      Timber.i("Adding layer");
-      layer = new CircleLayer("my-layer", "composite");
-      layer.setSourceLayer("composite");
-      mapboxMap.addLayer(layer);
-      //Layer reference is now stale, get new reference
-      layer = mapboxMap.getLayerAs("my-layer");
-    }
     Timber.i("circle-stroke-width");
     assertNotNull(layer);
 
@@ -285,17 +170,6 @@ public class CircleLayerTest extends BaseStyleTest {
   @Test
   public void testCircleStrokeColor() {
     checkViewIsDisplayed(R.id.mapView);
-
-    mapboxMap = rule.getActivity().getMapboxMap();
-
-    if ((layer = mapboxMap.getLayerAs("my-layer")) == null) {
-      Timber.i("Adding layer");
-      layer = new CircleLayer("my-layer", "composite");
-      layer.setSourceLayer("composite");
-      mapboxMap.addLayer(layer);
-      //Layer reference is now stale, get new reference
-      layer = mapboxMap.getLayerAs("my-layer");
-    }
     Timber.i("circle-stroke-color");
     assertNotNull(layer);
 
@@ -307,17 +181,6 @@ public class CircleLayerTest extends BaseStyleTest {
   @Test
   public void testCircleStrokeColorAsInt() {
     checkViewIsDisplayed(R.id.mapView);
-
-    mapboxMap = rule.getActivity().getMapboxMap();
-
-    if ((layer = mapboxMap.getLayerAs("my-layer")) == null) {
-      Timber.i("Adding layer");
-      layer = new CircleLayer("my-layer", "composite");
-      layer.setSourceLayer("composite");
-      mapboxMap.addLayer(layer);
-      //Layer reference is now stale, get new reference
-      layer = mapboxMap.getLayerAs("my-layer");
-    }
     Timber.i("circle-stroke-color");
     assertNotNull(layer);
 
@@ -329,17 +192,6 @@ public class CircleLayerTest extends BaseStyleTest {
   @Test
   public void testCircleStrokeOpacity() {
     checkViewIsDisplayed(R.id.mapView);
-
-    mapboxMap = rule.getActivity().getMapboxMap();
-
-    if ((layer = mapboxMap.getLayerAs("my-layer")) == null) {
-      Timber.i("Adding layer");
-      layer = new CircleLayer("my-layer", "composite");
-      layer.setSourceLayer("composite");
-      mapboxMap.addLayer(layer);
-      //Layer reference is now stale, get new reference
-      layer = mapboxMap.getLayerAs("my-layer");
-    }
     Timber.i("circle-stroke-opacity");
     assertNotNull(layer);
 
