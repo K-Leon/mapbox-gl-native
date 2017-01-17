@@ -8,6 +8,9 @@ package com.mapbox.mapboxsdk.style.layers;
 import android.annotation.SuppressLint;
 import android.support.annotation.ColorInt;
 
+import com.mapbox.mapboxsdk.style.functions.Function;
+import com.mapbox.mapboxsdk.style.functions.ZoomFunction;
+
 /**
  * Constructs paint/layout properties for Layers
  *
@@ -28,10 +31,11 @@ public class PropertyFactory {
     /**
      * Set the property visibility.
      *
+     * @param <T> the function input type
      * @param function the visibility function
      * @return property wrapper around a String function
      */
-    public static Property<Function<String>> visibility(Function<String> function) {
+    public static <T> Property<Function<T, String>> visibility(Function<T, String> function) {
         return new LayoutProperty<>("visibility", function);
     }
 
@@ -58,16 +62,33 @@ public class PropertyFactory {
         return new PaintProperty<>("<%-  property.name %>", value);
     }
 
+<% if (supportsPropertyFunction(property)) { -%>
+
     /**
      * <%- propertyFactoryMethodDoc(property) %>
      *
+     * @param <T> the function input type
      * @param function a wrapper function for <%- propertyType(property) %>
      * @return property wrapper around a <%- propertyType(property) %> function
      */
-    public static Property<Function<<%- propertyType(property) %>>> <%- camelizeWithLeadingLowercase(property.name) %>(Function<<%- propertyType(property) %>> function) {
+    public static <T> Property<Function<T, <%- propertyType(property) %>>> <%- camelizeWithLeadingLowercase(property.name) %>(Function<T, <%- propertyType(property) %>> function) {
         return new PaintProperty<>("<%-  property.name %>", function);
     }
 
+<% } else if (supportsZoomFunction(property)) { -%>
+
+    /**
+     * <%- propertyFactoryMethodDoc(property) %>
+     *
+     * @param <ZOOM> the zoom parameter type
+     * @param function a wrapper {@link ZoomFunction} for <%- propertyType(property) %>
+     * @return property wrapper around a <%- propertyType(property) %> function
+     */
+    public static <ZOOM extends Number> Property<ZoomFunction<ZOOM, <%- propertyType(property) %>>> <%- camelizeWithLeadingLowercase(property.name) %>(ZoomFunction<ZOOM, <%- propertyType(property) %>> function) {
+        return new PaintProperty<>("<%-  property.name %>", function);
+    }
+
+<% } -%>
 <% } -%>
 <% for (const property of layoutProperties) { -%>
     /**
@@ -80,16 +101,34 @@ public class PropertyFactory {
         return new LayoutProperty<>("<%-  property.name %>", value);
     }
 
+
+<% if (supportsPropertyFunction(property)) { -%>
+
     /**
      * <%- propertyFactoryMethodDoc(property) %>
      *
+     * @param <T> the function input type
      * @param function a wrapper function for <%- propertyType(property) %>
      * @return property wrapper around a <%- propertyType(property) %> function
      */
-    public static Property<Function<<%- propertyType(property) %>>> <%- camelizeWithLeadingLowercase(property.name) %>(Function<<%- propertyType(property) %>> function) {
+    public static <T> Property<Function<T, <%- propertyType(property) %>>> <%- camelizeWithLeadingLowercase(property.name) %>(Function<T, <%- propertyType(property) %>> function) {
         return new LayoutProperty<>("<%-  property.name %>", function);
     }
 
+<% } else if (supportsZoomFunction(property)) { -%>
+
+    /**
+     * <%- propertyFactoryMethodDoc(property) %>
+     *
+     * @param <ZOOM> the zoom parameter type
+     * @param function a wrapper {@link ZoomFunction} for <%- propertyType(property) %>
+     * @return property wrapper around a <%- propertyType(property) %> function
+     */
+    public static <ZOOM extends Number> Property<ZoomFunction<ZOOM, <%- propertyType(property) %>>> <%- camelizeWithLeadingLowercase(property.name) %>(ZoomFunction<ZOOM, <%- propertyType(property) %>> function) {
+        return new LayoutProperty<>("<%-  property.name %>", function);
+    }
+
+<% } -%>
 <% } -%>
     @SuppressLint("DefaultLocale")
     static String colorToRgbaString(@ColorInt int value) {

@@ -1,9 +1,11 @@
 package com.mapbox.mapboxsdk.style.layers;
 
+import com.mapbox.mapboxsdk.style.functions.Function;
+
 import org.junit.Test;
 
-import static com.mapbox.mapboxsdk.style.layers.Function.stop;
-import static com.mapbox.mapboxsdk.style.layers.Function.zoom;
+import static com.mapbox.mapboxsdk.style.functions.Function.stop;
+import static com.mapbox.mapboxsdk.style.functions.Function.zoom;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineBlur;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNotNull;

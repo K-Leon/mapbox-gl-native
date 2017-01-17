@@ -2,6 +2,8 @@ package com.mapbox.mapboxsdk.style.layers;
 
 import android.support.annotation.Nullable;
 
+import com.mapbox.mapboxsdk.style.functions.Function;
+
 import timber.log.Timber;
 
 /**
@@ -28,10 +30,10 @@ public class PropertyValue<T> {
   }
 
   @Nullable
-  public Function<T> getFunction() {
+  public Function<?, T> getFunction() {
     if (isFunction()) {
       //noinspection unchecked
-      return (Function<T>) value;
+      return (Function<?, T>) value;
     } else {
       Timber.w("not a function, try value");
       return null;

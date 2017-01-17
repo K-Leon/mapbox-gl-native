@@ -14,8 +14,9 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.mapboxsdk.style.functions.Stop;
 import com.mapbox.mapboxsdk.style.layers.FillLayer;
-import com.mapbox.mapboxsdk.style.layers.Function;
+import com.mapbox.mapboxsdk.style.functions.Function;
 import com.mapbox.mapboxsdk.style.layers.Layer;
 import com.mapbox.mapboxsdk.style.layers.LineLayer;
 import com.mapbox.mapboxsdk.style.layers.NoSuchLayerException;
@@ -47,9 +48,8 @@ import static com.mapbox.mapboxsdk.style.layers.Filter.all;
 import static com.mapbox.mapboxsdk.style.layers.Filter.eq;
 import static com.mapbox.mapboxsdk.style.layers.Filter.gte;
 import static com.mapbox.mapboxsdk.style.layers.Filter.lt;
-import static com.mapbox.mapboxsdk.style.layers.Function.Stop;
-import static com.mapbox.mapboxsdk.style.layers.Function.stop;
-import static com.mapbox.mapboxsdk.style.layers.Function.zoom;
+import static com.mapbox.mapboxsdk.style.functions.Function.stop;
+import static com.mapbox.mapboxsdk.style.functions.Function.zoom;
 import static com.mapbox.mapboxsdk.style.layers.Property.FILL_TRANSLATE_ANCHOR_MAP;
 import static com.mapbox.mapboxsdk.style.layers.Property.NONE;
 import static com.mapbox.mapboxsdk.style.layers.Property.SYMBOL_PLACEMENT_POINT;
@@ -423,12 +423,12 @@ public class RuntimeStyleActivity extends AppCompatActivity {
     mapboxMap.animateCamera(CameraUpdateFactory.zoomTo(1), 1500);
 
     PropertyValue<String> fillColor = layer.getFillColor();
-    Function<String> function = fillColor.getFunction();
+    Function<?, String> function = fillColor.getFunction();
     if (function != null) {
       Timber.d("Fill color base: " + function.getBase());
       Timber.d("Fill color #stops: " + function.getStops().length);
       if (function.getStops() != null) {
-        for (Stop stop : function.getStops()) {
+        for (Stop<?, String> stop : function.getStops()) {
           Timber.d("Fill color #stops: " + stop);
         }
       }
