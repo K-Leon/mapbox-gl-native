@@ -8,7 +8,9 @@ import android.support.test.runner.AndroidJUnit4;
 import timber.log.Timber;
 
 import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.style.functions.Function;
 import com.mapbox.mapboxsdk.style.functions.ZoomFunction;
+import com.mapbox.mapboxsdk.style.functions.PropertyFunction;
 import com.mapbox.mapboxsdk.style.layers.FillLayer;
 import com.mapbox.mapboxsdk.testapp.R;
 import com.mapbox.mapboxsdk.testapp.activity.style.RuntimeStyleTestActivity;
@@ -143,6 +145,26 @@ public class FillLayerTest extends BaseStyleTest {
   }
 
   @Test
+  public void testFillOpacityAsIdentityPropertyFunction() {
+    //Supports property function: true - true
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("fill-opacity");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      fillOpacity(Function.<Float>property("FeaturePropertyA"))
+    );
+
+    //Verify
+    assertNotNull(layer.getFillOpacity());
+    assertNotNull(layer.getFillOpacity().getFunction());
+    assertEquals(PropertyFunction.class, layer.getFillOpacity().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((PropertyFunction) layer.getFillOpacity().getFunction()).getProperty());
+    assertNull(layer.getFillOpacity().getFunction().getStops());
+  }
+
+  @Test
   public void testFillColorAsConstant() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("fill-color");
@@ -176,6 +198,26 @@ public class FillLayerTest extends BaseStyleTest {
     assertEquals(ZoomFunction.class, layer.getFillColor().getFunction().getClass());
     assertEquals(1, layer.getFillColor().getFunction().getStops().length);
     assertEquals((Float) 0.5f, layer.getFillColor().getFunction().getBase());
+  }
+
+  @Test
+  public void testFillColorAsIdentityPropertyFunction() {
+    //Supports property function: true - true
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("fill-color");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      fillColor(Function.<String>property("FeaturePropertyA"))
+    );
+
+    //Verify
+    assertNotNull(layer.getFillColor());
+    assertNotNull(layer.getFillColor().getFunction());
+    assertEquals(PropertyFunction.class, layer.getFillColor().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((PropertyFunction) layer.getFillColor().getFunction()).getProperty());
+    assertNull(layer.getFillColor().getFunction().getStops());
   }
 
   @Test
@@ -223,6 +265,26 @@ public class FillLayerTest extends BaseStyleTest {
     assertEquals(ZoomFunction.class, layer.getFillOutlineColor().getFunction().getClass());
     assertEquals(1, layer.getFillOutlineColor().getFunction().getStops().length);
     assertEquals((Float) 0.5f, layer.getFillOutlineColor().getFunction().getBase());
+  }
+
+  @Test
+  public void testFillOutlineColorAsIdentityPropertyFunction() {
+    //Supports property function: true - true
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("fill-outline-color");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      fillOutlineColor(Function.<String>property("FeaturePropertyA"))
+    );
+
+    //Verify
+    assertNotNull(layer.getFillOutlineColor());
+    assertNotNull(layer.getFillOutlineColor().getFunction());
+    assertEquals(PropertyFunction.class, layer.getFillOutlineColor().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((PropertyFunction) layer.getFillOutlineColor().getFunction()).getProperty());
+    assertNull(layer.getFillOutlineColor().getFunction().getStops());
   }
 
   @Test

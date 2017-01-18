@@ -80,7 +80,6 @@ public class Function<V, T> {
     return new ZoomFunction<>(stops);
   }
 
-
   /**
    * Zoom functions allow the appearance of a map feature to change with map’s zoom.
    * Zoom functions can be used to create the illusion of depth and control data density.
@@ -107,11 +106,15 @@ public class Function<V, T> {
     return new ZoomFunction<>(type, stops);
   }
 
+  public static <T> PropertyFunction<T, T> property(@NonNull String property) {
+    return new PropertyFunction<>(property);
+  }
+
   @SafeVarargs
   public static <V, T> PropertyFunction<V, T> property(
     @NonNull String property,
     @NonNull @Size(min = 1) Stop<V, T>... stops) {
-    return new PropertyFunction<V, T>(property, stops);
+    return new PropertyFunction<>(property, stops);
   }
 
   @SafeVarargs
@@ -120,7 +123,7 @@ public class Function<V, T> {
     //TODO: FloatRange?
     float base,
     @NonNull @Size(min = 1) Stop<V, T>... stops) {
-    return new PropertyFunction<V, T>(property, base, stops);
+    return new PropertyFunction<>(property, base, stops);
   }
 
   @SafeVarargs
@@ -129,7 +132,7 @@ public class Function<V, T> {
     //TODO: FloatRange?
     @TYPE String type,
     @NonNull @Size(min = 1) Stop<V, T>... stops) {
-    return new PropertyFunction<V, T>(property, type, stops);
+    return new PropertyFunction<>(property, type, stops);
   }
 
   @SafeVarargs
@@ -209,18 +212,27 @@ public class Function<V, T> {
   }
 
   public Map<String, Object> toValueObject() {
-    Object[] stopsValue = new Object[stops.length];
+    Map<String, Object> value = new HashMap<>();
 
-    for (int i = 0; i < stopsValue.length; i++) {
-      Stop stop = stops[i];
-      stopsValue[i] = stop.toValueObject();
+    if (stops != null) {
+      Object[] stopsValue = new Object[stops.length];
+
+      for (int i = 0; i < stopsValue.length; i++) {
+        Stop stop = stops[i];
+        stopsValue[i] = stop.toValueObject();
+      }
+
+      value.put("stops", stopsValue);
     }
 
-    Map<String, Object> value = new HashMap<>();
+    if (type != null) {
+      value.put("type", type);
+    }
+
     if (base != null) {
       value.put("base", base);
     }
-    value.put("stops", stopsValue);
+
     return value;
   }
 }

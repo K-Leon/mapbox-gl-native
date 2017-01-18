@@ -8,7 +8,9 @@ import android.support.test.runner.AndroidJUnit4;
 import timber.log.Timber;
 
 import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.style.functions.Function;
 import com.mapbox.mapboxsdk.style.functions.ZoomFunction;
+import com.mapbox.mapboxsdk.style.functions.PropertyFunction;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.testapp.R;
 import com.mapbox.mapboxsdk.testapp.activity.style.RuntimeStyleTestActivity;
@@ -503,6 +505,26 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
+  public void testIconRotateAsIdentityPropertyFunction() {
+    //Supports property function: true - true
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("icon-rotate");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      iconRotate(Function.<Float>property("FeaturePropertyA"))
+    );
+
+    //Verify
+    assertNotNull(layer.getIconRotate());
+    assertNotNull(layer.getIconRotate().getFunction());
+    assertEquals(PropertyFunction.class, layer.getIconRotate().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((PropertyFunction) layer.getIconRotate().getFunction()).getProperty());
+    assertNull(layer.getIconRotate().getFunction().getStops());
+  }
+
+  @Test
   public void testIconPaddingAsConstant() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-padding");
@@ -608,6 +630,26 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(ZoomFunction.class, layer.getIconOffset().getFunction().getClass());
     assertEquals(1, layer.getIconOffset().getFunction().getStops().length);
     assertEquals((Float) 0.5f, layer.getIconOffset().getFunction().getBase());
+  }
+
+  @Test
+  public void testIconOffsetAsIdentityPropertyFunction() {
+    //Supports property function: true - true
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("icon-offset");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      iconOffset(Function.<Float[]>property("FeaturePropertyA"))
+    );
+
+    //Verify
+    assertNotNull(layer.getIconOffset());
+    assertNotNull(layer.getIconOffset().getFunction());
+    assertEquals(PropertyFunction.class, layer.getIconOffset().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((PropertyFunction) layer.getIconOffset().getFunction()).getProperty());
+    assertNull(layer.getIconOffset().getFunction().getStops());
   }
 
   @Test

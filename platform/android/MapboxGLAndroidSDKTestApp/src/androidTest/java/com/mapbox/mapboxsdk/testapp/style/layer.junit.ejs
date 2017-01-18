@@ -12,7 +12,9 @@ import android.support.test.runner.AndroidJUnit4;
 import timber.log.Timber;
 
 import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.style.functions.Function;
 import com.mapbox.mapboxsdk.style.functions.ZoomFunction;
+import com.mapbox.mapboxsdk.style.functions.PropertyFunction;
 import com.mapbox.mapboxsdk.style.layers.<%- camelize(type) %>Layer;
 import com.mapbox.mapboxsdk.testapp.R;
 import com.mapbox.mapboxsdk.testapp.activity.style.RuntimeStyleTestActivity;
@@ -124,6 +126,28 @@ public class <%- camelize(type) %>LayerTest extends BaseStyleTest {
 <% } else { -%>
     assertEquals((Float) 0.5f, layer.get<%- camelize(property.name) %>().getFunction().getBase());
 <% } -%>
+  }
+<% } -%>
+<% if (supportsPropertyFunction(property)) { -%>
+
+  @Test
+  public void test<%- camelize(property.name) %>AsIdentityPropertyFunction() {
+    //Supports property function: <%- property['property-function'] %> - <%- supportsPropertyFunction(property) %>
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("<%- property.name %>");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      <%- camelizeWithLeadingLowercase(property.name) %>(Function.<<%- propertyType(property) %>>property("FeaturePropertyA"))
+    );
+
+    //Verify
+    assertNotNull(layer.get<%- camelize(property.name) %>());
+    assertNotNull(layer.get<%- camelize(property.name) %>().getFunction());
+    assertEquals(PropertyFunction.class, layer.get<%- camelize(property.name) %>().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((PropertyFunction) layer.get<%- camelize(property.name) %>().getFunction()).getProperty());
+    assertNull(layer.get<%- camelize(property.name) %>().getFunction().getStops());
   }
 <% } -%>
 <% if (property.type == 'color') { -%>

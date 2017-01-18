@@ -8,7 +8,9 @@ import android.support.test.runner.AndroidJUnit4;
 import timber.log.Timber;
 
 import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.style.functions.Function;
 import com.mapbox.mapboxsdk.style.functions.ZoomFunction;
+import com.mapbox.mapboxsdk.style.functions.PropertyFunction;
 import com.mapbox.mapboxsdk.style.layers.CircleLayer;
 import com.mapbox.mapboxsdk.testapp.R;
 import com.mapbox.mapboxsdk.testapp.activity.style.RuntimeStyleTestActivity;
@@ -107,6 +109,26 @@ public class CircleLayerTest extends BaseStyleTest {
   }
 
   @Test
+  public void testCircleRadiusAsIdentityPropertyFunction() {
+    //Supports property function: true - true
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("circle-radius");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      circleRadius(Function.<Float>property("FeaturePropertyA"))
+    );
+
+    //Verify
+    assertNotNull(layer.getCircleRadius());
+    assertNotNull(layer.getCircleRadius().getFunction());
+    assertEquals(PropertyFunction.class, layer.getCircleRadius().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((PropertyFunction) layer.getCircleRadius().getFunction()).getProperty());
+    assertNull(layer.getCircleRadius().getFunction().getStops());
+  }
+
+  @Test
   public void testCircleColorAsConstant() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("circle-color");
@@ -140,6 +162,26 @@ public class CircleLayerTest extends BaseStyleTest {
     assertEquals(ZoomFunction.class, layer.getCircleColor().getFunction().getClass());
     assertEquals(1, layer.getCircleColor().getFunction().getStops().length);
     assertEquals((Float) 0.5f, layer.getCircleColor().getFunction().getBase());
+  }
+
+  @Test
+  public void testCircleColorAsIdentityPropertyFunction() {
+    //Supports property function: true - true
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("circle-color");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      circleColor(Function.<String>property("FeaturePropertyA"))
+    );
+
+    //Verify
+    assertNotNull(layer.getCircleColor());
+    assertNotNull(layer.getCircleColor().getFunction());
+    assertEquals(PropertyFunction.class, layer.getCircleColor().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((PropertyFunction) layer.getCircleColor().getFunction()).getProperty());
+    assertNull(layer.getCircleColor().getFunction().getStops());
   }
 
   @Test
@@ -190,6 +232,26 @@ public class CircleLayerTest extends BaseStyleTest {
   }
 
   @Test
+  public void testCircleBlurAsIdentityPropertyFunction() {
+    //Supports property function: true - true
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("circle-blur");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      circleBlur(Function.<Float>property("FeaturePropertyA"))
+    );
+
+    //Verify
+    assertNotNull(layer.getCircleBlur());
+    assertNotNull(layer.getCircleBlur().getFunction());
+    assertEquals(PropertyFunction.class, layer.getCircleBlur().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((PropertyFunction) layer.getCircleBlur().getFunction()).getProperty());
+    assertNull(layer.getCircleBlur().getFunction().getStops());
+  }
+
+  @Test
   public void testCircleOpacityAsConstant() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("circle-opacity");
@@ -223,6 +285,26 @@ public class CircleLayerTest extends BaseStyleTest {
     assertEquals(ZoomFunction.class, layer.getCircleOpacity().getFunction().getClass());
     assertEquals(1, layer.getCircleOpacity().getFunction().getStops().length);
     assertEquals((Float) 0.5f, layer.getCircleOpacity().getFunction().getBase());
+  }
+
+  @Test
+  public void testCircleOpacityAsIdentityPropertyFunction() {
+    //Supports property function: true - true
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("circle-opacity");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      circleOpacity(Function.<Float>property("FeaturePropertyA"))
+    );
+
+    //Verify
+    assertNotNull(layer.getCircleOpacity());
+    assertNotNull(layer.getCircleOpacity().getFunction());
+    assertEquals(PropertyFunction.class, layer.getCircleOpacity().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((PropertyFunction) layer.getCircleOpacity().getFunction()).getProperty());
+    assertNull(layer.getCircleOpacity().getFunction().getStops());
   }
 
   @Test
@@ -370,6 +452,26 @@ public class CircleLayerTest extends BaseStyleTest {
   }
 
   @Test
+  public void testCircleStrokeWidthAsIdentityPropertyFunction() {
+    //Supports property function: true - true
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("circle-stroke-width");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      circleStrokeWidth(Function.<Float>property("FeaturePropertyA"))
+    );
+
+    //Verify
+    assertNotNull(layer.getCircleStrokeWidth());
+    assertNotNull(layer.getCircleStrokeWidth().getFunction());
+    assertEquals(PropertyFunction.class, layer.getCircleStrokeWidth().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((PropertyFunction) layer.getCircleStrokeWidth().getFunction()).getProperty());
+    assertNull(layer.getCircleStrokeWidth().getFunction().getStops());
+  }
+
+  @Test
   public void testCircleStrokeColorAsConstant() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("circle-stroke-color");
@@ -403,6 +505,26 @@ public class CircleLayerTest extends BaseStyleTest {
     assertEquals(ZoomFunction.class, layer.getCircleStrokeColor().getFunction().getClass());
     assertEquals(1, layer.getCircleStrokeColor().getFunction().getStops().length);
     assertEquals((Float) 0.5f, layer.getCircleStrokeColor().getFunction().getBase());
+  }
+
+  @Test
+  public void testCircleStrokeColorAsIdentityPropertyFunction() {
+    //Supports property function: true - true
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("circle-stroke-color");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      circleStrokeColor(Function.<String>property("FeaturePropertyA"))
+    );
+
+    //Verify
+    assertNotNull(layer.getCircleStrokeColor());
+    assertNotNull(layer.getCircleStrokeColor().getFunction());
+    assertEquals(PropertyFunction.class, layer.getCircleStrokeColor().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((PropertyFunction) layer.getCircleStrokeColor().getFunction()).getProperty());
+    assertNull(layer.getCircleStrokeColor().getFunction().getStops());
   }
 
   @Test
@@ -450,6 +572,26 @@ public class CircleLayerTest extends BaseStyleTest {
     assertEquals(ZoomFunction.class, layer.getCircleStrokeOpacity().getFunction().getClass());
     assertEquals(1, layer.getCircleStrokeOpacity().getFunction().getStops().length);
     assertEquals((Float) 0.5f, layer.getCircleStrokeOpacity().getFunction().getBase());
+  }
+
+  @Test
+  public void testCircleStrokeOpacityAsIdentityPropertyFunction() {
+    //Supports property function: true - true
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("circle-stroke-opacity");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      circleStrokeOpacity(Function.<Float>property("FeaturePropertyA"))
+    );
+
+    //Verify
+    assertNotNull(layer.getCircleStrokeOpacity());
+    assertNotNull(layer.getCircleStrokeOpacity().getFunction());
+    assertEquals(PropertyFunction.class, layer.getCircleStrokeOpacity().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((PropertyFunction) layer.getCircleStrokeOpacity().getFunction()).getProperty());
+    assertNull(layer.getCircleStrokeOpacity().getFunction().getStops());
   }
 
 
