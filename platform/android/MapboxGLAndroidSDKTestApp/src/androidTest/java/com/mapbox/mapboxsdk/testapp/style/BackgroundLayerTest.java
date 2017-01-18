@@ -8,6 +8,7 @@ import android.support.test.runner.AndroidJUnit4;
 import timber.log.Timber;
 
 import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.style.functions.ZoomFunction;
 import com.mapbox.mapboxsdk.style.layers.BackgroundLayer;
 import com.mapbox.mapboxsdk.testapp.R;
 import com.mapbox.mapboxsdk.testapp.activity.style.RuntimeStyleTestActivity;
@@ -19,6 +20,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static com.mapbox.mapboxsdk.style.functions.Function.*;
 import static org.junit.Assert.*;
 import static com.mapbox.mapboxsdk.style.layers.Property.*;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.*;
@@ -63,7 +65,7 @@ public class BackgroundLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testBackgroundColor() {
+  public void testBackgroundColorAsConstant() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("background-color");
     assertNotNull(layer);
@@ -74,7 +76,32 @@ public class BackgroundLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testBackgroundColorAsInt() {
+  public void testBackgroundColorAsZoomFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("background-color");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      backgroundColor(
+        zoom(
+          //Exponential stops (implicit)
+          0.5f,
+          stop(2, backgroundColor("rgba(0, 0, 0, 1)"))
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getBackgroundColor());
+    assertNotNull(layer.getBackgroundColor().getFunction());
+    assertEquals(ZoomFunction.class, layer.getBackgroundColor().getFunction().getClass());
+    assertEquals(1, layer.getBackgroundColor().getFunction().getStops().length);
+    assertEquals((Float) 0.5f, layer.getBackgroundColor().getFunction().getBase());
+  }
+
+  @Test
+  public void testBackgroundColorAsIntConstant() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("background-color");
     assertNotNull(layer);
@@ -85,7 +112,7 @@ public class BackgroundLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testBackgroundPattern() {
+  public void testBackgroundPatternAsConstant() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("background-pattern");
     assertNotNull(layer);
@@ -96,7 +123,32 @@ public class BackgroundLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testBackgroundOpacity() {
+  public void testBackgroundPatternAsZoomFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("background-pattern");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      backgroundPattern(
+        zoom(
+          //Interval stops (explicit)
+          INTERVAL,
+          stop(2, backgroundPattern("pedestrian-polygon"))
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getBackgroundPattern());
+    assertNotNull(layer.getBackgroundPattern().getFunction());
+    assertEquals(ZoomFunction.class, layer.getBackgroundPattern().getFunction().getClass());
+    assertEquals(1, layer.getBackgroundPattern().getFunction().getStops().length);
+    assertEquals(INTERVAL, layer.getBackgroundPattern().getFunction().getType());
+  }
+
+  @Test
+  public void testBackgroundOpacityAsConstant() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("background-opacity");
     assertNotNull(layer);
@@ -104,6 +156,31 @@ public class BackgroundLayerTest extends BaseStyleTest {
     //Set and Get
     layer.setProperties(backgroundOpacity(0.3f));
     assertEquals((Float) layer.getBackgroundOpacity().getValue(), (Float) 0.3f);
+  }
+
+  @Test
+  public void testBackgroundOpacityAsZoomFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("background-opacity");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      backgroundOpacity(
+        zoom(
+          //Exponential stops (implicit)
+          0.5f,
+          stop(2, backgroundOpacity(0.3f))
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getBackgroundOpacity());
+    assertNotNull(layer.getBackgroundOpacity().getFunction());
+    assertEquals(ZoomFunction.class, layer.getBackgroundOpacity().getFunction().getClass());
+    assertEquals(1, layer.getBackgroundOpacity().getFunction().getStops().length);
+    assertEquals((Float) 0.5f, layer.getBackgroundOpacity().getFunction().getBase());
   }
 
 

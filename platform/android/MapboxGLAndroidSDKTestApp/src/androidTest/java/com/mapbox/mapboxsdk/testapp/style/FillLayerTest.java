@@ -8,6 +8,7 @@ import android.support.test.runner.AndroidJUnit4;
 import timber.log.Timber;
 
 import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.style.functions.ZoomFunction;
 import com.mapbox.mapboxsdk.style.layers.FillLayer;
 import com.mapbox.mapboxsdk.testapp.R;
 import com.mapbox.mapboxsdk.testapp.activity.style.RuntimeStyleTestActivity;
@@ -19,6 +20,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static com.mapbox.mapboxsdk.style.functions.Function.*;
 import static org.junit.Assert.*;
 import static com.mapbox.mapboxsdk.style.layers.Property.*;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.*;
@@ -69,7 +71,7 @@ public class FillLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testFillAntialias() {
+  public void testFillAntialiasAsConstant() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("fill-antialias");
     assertNotNull(layer);
@@ -80,7 +82,32 @@ public class FillLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testFillOpacity() {
+  public void testFillAntialiasAsZoomFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("fill-antialias");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      fillAntialias(
+        zoom(
+          //Interval stops (explicit)
+          INTERVAL,
+          stop(2, fillAntialias(true))
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getFillAntialias());
+    assertNotNull(layer.getFillAntialias().getFunction());
+    assertEquals(ZoomFunction.class, layer.getFillAntialias().getFunction().getClass());
+    assertEquals(1, layer.getFillAntialias().getFunction().getStops().length);
+    assertEquals(INTERVAL, layer.getFillAntialias().getFunction().getType());
+  }
+
+  @Test
+  public void testFillOpacityAsConstant() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("fill-opacity");
     assertNotNull(layer);
@@ -91,7 +118,32 @@ public class FillLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testFillColor() {
+  public void testFillOpacityAsZoomFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("fill-opacity");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      fillOpacity(
+        zoom(
+          //Exponential stops (implicit)
+          0.5f,
+          stop(2, fillOpacity(0.3f))
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getFillOpacity());
+    assertNotNull(layer.getFillOpacity().getFunction());
+    assertEquals(ZoomFunction.class, layer.getFillOpacity().getFunction().getClass());
+    assertEquals(1, layer.getFillOpacity().getFunction().getStops().length);
+    assertEquals((Float) 0.5f, layer.getFillOpacity().getFunction().getBase());
+  }
+
+  @Test
+  public void testFillColorAsConstant() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("fill-color");
     assertNotNull(layer);
@@ -102,7 +154,32 @@ public class FillLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testFillColorAsInt() {
+  public void testFillColorAsZoomFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("fill-color");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      fillColor(
+        zoom(
+          //Exponential stops (implicit)
+          0.5f,
+          stop(2, fillColor("rgba(0, 0, 0, 1)"))
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getFillColor());
+    assertNotNull(layer.getFillColor().getFunction());
+    assertEquals(ZoomFunction.class, layer.getFillColor().getFunction().getClass());
+    assertEquals(1, layer.getFillColor().getFunction().getStops().length);
+    assertEquals((Float) 0.5f, layer.getFillColor().getFunction().getBase());
+  }
+
+  @Test
+  public void testFillColorAsIntConstant() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("fill-color");
     assertNotNull(layer);
@@ -113,7 +190,7 @@ public class FillLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testFillOutlineColor() {
+  public void testFillOutlineColorAsConstant() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("fill-outline-color");
     assertNotNull(layer);
@@ -124,7 +201,32 @@ public class FillLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testFillOutlineColorAsInt() {
+  public void testFillOutlineColorAsZoomFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("fill-outline-color");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      fillOutlineColor(
+        zoom(
+          //Exponential stops (implicit)
+          0.5f,
+          stop(2, fillOutlineColor("rgba(0, 0, 0, 1)"))
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getFillOutlineColor());
+    assertNotNull(layer.getFillOutlineColor().getFunction());
+    assertEquals(ZoomFunction.class, layer.getFillOutlineColor().getFunction().getClass());
+    assertEquals(1, layer.getFillOutlineColor().getFunction().getStops().length);
+    assertEquals((Float) 0.5f, layer.getFillOutlineColor().getFunction().getBase());
+  }
+
+  @Test
+  public void testFillOutlineColorAsIntConstant() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("fill-outline-color");
     assertNotNull(layer);
@@ -135,7 +237,7 @@ public class FillLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testFillTranslate() {
+  public void testFillTranslateAsConstant() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("fill-translate");
     assertNotNull(layer);
@@ -146,7 +248,32 @@ public class FillLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testFillTranslateAnchor() {
+  public void testFillTranslateAsZoomFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("fill-translate");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      fillTranslate(
+        zoom(
+          //Exponential stops (implicit)
+          0.5f,
+          stop(2, fillTranslate(new Float[]{0f,0f}))
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getFillTranslate());
+    assertNotNull(layer.getFillTranslate().getFunction());
+    assertEquals(ZoomFunction.class, layer.getFillTranslate().getFunction().getClass());
+    assertEquals(1, layer.getFillTranslate().getFunction().getStops().length);
+    assertEquals((Float) 0.5f, layer.getFillTranslate().getFunction().getBase());
+  }
+
+  @Test
+  public void testFillTranslateAnchorAsConstant() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("fill-translate-anchor");
     assertNotNull(layer);
@@ -157,7 +284,32 @@ public class FillLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testFillPattern() {
+  public void testFillTranslateAnchorAsZoomFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("fill-translate-anchor");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      fillTranslateAnchor(
+        zoom(
+          //Interval stops (explicit)
+          INTERVAL,
+          stop(2, fillTranslateAnchor(FILL_TRANSLATE_ANCHOR_MAP))
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getFillTranslateAnchor());
+    assertNotNull(layer.getFillTranslateAnchor().getFunction());
+    assertEquals(ZoomFunction.class, layer.getFillTranslateAnchor().getFunction().getClass());
+    assertEquals(1, layer.getFillTranslateAnchor().getFunction().getStops().length);
+    assertEquals(INTERVAL, layer.getFillTranslateAnchor().getFunction().getType());
+  }
+
+  @Test
+  public void testFillPatternAsConstant() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("fill-pattern");
     assertNotNull(layer);
@@ -165,6 +317,31 @@ public class FillLayerTest extends BaseStyleTest {
     //Set and Get
     layer.setProperties(fillPattern("pedestrian-polygon"));
     assertEquals((String) layer.getFillPattern().getValue(), (String) "pedestrian-polygon");
+  }
+
+  @Test
+  public void testFillPatternAsZoomFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("fill-pattern");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      fillPattern(
+        zoom(
+          //Interval stops (explicit)
+          INTERVAL,
+          stop(2, fillPattern("pedestrian-polygon"))
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getFillPattern());
+    assertNotNull(layer.getFillPattern().getFunction());
+    assertEquals(ZoomFunction.class, layer.getFillPattern().getFunction().getClass());
+    assertEquals(1, layer.getFillPattern().getFunction().getStops().length);
+    assertEquals(INTERVAL, layer.getFillPattern().getFunction().getType());
   }
 
 
