@@ -9,8 +9,12 @@ import timber.log.Timber;
 
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.style.functions.Function;
-import com.mapbox.mapboxsdk.style.functions.ZoomFunction;
-import com.mapbox.mapboxsdk.style.functions.PropertyFunction;
+import com.mapbox.mapboxsdk.style.functions.CameraFunction;
+import com.mapbox.mapboxsdk.style.functions.SourceFunction;
+import com.mapbox.mapboxsdk.style.functions.stops.ExponentialStops;
+import com.mapbox.mapboxsdk.style.functions.stops.IdentityStops;
+import com.mapbox.mapboxsdk.style.functions.stops.IntervalStops;
+import com.mapbox.mapboxsdk.style.functions.stops.Stops;
 import com.mapbox.mapboxsdk.style.layers.LineLayer;
 import com.mapbox.mapboxsdk.testapp.R;
 import com.mapbox.mapboxsdk.testapp.activity.style.RuntimeStyleTestActivity;
@@ -23,6 +27,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static com.mapbox.mapboxsdk.style.functions.Function.*;
+import static com.mapbox.mapboxsdk.style.functions.stops.Stop.stop;
+import static com.mapbox.mapboxsdk.style.functions.stops.Stops.*;
 import static org.junit.Assert.*;
 import static com.mapbox.mapboxsdk.style.layers.Property.*;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.*;
@@ -84,7 +90,7 @@ public class LineLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testLineCapAsZoomFunction() {
+  public void testLineCapAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-cap");
     assertNotNull(layer);
@@ -93,9 +99,9 @@ public class LineLayerTest extends BaseStyleTest {
     layer.setProperties(
       lineCap(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, lineCap(LINE_CAP_BUTT))
+          interval(
+            stop(2, lineCap(LINE_CAP_BUTT))
+          )
         )
       )
     );
@@ -103,9 +109,9 @@ public class LineLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getLineCap());
     assertNotNull(layer.getLineCap().getFunction());
-    assertEquals(ZoomFunction.class, layer.getLineCap().getFunction().getClass());
-    assertEquals(1, layer.getLineCap().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getLineCap().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getLineCap().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getLineCap().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getLineCap().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -120,7 +126,7 @@ public class LineLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testLineJoinAsZoomFunction() {
+  public void testLineJoinAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-join");
     assertNotNull(layer);
@@ -129,9 +135,9 @@ public class LineLayerTest extends BaseStyleTest {
     layer.setProperties(
       lineJoin(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, lineJoin(LINE_JOIN_BEVEL))
+          interval(
+            stop(2, lineJoin(LINE_JOIN_BEVEL))
+          )
         )
       )
     );
@@ -139,9 +145,9 @@ public class LineLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getLineJoin());
     assertNotNull(layer.getLineJoin().getFunction());
-    assertEquals(ZoomFunction.class, layer.getLineJoin().getFunction().getClass());
-    assertEquals(1, layer.getLineJoin().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getLineJoin().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getLineJoin().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getLineJoin().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getLineJoin().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -156,7 +162,7 @@ public class LineLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testLineMiterLimitAsZoomFunction() {
+  public void testLineMiterLimitAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-miter-limit");
     assertNotNull(layer);
@@ -165,9 +171,10 @@ public class LineLayerTest extends BaseStyleTest {
     layer.setProperties(
       lineMiterLimit(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, lineMiterLimit(0.3f))
+          exponential(
+            0.5f,
+            stop(2, lineMiterLimit(0.3f))
+          )
         )
       )
     );
@@ -175,9 +182,10 @@ public class LineLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getLineMiterLimit());
     assertNotNull(layer.getLineMiterLimit().getFunction());
-    assertEquals(ZoomFunction.class, layer.getLineMiterLimit().getFunction().getClass());
-    assertEquals(1, layer.getLineMiterLimit().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getLineMiterLimit().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getLineMiterLimit().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getLineMiterLimit().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getLineMiterLimit().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getLineMiterLimit().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -192,7 +200,7 @@ public class LineLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testLineRoundLimitAsZoomFunction() {
+  public void testLineRoundLimitAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-round-limit");
     assertNotNull(layer);
@@ -201,9 +209,10 @@ public class LineLayerTest extends BaseStyleTest {
     layer.setProperties(
       lineRoundLimit(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, lineRoundLimit(0.3f))
+          exponential(
+            0.5f,
+            stop(2, lineRoundLimit(0.3f))
+          )
         )
       )
     );
@@ -211,9 +220,10 @@ public class LineLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getLineRoundLimit());
     assertNotNull(layer.getLineRoundLimit().getFunction());
-    assertEquals(ZoomFunction.class, layer.getLineRoundLimit().getFunction().getClass());
-    assertEquals(1, layer.getLineRoundLimit().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getLineRoundLimit().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getLineRoundLimit().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getLineRoundLimit().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getLineRoundLimit().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getLineRoundLimit().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -228,7 +238,7 @@ public class LineLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testLineOpacityAsZoomFunction() {
+  public void testLineOpacityAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-opacity");
     assertNotNull(layer);
@@ -237,9 +247,10 @@ public class LineLayerTest extends BaseStyleTest {
     layer.setProperties(
       lineOpacity(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, lineOpacity(0.3f))
+          exponential(
+            0.5f,
+            stop(2, lineOpacity(0.3f))
+          )
         )
       )
     );
@@ -247,13 +258,14 @@ public class LineLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getLineOpacity());
     assertNotNull(layer.getLineOpacity().getFunction());
-    assertEquals(ZoomFunction.class, layer.getLineOpacity().getFunction().getClass());
-    assertEquals(1, layer.getLineOpacity().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getLineOpacity().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getLineOpacity().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getLineOpacity().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getLineOpacity().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getLineOpacity().getFunction().getStops()).stops.length);
   }
 
   @Test
-  public void testLineOpacityAsIdentityPropertyFunction() {
+  public void testLineOpacityAsIdentitySourceFunction() {
     //Supports property function: true - true
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-opacity");
@@ -261,15 +273,15 @@ public class LineLayerTest extends BaseStyleTest {
 
     //Set
     layer.setProperties(
-      lineOpacity(Function.<Float>property("FeaturePropertyA"))
+      lineOpacity(property("FeaturePropertyA", Stops.<Float>identity()))
     );
 
     //Verify
     assertNotNull(layer.getLineOpacity());
     assertNotNull(layer.getLineOpacity().getFunction());
-    assertEquals(PropertyFunction.class, layer.getLineOpacity().getFunction().getClass());
-    assertEquals("FeaturePropertyA", ((PropertyFunction) layer.getLineOpacity().getFunction()).getProperty());
-    assertNull(layer.getLineOpacity().getFunction().getStops());
+    assertEquals(SourceFunction.class, layer.getLineOpacity().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getLineOpacity().getFunction()).getProperty());
+    assertEquals(IdentityStops.class, layer.getLineOpacity().getFunction().getStops().getClass());
   }
 
   @Test
@@ -284,7 +296,7 @@ public class LineLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testLineColorAsZoomFunction() {
+  public void testLineColorAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-color");
     assertNotNull(layer);
@@ -293,9 +305,10 @@ public class LineLayerTest extends BaseStyleTest {
     layer.setProperties(
       lineColor(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, lineColor("rgba(0, 0, 0, 1)"))
+          exponential(
+            0.5f,
+            stop(2, lineColor("rgba(0, 0, 0, 1)"))
+          )
         )
       )
     );
@@ -303,13 +316,14 @@ public class LineLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getLineColor());
     assertNotNull(layer.getLineColor().getFunction());
-    assertEquals(ZoomFunction.class, layer.getLineColor().getFunction().getClass());
-    assertEquals(1, layer.getLineColor().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getLineColor().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getLineColor().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getLineColor().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getLineColor().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getLineColor().getFunction().getStops()).stops.length);
   }
 
   @Test
-  public void testLineColorAsIdentityPropertyFunction() {
+  public void testLineColorAsIdentitySourceFunction() {
     //Supports property function: true - true
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-color");
@@ -317,15 +331,15 @@ public class LineLayerTest extends BaseStyleTest {
 
     //Set
     layer.setProperties(
-      lineColor(Function.<String>property("FeaturePropertyA"))
+      lineColor(property("FeaturePropertyA", Stops.<String>identity()))
     );
 
     //Verify
     assertNotNull(layer.getLineColor());
     assertNotNull(layer.getLineColor().getFunction());
-    assertEquals(PropertyFunction.class, layer.getLineColor().getFunction().getClass());
-    assertEquals("FeaturePropertyA", ((PropertyFunction) layer.getLineColor().getFunction()).getProperty());
-    assertNull(layer.getLineColor().getFunction().getStops());
+    assertEquals(SourceFunction.class, layer.getLineColor().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getLineColor().getFunction()).getProperty());
+    assertEquals(IdentityStops.class, layer.getLineColor().getFunction().getStops().getClass());
   }
 
   @Test
@@ -351,7 +365,7 @@ public class LineLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testLineTranslateAsZoomFunction() {
+  public void testLineTranslateAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-translate");
     assertNotNull(layer);
@@ -360,9 +374,10 @@ public class LineLayerTest extends BaseStyleTest {
     layer.setProperties(
       lineTranslate(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, lineTranslate(new Float[]{0f,0f}))
+          exponential(
+            0.5f,
+            stop(2, lineTranslate(new Float[]{0f,0f}))
+          )
         )
       )
     );
@@ -370,9 +385,10 @@ public class LineLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getLineTranslate());
     assertNotNull(layer.getLineTranslate().getFunction());
-    assertEquals(ZoomFunction.class, layer.getLineTranslate().getFunction().getClass());
-    assertEquals(1, layer.getLineTranslate().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getLineTranslate().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getLineTranslate().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getLineTranslate().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getLineTranslate().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getLineTranslate().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -387,7 +403,7 @@ public class LineLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testLineTranslateAnchorAsZoomFunction() {
+  public void testLineTranslateAnchorAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-translate-anchor");
     assertNotNull(layer);
@@ -396,9 +412,9 @@ public class LineLayerTest extends BaseStyleTest {
     layer.setProperties(
       lineTranslateAnchor(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, lineTranslateAnchor(LINE_TRANSLATE_ANCHOR_MAP))
+          interval(
+            stop(2, lineTranslateAnchor(LINE_TRANSLATE_ANCHOR_MAP))
+          )
         )
       )
     );
@@ -406,9 +422,9 @@ public class LineLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getLineTranslateAnchor());
     assertNotNull(layer.getLineTranslateAnchor().getFunction());
-    assertEquals(ZoomFunction.class, layer.getLineTranslateAnchor().getFunction().getClass());
-    assertEquals(1, layer.getLineTranslateAnchor().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getLineTranslateAnchor().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getLineTranslateAnchor().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getLineTranslateAnchor().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getLineTranslateAnchor().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -423,7 +439,7 @@ public class LineLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testLineWidthAsZoomFunction() {
+  public void testLineWidthAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-width");
     assertNotNull(layer);
@@ -432,9 +448,10 @@ public class LineLayerTest extends BaseStyleTest {
     layer.setProperties(
       lineWidth(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, lineWidth(0.3f))
+          exponential(
+            0.5f,
+            stop(2, lineWidth(0.3f))
+          )
         )
       )
     );
@@ -442,9 +459,10 @@ public class LineLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getLineWidth());
     assertNotNull(layer.getLineWidth().getFunction());
-    assertEquals(ZoomFunction.class, layer.getLineWidth().getFunction().getClass());
-    assertEquals(1, layer.getLineWidth().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getLineWidth().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getLineWidth().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getLineWidth().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getLineWidth().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getLineWidth().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -459,7 +477,7 @@ public class LineLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testLineGapWidthAsZoomFunction() {
+  public void testLineGapWidthAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-gap-width");
     assertNotNull(layer);
@@ -468,9 +486,10 @@ public class LineLayerTest extends BaseStyleTest {
     layer.setProperties(
       lineGapWidth(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, lineGapWidth(0.3f))
+          exponential(
+            0.5f,
+            stop(2, lineGapWidth(0.3f))
+          )
         )
       )
     );
@@ -478,13 +497,14 @@ public class LineLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getLineGapWidth());
     assertNotNull(layer.getLineGapWidth().getFunction());
-    assertEquals(ZoomFunction.class, layer.getLineGapWidth().getFunction().getClass());
-    assertEquals(1, layer.getLineGapWidth().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getLineGapWidth().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getLineGapWidth().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getLineGapWidth().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getLineGapWidth().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getLineGapWidth().getFunction().getStops()).stops.length);
   }
 
   @Test
-  public void testLineGapWidthAsIdentityPropertyFunction() {
+  public void testLineGapWidthAsIdentitySourceFunction() {
     //Supports property function: true - true
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-gap-width");
@@ -492,15 +512,15 @@ public class LineLayerTest extends BaseStyleTest {
 
     //Set
     layer.setProperties(
-      lineGapWidth(Function.<Float>property("FeaturePropertyA"))
+      lineGapWidth(property("FeaturePropertyA", Stops.<Float>identity()))
     );
 
     //Verify
     assertNotNull(layer.getLineGapWidth());
     assertNotNull(layer.getLineGapWidth().getFunction());
-    assertEquals(PropertyFunction.class, layer.getLineGapWidth().getFunction().getClass());
-    assertEquals("FeaturePropertyA", ((PropertyFunction) layer.getLineGapWidth().getFunction()).getProperty());
-    assertNull(layer.getLineGapWidth().getFunction().getStops());
+    assertEquals(SourceFunction.class, layer.getLineGapWidth().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getLineGapWidth().getFunction()).getProperty());
+    assertEquals(IdentityStops.class, layer.getLineGapWidth().getFunction().getStops().getClass());
   }
 
   @Test
@@ -515,7 +535,7 @@ public class LineLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testLineOffsetAsZoomFunction() {
+  public void testLineOffsetAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-offset");
     assertNotNull(layer);
@@ -524,9 +544,10 @@ public class LineLayerTest extends BaseStyleTest {
     layer.setProperties(
       lineOffset(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, lineOffset(0.3f))
+          exponential(
+            0.5f,
+            stop(2, lineOffset(0.3f))
+          )
         )
       )
     );
@@ -534,13 +555,14 @@ public class LineLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getLineOffset());
     assertNotNull(layer.getLineOffset().getFunction());
-    assertEquals(ZoomFunction.class, layer.getLineOffset().getFunction().getClass());
-    assertEquals(1, layer.getLineOffset().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getLineOffset().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getLineOffset().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getLineOffset().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getLineOffset().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getLineOffset().getFunction().getStops()).stops.length);
   }
 
   @Test
-  public void testLineOffsetAsIdentityPropertyFunction() {
+  public void testLineOffsetAsIdentitySourceFunction() {
     //Supports property function: true - true
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-offset");
@@ -548,15 +570,15 @@ public class LineLayerTest extends BaseStyleTest {
 
     //Set
     layer.setProperties(
-      lineOffset(Function.<Float>property("FeaturePropertyA"))
+      lineOffset(property("FeaturePropertyA", Stops.<Float>identity()))
     );
 
     //Verify
     assertNotNull(layer.getLineOffset());
     assertNotNull(layer.getLineOffset().getFunction());
-    assertEquals(PropertyFunction.class, layer.getLineOffset().getFunction().getClass());
-    assertEquals("FeaturePropertyA", ((PropertyFunction) layer.getLineOffset().getFunction()).getProperty());
-    assertNull(layer.getLineOffset().getFunction().getStops());
+    assertEquals(SourceFunction.class, layer.getLineOffset().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getLineOffset().getFunction()).getProperty());
+    assertEquals(IdentityStops.class, layer.getLineOffset().getFunction().getStops().getClass());
   }
 
   @Test
@@ -571,7 +593,7 @@ public class LineLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testLineBlurAsZoomFunction() {
+  public void testLineBlurAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-blur");
     assertNotNull(layer);
@@ -580,9 +602,10 @@ public class LineLayerTest extends BaseStyleTest {
     layer.setProperties(
       lineBlur(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, lineBlur(0.3f))
+          exponential(
+            0.5f,
+            stop(2, lineBlur(0.3f))
+          )
         )
       )
     );
@@ -590,13 +613,14 @@ public class LineLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getLineBlur());
     assertNotNull(layer.getLineBlur().getFunction());
-    assertEquals(ZoomFunction.class, layer.getLineBlur().getFunction().getClass());
-    assertEquals(1, layer.getLineBlur().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getLineBlur().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getLineBlur().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getLineBlur().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getLineBlur().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getLineBlur().getFunction().getStops()).stops.length);
   }
 
   @Test
-  public void testLineBlurAsIdentityPropertyFunction() {
+  public void testLineBlurAsIdentitySourceFunction() {
     //Supports property function: true - true
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-blur");
@@ -604,15 +628,15 @@ public class LineLayerTest extends BaseStyleTest {
 
     //Set
     layer.setProperties(
-      lineBlur(Function.<Float>property("FeaturePropertyA"))
+      lineBlur(property("FeaturePropertyA", Stops.<Float>identity()))
     );
 
     //Verify
     assertNotNull(layer.getLineBlur());
     assertNotNull(layer.getLineBlur().getFunction());
-    assertEquals(PropertyFunction.class, layer.getLineBlur().getFunction().getClass());
-    assertEquals("FeaturePropertyA", ((PropertyFunction) layer.getLineBlur().getFunction()).getProperty());
-    assertNull(layer.getLineBlur().getFunction().getStops());
+    assertEquals(SourceFunction.class, layer.getLineBlur().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getLineBlur().getFunction()).getProperty());
+    assertEquals(IdentityStops.class, layer.getLineBlur().getFunction().getStops().getClass());
   }
 
   @Test
@@ -627,7 +651,7 @@ public class LineLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testLineDasharrayAsZoomFunction() {
+  public void testLineDasharrayAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-dasharray");
     assertNotNull(layer);
@@ -636,9 +660,9 @@ public class LineLayerTest extends BaseStyleTest {
     layer.setProperties(
       lineDasharray(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, lineDasharray(new Float[]{}))
+          interval(
+            stop(2, lineDasharray(new Float[]{}))
+          )
         )
       )
     );
@@ -646,9 +670,9 @@ public class LineLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getLineDasharray());
     assertNotNull(layer.getLineDasharray().getFunction());
-    assertEquals(ZoomFunction.class, layer.getLineDasharray().getFunction().getClass());
-    assertEquals(1, layer.getLineDasharray().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getLineDasharray().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getLineDasharray().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getLineDasharray().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getLineDasharray().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -663,7 +687,7 @@ public class LineLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testLinePatternAsZoomFunction() {
+  public void testLinePatternAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-pattern");
     assertNotNull(layer);
@@ -672,9 +696,9 @@ public class LineLayerTest extends BaseStyleTest {
     layer.setProperties(
       linePattern(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, linePattern("pedestrian-polygon"))
+          interval(
+            stop(2, linePattern("pedestrian-polygon"))
+          )
         )
       )
     );
@@ -682,9 +706,9 @@ public class LineLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getLinePattern());
     assertNotNull(layer.getLinePattern().getFunction());
-    assertEquals(ZoomFunction.class, layer.getLinePattern().getFunction().getClass());
-    assertEquals(1, layer.getLinePattern().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getLinePattern().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getLinePattern().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getLinePattern().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getLinePattern().getFunction().getStops()).stops.length);
   }
 
 

@@ -13,8 +13,12 @@ import timber.log.Timber;
 
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.style.functions.Function;
-import com.mapbox.mapboxsdk.style.functions.ZoomFunction;
-import com.mapbox.mapboxsdk.style.functions.PropertyFunction;
+import com.mapbox.mapboxsdk.style.functions.CameraFunction;
+import com.mapbox.mapboxsdk.style.functions.SourceFunction;
+import com.mapbox.mapboxsdk.style.functions.stops.ExponentialStops;
+import com.mapbox.mapboxsdk.style.functions.stops.IdentityStops;
+import com.mapbox.mapboxsdk.style.functions.stops.IntervalStops;
+import com.mapbox.mapboxsdk.style.functions.stops.Stops;
 import com.mapbox.mapboxsdk.style.layers.<%- camelize(type) %>Layer;
 import com.mapbox.mapboxsdk.testapp.R;
 import com.mapbox.mapboxsdk.testapp.activity.style.RuntimeStyleTestActivity;
@@ -27,6 +31,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static com.mapbox.mapboxsdk.style.functions.Function.*;
+import static com.mapbox.mapboxsdk.style.functions.stops.Stop.stop;
+import static com.mapbox.mapboxsdk.style.functions.stops.Stops.*;
 import static org.junit.Assert.*;
 import static com.mapbox.mapboxsdk.style.layers.Property.*;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.*;
@@ -95,7 +101,7 @@ public class <%- camelize(type) %>LayerTest extends BaseStyleTest {
 <% if (supportsZoomFunction(property)) { -%>
 
   @Test
-  public void test<%- camelize(property.name) %>AsZoomFunction() {
+  public void test<%- camelize(property.name) %>AsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("<%- property.name %>");
     assertNotNull(layer);
@@ -105,13 +111,13 @@ public class <%- camelize(type) %>LayerTest extends BaseStyleTest {
       <%- camelizeWithLeadingLowercase(property.name) %>(
         zoom(
 <% if (property.function == 'piecewise-constant') { -%>
-          //Interval stops (explicit)
-          INTERVAL,
+          interval(
 <% } else { -%>
-          //Exponential stops (implicit)
-          0.5f,
+          exponential(
+            0.5f,
 <% } -%>
-          stop(2, <%- camelizeWithLeadingLowercase(property.name) %>(<%- defaultValueJava(property) %>))
+            stop(2, <%- camelizeWithLeadingLowercase(property.name) %>(<%- defaultValueJava(property) %>))
+          )
         )
       )
     );
@@ -119,19 +125,21 @@ public class <%- camelize(type) %>LayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.get<%- camelize(property.name) %>());
     assertNotNull(layer.get<%- camelize(property.name) %>().getFunction());
-    assertEquals(ZoomFunction.class, layer.get<%- camelize(property.name) %>().getFunction().getClass());
-    assertEquals(1, layer.get<%- camelize(property.name) %>().getFunction().getStops().length);
+    assertEquals(CameraFunction.class, layer.get<%- camelize(property.name) %>().getFunction().getClass());
 <% if (property.function == 'piecewise-constant') { -%>
-    assertEquals(INTERVAL, layer.get<%- camelize(property.name) %>().getFunction().getType());
+    assertEquals(IntervalStops.class, layer.get<%- camelize(property.name) %>().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.get<%- camelize(property.name) %>().getFunction().getStops()).stops.length);
 <% } else { -%>
-    assertEquals((Float) 0.5f, layer.get<%- camelize(property.name) %>().getFunction().getBase());
+    assertEquals(ExponentialStops.class, layer.get<%- camelize(property.name) %>().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.get<%- camelize(property.name) %>().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.get<%- camelize(property.name) %>().getFunction().getStops()).stops.length);
 <% } -%>
   }
 <% } -%>
 <% if (supportsPropertyFunction(property)) { -%>
 
   @Test
-  public void test<%- camelize(property.name) %>AsIdentityPropertyFunction() {
+  public void test<%- camelize(property.name) %>AsIdentitySourceFunction() {
     //Supports property function: <%- property['property-function'] %> - <%- supportsPropertyFunction(property) %>
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("<%- property.name %>");
@@ -139,15 +147,15 @@ public class <%- camelize(type) %>LayerTest extends BaseStyleTest {
 
     //Set
     layer.setProperties(
-      <%- camelizeWithLeadingLowercase(property.name) %>(Function.<<%- propertyType(property) %>>property("FeaturePropertyA"))
+      <%- camelizeWithLeadingLowercase(property.name) %>(property("FeaturePropertyA", Stops.<<%- propertyType(property) %>>identity()))
     );
 
     //Verify
     assertNotNull(layer.get<%- camelize(property.name) %>());
     assertNotNull(layer.get<%- camelize(property.name) %>().getFunction());
-    assertEquals(PropertyFunction.class, layer.get<%- camelize(property.name) %>().getFunction().getClass());
-    assertEquals("FeaturePropertyA", ((PropertyFunction) layer.get<%- camelize(property.name) %>().getFunction()).getProperty());
-    assertNull(layer.get<%- camelize(property.name) %>().getFunction().getStops());
+    assertEquals(SourceFunction.class, layer.get<%- camelize(property.name) %>().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.get<%- camelize(property.name) %>().getFunction()).getProperty());
+    assertEquals(IdentityStops.class, layer.get<%- camelize(property.name) %>().getFunction().getStops().getClass());
   }
 <% } -%>
 <% if (property.type == 'color') { -%>

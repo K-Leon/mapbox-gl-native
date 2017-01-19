@@ -9,8 +9,12 @@ import timber.log.Timber;
 
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.style.functions.Function;
-import com.mapbox.mapboxsdk.style.functions.ZoomFunction;
-import com.mapbox.mapboxsdk.style.functions.PropertyFunction;
+import com.mapbox.mapboxsdk.style.functions.CameraFunction;
+import com.mapbox.mapboxsdk.style.functions.SourceFunction;
+import com.mapbox.mapboxsdk.style.functions.stops.ExponentialStops;
+import com.mapbox.mapboxsdk.style.functions.stops.IdentityStops;
+import com.mapbox.mapboxsdk.style.functions.stops.IntervalStops;
+import com.mapbox.mapboxsdk.style.functions.stops.Stops;
 import com.mapbox.mapboxsdk.style.layers.RasterLayer;
 import com.mapbox.mapboxsdk.testapp.R;
 import com.mapbox.mapboxsdk.testapp.activity.style.RuntimeStyleTestActivity;
@@ -23,6 +27,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static com.mapbox.mapboxsdk.style.functions.Function.*;
+import static com.mapbox.mapboxsdk.style.functions.stops.Stop.stop;
+import static com.mapbox.mapboxsdk.style.functions.stops.Stops.*;
 import static org.junit.Assert.*;
 import static com.mapbox.mapboxsdk.style.layers.Property.*;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.*;
@@ -84,7 +90,7 @@ public class RasterLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testRasterOpacityAsZoomFunction() {
+  public void testRasterOpacityAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("raster-opacity");
     assertNotNull(layer);
@@ -93,9 +99,10 @@ public class RasterLayerTest extends BaseStyleTest {
     layer.setProperties(
       rasterOpacity(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, rasterOpacity(0.3f))
+          exponential(
+            0.5f,
+            stop(2, rasterOpacity(0.3f))
+          )
         )
       )
     );
@@ -103,9 +110,10 @@ public class RasterLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getRasterOpacity());
     assertNotNull(layer.getRasterOpacity().getFunction());
-    assertEquals(ZoomFunction.class, layer.getRasterOpacity().getFunction().getClass());
-    assertEquals(1, layer.getRasterOpacity().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getRasterOpacity().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getRasterOpacity().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getRasterOpacity().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getRasterOpacity().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getRasterOpacity().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -120,7 +128,7 @@ public class RasterLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testRasterHueRotateAsZoomFunction() {
+  public void testRasterHueRotateAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("raster-hue-rotate");
     assertNotNull(layer);
@@ -129,9 +137,10 @@ public class RasterLayerTest extends BaseStyleTest {
     layer.setProperties(
       rasterHueRotate(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, rasterHueRotate(0.3f))
+          exponential(
+            0.5f,
+            stop(2, rasterHueRotate(0.3f))
+          )
         )
       )
     );
@@ -139,9 +148,10 @@ public class RasterLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getRasterHueRotate());
     assertNotNull(layer.getRasterHueRotate().getFunction());
-    assertEquals(ZoomFunction.class, layer.getRasterHueRotate().getFunction().getClass());
-    assertEquals(1, layer.getRasterHueRotate().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getRasterHueRotate().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getRasterHueRotate().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getRasterHueRotate().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getRasterHueRotate().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getRasterHueRotate().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -156,7 +166,7 @@ public class RasterLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testRasterBrightnessMinAsZoomFunction() {
+  public void testRasterBrightnessMinAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("raster-brightness-min");
     assertNotNull(layer);
@@ -165,9 +175,10 @@ public class RasterLayerTest extends BaseStyleTest {
     layer.setProperties(
       rasterBrightnessMin(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, rasterBrightnessMin(0.3f))
+          exponential(
+            0.5f,
+            stop(2, rasterBrightnessMin(0.3f))
+          )
         )
       )
     );
@@ -175,9 +186,10 @@ public class RasterLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getRasterBrightnessMin());
     assertNotNull(layer.getRasterBrightnessMin().getFunction());
-    assertEquals(ZoomFunction.class, layer.getRasterBrightnessMin().getFunction().getClass());
-    assertEquals(1, layer.getRasterBrightnessMin().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getRasterBrightnessMin().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getRasterBrightnessMin().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getRasterBrightnessMin().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getRasterBrightnessMin().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getRasterBrightnessMin().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -192,7 +204,7 @@ public class RasterLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testRasterBrightnessMaxAsZoomFunction() {
+  public void testRasterBrightnessMaxAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("raster-brightness-max");
     assertNotNull(layer);
@@ -201,9 +213,10 @@ public class RasterLayerTest extends BaseStyleTest {
     layer.setProperties(
       rasterBrightnessMax(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, rasterBrightnessMax(0.3f))
+          exponential(
+            0.5f,
+            stop(2, rasterBrightnessMax(0.3f))
+          )
         )
       )
     );
@@ -211,9 +224,10 @@ public class RasterLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getRasterBrightnessMax());
     assertNotNull(layer.getRasterBrightnessMax().getFunction());
-    assertEquals(ZoomFunction.class, layer.getRasterBrightnessMax().getFunction().getClass());
-    assertEquals(1, layer.getRasterBrightnessMax().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getRasterBrightnessMax().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getRasterBrightnessMax().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getRasterBrightnessMax().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getRasterBrightnessMax().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getRasterBrightnessMax().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -228,7 +242,7 @@ public class RasterLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testRasterSaturationAsZoomFunction() {
+  public void testRasterSaturationAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("raster-saturation");
     assertNotNull(layer);
@@ -237,9 +251,10 @@ public class RasterLayerTest extends BaseStyleTest {
     layer.setProperties(
       rasterSaturation(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, rasterSaturation(0.3f))
+          exponential(
+            0.5f,
+            stop(2, rasterSaturation(0.3f))
+          )
         )
       )
     );
@@ -247,9 +262,10 @@ public class RasterLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getRasterSaturation());
     assertNotNull(layer.getRasterSaturation().getFunction());
-    assertEquals(ZoomFunction.class, layer.getRasterSaturation().getFunction().getClass());
-    assertEquals(1, layer.getRasterSaturation().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getRasterSaturation().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getRasterSaturation().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getRasterSaturation().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getRasterSaturation().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getRasterSaturation().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -264,7 +280,7 @@ public class RasterLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testRasterContrastAsZoomFunction() {
+  public void testRasterContrastAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("raster-contrast");
     assertNotNull(layer);
@@ -273,9 +289,10 @@ public class RasterLayerTest extends BaseStyleTest {
     layer.setProperties(
       rasterContrast(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, rasterContrast(0.3f))
+          exponential(
+            0.5f,
+            stop(2, rasterContrast(0.3f))
+          )
         )
       )
     );
@@ -283,9 +300,10 @@ public class RasterLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getRasterContrast());
     assertNotNull(layer.getRasterContrast().getFunction());
-    assertEquals(ZoomFunction.class, layer.getRasterContrast().getFunction().getClass());
-    assertEquals(1, layer.getRasterContrast().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getRasterContrast().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getRasterContrast().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getRasterContrast().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getRasterContrast().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getRasterContrast().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -300,7 +318,7 @@ public class RasterLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testRasterFadeDurationAsZoomFunction() {
+  public void testRasterFadeDurationAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("raster-fade-duration");
     assertNotNull(layer);
@@ -309,9 +327,10 @@ public class RasterLayerTest extends BaseStyleTest {
     layer.setProperties(
       rasterFadeDuration(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, rasterFadeDuration(0.3f))
+          exponential(
+            0.5f,
+            stop(2, rasterFadeDuration(0.3f))
+          )
         )
       )
     );
@@ -319,9 +338,10 @@ public class RasterLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getRasterFadeDuration());
     assertNotNull(layer.getRasterFadeDuration().getFunction());
-    assertEquals(ZoomFunction.class, layer.getRasterFadeDuration().getFunction().getClass());
-    assertEquals(1, layer.getRasterFadeDuration().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getRasterFadeDuration().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getRasterFadeDuration().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getRasterFadeDuration().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getRasterFadeDuration().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getRasterFadeDuration().getFunction().getStops()).stops.length);
   }
 
 

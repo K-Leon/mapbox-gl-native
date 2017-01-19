@@ -9,8 +9,12 @@ import timber.log.Timber;
 
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.style.functions.Function;
-import com.mapbox.mapboxsdk.style.functions.ZoomFunction;
-import com.mapbox.mapboxsdk.style.functions.PropertyFunction;
+import com.mapbox.mapboxsdk.style.functions.CameraFunction;
+import com.mapbox.mapboxsdk.style.functions.SourceFunction;
+import com.mapbox.mapboxsdk.style.functions.stops.ExponentialStops;
+import com.mapbox.mapboxsdk.style.functions.stops.IdentityStops;
+import com.mapbox.mapboxsdk.style.functions.stops.IntervalStops;
+import com.mapbox.mapboxsdk.style.functions.stops.Stops;
 import com.mapbox.mapboxsdk.style.layers.BackgroundLayer;
 import com.mapbox.mapboxsdk.testapp.R;
 import com.mapbox.mapboxsdk.testapp.activity.style.RuntimeStyleTestActivity;
@@ -23,6 +27,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static com.mapbox.mapboxsdk.style.functions.Function.*;
+import static com.mapbox.mapboxsdk.style.functions.stops.Stop.stop;
+import static com.mapbox.mapboxsdk.style.functions.stops.Stops.*;
 import static org.junit.Assert.*;
 import static com.mapbox.mapboxsdk.style.layers.Property.*;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.*;
@@ -78,7 +84,7 @@ public class BackgroundLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testBackgroundColorAsZoomFunction() {
+  public void testBackgroundColorAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("background-color");
     assertNotNull(layer);
@@ -87,9 +93,10 @@ public class BackgroundLayerTest extends BaseStyleTest {
     layer.setProperties(
       backgroundColor(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, backgroundColor("rgba(0, 0, 0, 1)"))
+          exponential(
+            0.5f,
+            stop(2, backgroundColor("rgba(0, 0, 0, 1)"))
+          )
         )
       )
     );
@@ -97,9 +104,10 @@ public class BackgroundLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getBackgroundColor());
     assertNotNull(layer.getBackgroundColor().getFunction());
-    assertEquals(ZoomFunction.class, layer.getBackgroundColor().getFunction().getClass());
-    assertEquals(1, layer.getBackgroundColor().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getBackgroundColor().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getBackgroundColor().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getBackgroundColor().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getBackgroundColor().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getBackgroundColor().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -125,7 +133,7 @@ public class BackgroundLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testBackgroundPatternAsZoomFunction() {
+  public void testBackgroundPatternAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("background-pattern");
     assertNotNull(layer);
@@ -134,9 +142,9 @@ public class BackgroundLayerTest extends BaseStyleTest {
     layer.setProperties(
       backgroundPattern(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, backgroundPattern("pedestrian-polygon"))
+          interval(
+            stop(2, backgroundPattern("pedestrian-polygon"))
+          )
         )
       )
     );
@@ -144,9 +152,9 @@ public class BackgroundLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getBackgroundPattern());
     assertNotNull(layer.getBackgroundPattern().getFunction());
-    assertEquals(ZoomFunction.class, layer.getBackgroundPattern().getFunction().getClass());
-    assertEquals(1, layer.getBackgroundPattern().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getBackgroundPattern().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getBackgroundPattern().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getBackgroundPattern().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getBackgroundPattern().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -161,7 +169,7 @@ public class BackgroundLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testBackgroundOpacityAsZoomFunction() {
+  public void testBackgroundOpacityAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("background-opacity");
     assertNotNull(layer);
@@ -170,9 +178,10 @@ public class BackgroundLayerTest extends BaseStyleTest {
     layer.setProperties(
       backgroundOpacity(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, backgroundOpacity(0.3f))
+          exponential(
+            0.5f,
+            stop(2, backgroundOpacity(0.3f))
+          )
         )
       )
     );
@@ -180,9 +189,10 @@ public class BackgroundLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getBackgroundOpacity());
     assertNotNull(layer.getBackgroundOpacity().getFunction());
-    assertEquals(ZoomFunction.class, layer.getBackgroundOpacity().getFunction().getClass());
-    assertEquals(1, layer.getBackgroundOpacity().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getBackgroundOpacity().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getBackgroundOpacity().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getBackgroundOpacity().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getBackgroundOpacity().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getBackgroundOpacity().getFunction().getStops()).stops.length);
   }
 
 

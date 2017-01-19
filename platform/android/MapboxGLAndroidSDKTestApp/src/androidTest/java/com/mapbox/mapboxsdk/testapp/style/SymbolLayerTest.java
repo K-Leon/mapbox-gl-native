@@ -9,8 +9,12 @@ import timber.log.Timber;
 
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.style.functions.Function;
-import com.mapbox.mapboxsdk.style.functions.ZoomFunction;
-import com.mapbox.mapboxsdk.style.functions.PropertyFunction;
+import com.mapbox.mapboxsdk.style.functions.CameraFunction;
+import com.mapbox.mapboxsdk.style.functions.SourceFunction;
+import com.mapbox.mapboxsdk.style.functions.stops.ExponentialStops;
+import com.mapbox.mapboxsdk.style.functions.stops.IdentityStops;
+import com.mapbox.mapboxsdk.style.functions.stops.IntervalStops;
+import com.mapbox.mapboxsdk.style.functions.stops.Stops;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.testapp.R;
 import com.mapbox.mapboxsdk.testapp.activity.style.RuntimeStyleTestActivity;
@@ -23,6 +27,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static com.mapbox.mapboxsdk.style.functions.Function.*;
+import static com.mapbox.mapboxsdk.style.functions.stops.Stop.stop;
+import static com.mapbox.mapboxsdk.style.functions.stops.Stops.*;
 import static org.junit.Assert.*;
 import static com.mapbox.mapboxsdk.style.layers.Property.*;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.*;
@@ -84,7 +90,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testSymbolPlacementAsZoomFunction() {
+  public void testSymbolPlacementAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("symbol-placement");
     assertNotNull(layer);
@@ -93,9 +99,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       symbolPlacement(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, symbolPlacement(SYMBOL_PLACEMENT_POINT))
+          interval(
+            stop(2, symbolPlacement(SYMBOL_PLACEMENT_POINT))
+          )
         )
       )
     );
@@ -103,9 +109,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getSymbolPlacement());
     assertNotNull(layer.getSymbolPlacement().getFunction());
-    assertEquals(ZoomFunction.class, layer.getSymbolPlacement().getFunction().getClass());
-    assertEquals(1, layer.getSymbolPlacement().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getSymbolPlacement().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getSymbolPlacement().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getSymbolPlacement().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getSymbolPlacement().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -120,7 +126,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testSymbolSpacingAsZoomFunction() {
+  public void testSymbolSpacingAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("symbol-spacing");
     assertNotNull(layer);
@@ -129,9 +135,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       symbolSpacing(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, symbolSpacing(0.3f))
+          exponential(
+            0.5f,
+            stop(2, symbolSpacing(0.3f))
+          )
         )
       )
     );
@@ -139,9 +146,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getSymbolSpacing());
     assertNotNull(layer.getSymbolSpacing().getFunction());
-    assertEquals(ZoomFunction.class, layer.getSymbolSpacing().getFunction().getClass());
-    assertEquals(1, layer.getSymbolSpacing().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getSymbolSpacing().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getSymbolSpacing().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getSymbolSpacing().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getSymbolSpacing().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getSymbolSpacing().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -156,7 +164,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testSymbolAvoidEdgesAsZoomFunction() {
+  public void testSymbolAvoidEdgesAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("symbol-avoid-edges");
     assertNotNull(layer);
@@ -165,9 +173,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       symbolAvoidEdges(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, symbolAvoidEdges(true))
+          interval(
+            stop(2, symbolAvoidEdges(true))
+          )
         )
       )
     );
@@ -175,9 +183,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getSymbolAvoidEdges());
     assertNotNull(layer.getSymbolAvoidEdges().getFunction());
-    assertEquals(ZoomFunction.class, layer.getSymbolAvoidEdges().getFunction().getClass());
-    assertEquals(1, layer.getSymbolAvoidEdges().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getSymbolAvoidEdges().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getSymbolAvoidEdges().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getSymbolAvoidEdges().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getSymbolAvoidEdges().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -192,7 +200,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testIconAllowOverlapAsZoomFunction() {
+  public void testIconAllowOverlapAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-allow-overlap");
     assertNotNull(layer);
@@ -201,9 +209,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       iconAllowOverlap(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, iconAllowOverlap(true))
+          interval(
+            stop(2, iconAllowOverlap(true))
+          )
         )
       )
     );
@@ -211,9 +219,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getIconAllowOverlap());
     assertNotNull(layer.getIconAllowOverlap().getFunction());
-    assertEquals(ZoomFunction.class, layer.getIconAllowOverlap().getFunction().getClass());
-    assertEquals(1, layer.getIconAllowOverlap().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getIconAllowOverlap().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getIconAllowOverlap().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getIconAllowOverlap().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getIconAllowOverlap().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -228,7 +236,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testIconIgnorePlacementAsZoomFunction() {
+  public void testIconIgnorePlacementAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-ignore-placement");
     assertNotNull(layer);
@@ -237,9 +245,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       iconIgnorePlacement(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, iconIgnorePlacement(true))
+          interval(
+            stop(2, iconIgnorePlacement(true))
+          )
         )
       )
     );
@@ -247,9 +255,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getIconIgnorePlacement());
     assertNotNull(layer.getIconIgnorePlacement().getFunction());
-    assertEquals(ZoomFunction.class, layer.getIconIgnorePlacement().getFunction().getClass());
-    assertEquals(1, layer.getIconIgnorePlacement().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getIconIgnorePlacement().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getIconIgnorePlacement().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getIconIgnorePlacement().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getIconIgnorePlacement().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -264,7 +272,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testIconOptionalAsZoomFunction() {
+  public void testIconOptionalAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-optional");
     assertNotNull(layer);
@@ -273,9 +281,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       iconOptional(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, iconOptional(true))
+          interval(
+            stop(2, iconOptional(true))
+          )
         )
       )
     );
@@ -283,9 +291,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getIconOptional());
     assertNotNull(layer.getIconOptional().getFunction());
-    assertEquals(ZoomFunction.class, layer.getIconOptional().getFunction().getClass());
-    assertEquals(1, layer.getIconOptional().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getIconOptional().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getIconOptional().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getIconOptional().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getIconOptional().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -300,7 +308,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testIconRotationAlignmentAsZoomFunction() {
+  public void testIconRotationAlignmentAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-rotation-alignment");
     assertNotNull(layer);
@@ -309,9 +317,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       iconRotationAlignment(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, iconRotationAlignment(ICON_ROTATION_ALIGNMENT_MAP))
+          interval(
+            stop(2, iconRotationAlignment(ICON_ROTATION_ALIGNMENT_MAP))
+          )
         )
       )
     );
@@ -319,9 +327,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getIconRotationAlignment());
     assertNotNull(layer.getIconRotationAlignment().getFunction());
-    assertEquals(ZoomFunction.class, layer.getIconRotationAlignment().getFunction().getClass());
-    assertEquals(1, layer.getIconRotationAlignment().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getIconRotationAlignment().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getIconRotationAlignment().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getIconRotationAlignment().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getIconRotationAlignment().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -336,7 +344,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testIconSizeAsZoomFunction() {
+  public void testIconSizeAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-size");
     assertNotNull(layer);
@@ -345,9 +353,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       iconSize(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, iconSize(0.3f))
+          exponential(
+            0.5f,
+            stop(2, iconSize(0.3f))
+          )
         )
       )
     );
@@ -355,9 +364,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getIconSize());
     assertNotNull(layer.getIconSize().getFunction());
-    assertEquals(ZoomFunction.class, layer.getIconSize().getFunction().getClass());
-    assertEquals(1, layer.getIconSize().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getIconSize().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getIconSize().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getIconSize().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getIconSize().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getIconSize().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -372,7 +382,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testIconTextFitAsZoomFunction() {
+  public void testIconTextFitAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-text-fit");
     assertNotNull(layer);
@@ -381,9 +391,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       iconTextFit(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, iconTextFit(ICON_TEXT_FIT_NONE))
+          interval(
+            stop(2, iconTextFit(ICON_TEXT_FIT_NONE))
+          )
         )
       )
     );
@@ -391,9 +401,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getIconTextFit());
     assertNotNull(layer.getIconTextFit().getFunction());
-    assertEquals(ZoomFunction.class, layer.getIconTextFit().getFunction().getClass());
-    assertEquals(1, layer.getIconTextFit().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getIconTextFit().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getIconTextFit().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getIconTextFit().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getIconTextFit().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -408,7 +418,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testIconTextFitPaddingAsZoomFunction() {
+  public void testIconTextFitPaddingAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-text-fit-padding");
     assertNotNull(layer);
@@ -417,9 +427,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       iconTextFitPadding(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, iconTextFitPadding(new Float[]{0f,0f,0f,0f}))
+          exponential(
+            0.5f,
+            stop(2, iconTextFitPadding(new Float[]{0f,0f,0f,0f}))
+          )
         )
       )
     );
@@ -427,9 +438,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getIconTextFitPadding());
     assertNotNull(layer.getIconTextFitPadding().getFunction());
-    assertEquals(ZoomFunction.class, layer.getIconTextFitPadding().getFunction().getClass());
-    assertEquals(1, layer.getIconTextFitPadding().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getIconTextFitPadding().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getIconTextFitPadding().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getIconTextFitPadding().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getIconTextFitPadding().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getIconTextFitPadding().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -444,7 +456,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testIconImageAsZoomFunction() {
+  public void testIconImageAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-image");
     assertNotNull(layer);
@@ -453,9 +465,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       iconImage(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, iconImage("undefined"))
+          interval(
+            stop(2, iconImage("undefined"))
+          )
         )
       )
     );
@@ -463,9 +475,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getIconImage());
     assertNotNull(layer.getIconImage().getFunction());
-    assertEquals(ZoomFunction.class, layer.getIconImage().getFunction().getClass());
-    assertEquals(1, layer.getIconImage().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getIconImage().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getIconImage().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getIconImage().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getIconImage().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -480,7 +492,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testIconRotateAsZoomFunction() {
+  public void testIconRotateAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-rotate");
     assertNotNull(layer);
@@ -489,9 +501,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       iconRotate(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, iconRotate(0.3f))
+          exponential(
+            0.5f,
+            stop(2, iconRotate(0.3f))
+          )
         )
       )
     );
@@ -499,13 +512,14 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getIconRotate());
     assertNotNull(layer.getIconRotate().getFunction());
-    assertEquals(ZoomFunction.class, layer.getIconRotate().getFunction().getClass());
-    assertEquals(1, layer.getIconRotate().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getIconRotate().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getIconRotate().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getIconRotate().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getIconRotate().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getIconRotate().getFunction().getStops()).stops.length);
   }
 
   @Test
-  public void testIconRotateAsIdentityPropertyFunction() {
+  public void testIconRotateAsIdentitySourceFunction() {
     //Supports property function: true - true
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-rotate");
@@ -513,15 +527,15 @@ public class SymbolLayerTest extends BaseStyleTest {
 
     //Set
     layer.setProperties(
-      iconRotate(Function.<Float>property("FeaturePropertyA"))
+      iconRotate(property("FeaturePropertyA", Stops.<Float>identity()))
     );
 
     //Verify
     assertNotNull(layer.getIconRotate());
     assertNotNull(layer.getIconRotate().getFunction());
-    assertEquals(PropertyFunction.class, layer.getIconRotate().getFunction().getClass());
-    assertEquals("FeaturePropertyA", ((PropertyFunction) layer.getIconRotate().getFunction()).getProperty());
-    assertNull(layer.getIconRotate().getFunction().getStops());
+    assertEquals(SourceFunction.class, layer.getIconRotate().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getIconRotate().getFunction()).getProperty());
+    assertEquals(IdentityStops.class, layer.getIconRotate().getFunction().getStops().getClass());
   }
 
   @Test
@@ -536,7 +550,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testIconPaddingAsZoomFunction() {
+  public void testIconPaddingAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-padding");
     assertNotNull(layer);
@@ -545,9 +559,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       iconPadding(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, iconPadding(0.3f))
+          exponential(
+            0.5f,
+            stop(2, iconPadding(0.3f))
+          )
         )
       )
     );
@@ -555,9 +570,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getIconPadding());
     assertNotNull(layer.getIconPadding().getFunction());
-    assertEquals(ZoomFunction.class, layer.getIconPadding().getFunction().getClass());
-    assertEquals(1, layer.getIconPadding().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getIconPadding().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getIconPadding().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getIconPadding().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getIconPadding().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getIconPadding().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -572,7 +588,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testIconKeepUprightAsZoomFunction() {
+  public void testIconKeepUprightAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-keep-upright");
     assertNotNull(layer);
@@ -581,9 +597,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       iconKeepUpright(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, iconKeepUpright(true))
+          interval(
+            stop(2, iconKeepUpright(true))
+          )
         )
       )
     );
@@ -591,9 +607,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getIconKeepUpright());
     assertNotNull(layer.getIconKeepUpright().getFunction());
-    assertEquals(ZoomFunction.class, layer.getIconKeepUpright().getFunction().getClass());
-    assertEquals(1, layer.getIconKeepUpright().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getIconKeepUpright().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getIconKeepUpright().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getIconKeepUpright().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getIconKeepUpright().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -608,7 +624,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testIconOffsetAsZoomFunction() {
+  public void testIconOffsetAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-offset");
     assertNotNull(layer);
@@ -617,9 +633,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       iconOffset(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, iconOffset(new Float[]{0f,0f}))
+          exponential(
+            0.5f,
+            stop(2, iconOffset(new Float[]{0f,0f}))
+          )
         )
       )
     );
@@ -627,13 +644,14 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getIconOffset());
     assertNotNull(layer.getIconOffset().getFunction());
-    assertEquals(ZoomFunction.class, layer.getIconOffset().getFunction().getClass());
-    assertEquals(1, layer.getIconOffset().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getIconOffset().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getIconOffset().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getIconOffset().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getIconOffset().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getIconOffset().getFunction().getStops()).stops.length);
   }
 
   @Test
-  public void testIconOffsetAsIdentityPropertyFunction() {
+  public void testIconOffsetAsIdentitySourceFunction() {
     //Supports property function: true - true
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-offset");
@@ -641,15 +659,15 @@ public class SymbolLayerTest extends BaseStyleTest {
 
     //Set
     layer.setProperties(
-      iconOffset(Function.<Float[]>property("FeaturePropertyA"))
+      iconOffset(property("FeaturePropertyA", Stops.<Float[]>identity()))
     );
 
     //Verify
     assertNotNull(layer.getIconOffset());
     assertNotNull(layer.getIconOffset().getFunction());
-    assertEquals(PropertyFunction.class, layer.getIconOffset().getFunction().getClass());
-    assertEquals("FeaturePropertyA", ((PropertyFunction) layer.getIconOffset().getFunction()).getProperty());
-    assertNull(layer.getIconOffset().getFunction().getStops());
+    assertEquals(SourceFunction.class, layer.getIconOffset().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getIconOffset().getFunction()).getProperty());
+    assertEquals(IdentityStops.class, layer.getIconOffset().getFunction().getStops().getClass());
   }
 
   @Test
@@ -664,7 +682,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextPitchAlignmentAsZoomFunction() {
+  public void testTextPitchAlignmentAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-pitch-alignment");
     assertNotNull(layer);
@@ -673,9 +691,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textPitchAlignment(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, textPitchAlignment(TEXT_PITCH_ALIGNMENT_MAP))
+          interval(
+            stop(2, textPitchAlignment(TEXT_PITCH_ALIGNMENT_MAP))
+          )
         )
       )
     );
@@ -683,9 +701,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextPitchAlignment());
     assertNotNull(layer.getTextPitchAlignment().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextPitchAlignment().getFunction().getClass());
-    assertEquals(1, layer.getTextPitchAlignment().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getTextPitchAlignment().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getTextPitchAlignment().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getTextPitchAlignment().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getTextPitchAlignment().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -700,7 +718,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextRotationAlignmentAsZoomFunction() {
+  public void testTextRotationAlignmentAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-rotation-alignment");
     assertNotNull(layer);
@@ -709,9 +727,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textRotationAlignment(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, textRotationAlignment(TEXT_ROTATION_ALIGNMENT_MAP))
+          interval(
+            stop(2, textRotationAlignment(TEXT_ROTATION_ALIGNMENT_MAP))
+          )
         )
       )
     );
@@ -719,9 +737,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextRotationAlignment());
     assertNotNull(layer.getTextRotationAlignment().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextRotationAlignment().getFunction().getClass());
-    assertEquals(1, layer.getTextRotationAlignment().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getTextRotationAlignment().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getTextRotationAlignment().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getTextRotationAlignment().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getTextRotationAlignment().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -736,7 +754,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextFieldAsZoomFunction() {
+  public void testTextFieldAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-field");
     assertNotNull(layer);
@@ -745,9 +763,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textField(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, textField(""))
+          interval(
+            stop(2, textField(""))
+          )
         )
       )
     );
@@ -755,9 +773,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextField());
     assertNotNull(layer.getTextField().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextField().getFunction().getClass());
-    assertEquals(1, layer.getTextField().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getTextField().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getTextField().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getTextField().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getTextField().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -772,7 +790,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextFontAsZoomFunction() {
+  public void testTextFontAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-font");
     assertNotNull(layer);
@@ -781,9 +799,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textFont(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, textFont(new String[]{"Open Sans Regular", "Arial Unicode MS Regular"}))
+          interval(
+            stop(2, textFont(new String[]{"Open Sans Regular", "Arial Unicode MS Regular"}))
+          )
         )
       )
     );
@@ -791,9 +809,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextFont());
     assertNotNull(layer.getTextFont().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextFont().getFunction().getClass());
-    assertEquals(1, layer.getTextFont().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getTextFont().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getTextFont().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getTextFont().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getTextFont().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -808,7 +826,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextSizeAsZoomFunction() {
+  public void testTextSizeAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-size");
     assertNotNull(layer);
@@ -817,9 +835,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textSize(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, textSize(0.3f))
+          exponential(
+            0.5f,
+            stop(2, textSize(0.3f))
+          )
         )
       )
     );
@@ -827,9 +846,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextSize());
     assertNotNull(layer.getTextSize().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextSize().getFunction().getClass());
-    assertEquals(1, layer.getTextSize().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getTextSize().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getTextSize().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getTextSize().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getTextSize().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getTextSize().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -844,7 +864,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextMaxWidthAsZoomFunction() {
+  public void testTextMaxWidthAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-max-width");
     assertNotNull(layer);
@@ -853,9 +873,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textMaxWidth(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, textMaxWidth(0.3f))
+          exponential(
+            0.5f,
+            stop(2, textMaxWidth(0.3f))
+          )
         )
       )
     );
@@ -863,9 +884,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextMaxWidth());
     assertNotNull(layer.getTextMaxWidth().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextMaxWidth().getFunction().getClass());
-    assertEquals(1, layer.getTextMaxWidth().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getTextMaxWidth().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getTextMaxWidth().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getTextMaxWidth().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getTextMaxWidth().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getTextMaxWidth().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -880,7 +902,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextLineHeightAsZoomFunction() {
+  public void testTextLineHeightAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-line-height");
     assertNotNull(layer);
@@ -889,9 +911,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textLineHeight(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, textLineHeight(0.3f))
+          exponential(
+            0.5f,
+            stop(2, textLineHeight(0.3f))
+          )
         )
       )
     );
@@ -899,9 +922,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextLineHeight());
     assertNotNull(layer.getTextLineHeight().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextLineHeight().getFunction().getClass());
-    assertEquals(1, layer.getTextLineHeight().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getTextLineHeight().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getTextLineHeight().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getTextLineHeight().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getTextLineHeight().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getTextLineHeight().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -916,7 +940,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextLetterSpacingAsZoomFunction() {
+  public void testTextLetterSpacingAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-letter-spacing");
     assertNotNull(layer);
@@ -925,9 +949,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textLetterSpacing(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, textLetterSpacing(0.3f))
+          exponential(
+            0.5f,
+            stop(2, textLetterSpacing(0.3f))
+          )
         )
       )
     );
@@ -935,9 +960,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextLetterSpacing());
     assertNotNull(layer.getTextLetterSpacing().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextLetterSpacing().getFunction().getClass());
-    assertEquals(1, layer.getTextLetterSpacing().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getTextLetterSpacing().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getTextLetterSpacing().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getTextLetterSpacing().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getTextLetterSpacing().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getTextLetterSpacing().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -952,7 +978,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextJustifyAsZoomFunction() {
+  public void testTextJustifyAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-justify");
     assertNotNull(layer);
@@ -961,9 +987,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textJustify(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, textJustify(TEXT_JUSTIFY_LEFT))
+          interval(
+            stop(2, textJustify(TEXT_JUSTIFY_LEFT))
+          )
         )
       )
     );
@@ -971,9 +997,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextJustify());
     assertNotNull(layer.getTextJustify().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextJustify().getFunction().getClass());
-    assertEquals(1, layer.getTextJustify().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getTextJustify().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getTextJustify().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getTextJustify().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getTextJustify().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -988,7 +1014,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextAnchorAsZoomFunction() {
+  public void testTextAnchorAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-anchor");
     assertNotNull(layer);
@@ -997,9 +1023,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textAnchor(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, textAnchor(TEXT_ANCHOR_CENTER))
+          interval(
+            stop(2, textAnchor(TEXT_ANCHOR_CENTER))
+          )
         )
       )
     );
@@ -1007,9 +1033,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextAnchor());
     assertNotNull(layer.getTextAnchor().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextAnchor().getFunction().getClass());
-    assertEquals(1, layer.getTextAnchor().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getTextAnchor().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getTextAnchor().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getTextAnchor().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getTextAnchor().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -1024,7 +1050,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextMaxAngleAsZoomFunction() {
+  public void testTextMaxAngleAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-max-angle");
     assertNotNull(layer);
@@ -1033,9 +1059,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textMaxAngle(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, textMaxAngle(0.3f))
+          exponential(
+            0.5f,
+            stop(2, textMaxAngle(0.3f))
+          )
         )
       )
     );
@@ -1043,9 +1070,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextMaxAngle());
     assertNotNull(layer.getTextMaxAngle().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextMaxAngle().getFunction().getClass());
-    assertEquals(1, layer.getTextMaxAngle().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getTextMaxAngle().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getTextMaxAngle().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getTextMaxAngle().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getTextMaxAngle().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getTextMaxAngle().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -1060,7 +1088,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextRotateAsZoomFunction() {
+  public void testTextRotateAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-rotate");
     assertNotNull(layer);
@@ -1069,9 +1097,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textRotate(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, textRotate(0.3f))
+          exponential(
+            0.5f,
+            stop(2, textRotate(0.3f))
+          )
         )
       )
     );
@@ -1079,9 +1108,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextRotate());
     assertNotNull(layer.getTextRotate().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextRotate().getFunction().getClass());
-    assertEquals(1, layer.getTextRotate().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getTextRotate().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getTextRotate().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getTextRotate().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getTextRotate().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getTextRotate().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -1096,7 +1126,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextPaddingAsZoomFunction() {
+  public void testTextPaddingAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-padding");
     assertNotNull(layer);
@@ -1105,9 +1135,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textPadding(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, textPadding(0.3f))
+          exponential(
+            0.5f,
+            stop(2, textPadding(0.3f))
+          )
         )
       )
     );
@@ -1115,9 +1146,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextPadding());
     assertNotNull(layer.getTextPadding().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextPadding().getFunction().getClass());
-    assertEquals(1, layer.getTextPadding().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getTextPadding().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getTextPadding().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getTextPadding().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getTextPadding().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getTextPadding().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -1132,7 +1164,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextKeepUprightAsZoomFunction() {
+  public void testTextKeepUprightAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-keep-upright");
     assertNotNull(layer);
@@ -1141,9 +1173,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textKeepUpright(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, textKeepUpright(true))
+          interval(
+            stop(2, textKeepUpright(true))
+          )
         )
       )
     );
@@ -1151,9 +1183,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextKeepUpright());
     assertNotNull(layer.getTextKeepUpright().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextKeepUpright().getFunction().getClass());
-    assertEquals(1, layer.getTextKeepUpright().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getTextKeepUpright().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getTextKeepUpright().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getTextKeepUpright().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getTextKeepUpright().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -1168,7 +1200,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextTransformAsZoomFunction() {
+  public void testTextTransformAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-transform");
     assertNotNull(layer);
@@ -1177,9 +1209,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textTransform(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, textTransform(TEXT_TRANSFORM_NONE))
+          interval(
+            stop(2, textTransform(TEXT_TRANSFORM_NONE))
+          )
         )
       )
     );
@@ -1187,9 +1219,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextTransform());
     assertNotNull(layer.getTextTransform().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextTransform().getFunction().getClass());
-    assertEquals(1, layer.getTextTransform().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getTextTransform().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getTextTransform().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getTextTransform().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getTextTransform().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -1204,7 +1236,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextOffsetAsZoomFunction() {
+  public void testTextOffsetAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-offset");
     assertNotNull(layer);
@@ -1213,9 +1245,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textOffset(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, textOffset(new Float[]{0f,0f}))
+          exponential(
+            0.5f,
+            stop(2, textOffset(new Float[]{0f,0f}))
+          )
         )
       )
     );
@@ -1223,9 +1256,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextOffset());
     assertNotNull(layer.getTextOffset().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextOffset().getFunction().getClass());
-    assertEquals(1, layer.getTextOffset().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getTextOffset().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getTextOffset().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getTextOffset().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getTextOffset().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getTextOffset().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -1240,7 +1274,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextAllowOverlapAsZoomFunction() {
+  public void testTextAllowOverlapAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-allow-overlap");
     assertNotNull(layer);
@@ -1249,9 +1283,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textAllowOverlap(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, textAllowOverlap(true))
+          interval(
+            stop(2, textAllowOverlap(true))
+          )
         )
       )
     );
@@ -1259,9 +1293,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextAllowOverlap());
     assertNotNull(layer.getTextAllowOverlap().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextAllowOverlap().getFunction().getClass());
-    assertEquals(1, layer.getTextAllowOverlap().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getTextAllowOverlap().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getTextAllowOverlap().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getTextAllowOverlap().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getTextAllowOverlap().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -1276,7 +1310,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextIgnorePlacementAsZoomFunction() {
+  public void testTextIgnorePlacementAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-ignore-placement");
     assertNotNull(layer);
@@ -1285,9 +1319,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textIgnorePlacement(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, textIgnorePlacement(true))
+          interval(
+            stop(2, textIgnorePlacement(true))
+          )
         )
       )
     );
@@ -1295,9 +1329,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextIgnorePlacement());
     assertNotNull(layer.getTextIgnorePlacement().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextIgnorePlacement().getFunction().getClass());
-    assertEquals(1, layer.getTextIgnorePlacement().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getTextIgnorePlacement().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getTextIgnorePlacement().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getTextIgnorePlacement().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getTextIgnorePlacement().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -1312,7 +1346,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextOptionalAsZoomFunction() {
+  public void testTextOptionalAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-optional");
     assertNotNull(layer);
@@ -1321,9 +1355,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textOptional(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, textOptional(true))
+          interval(
+            stop(2, textOptional(true))
+          )
         )
       )
     );
@@ -1331,9 +1365,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextOptional());
     assertNotNull(layer.getTextOptional().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextOptional().getFunction().getClass());
-    assertEquals(1, layer.getTextOptional().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getTextOptional().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getTextOptional().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getTextOptional().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getTextOptional().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -1348,7 +1382,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testIconOpacityAsZoomFunction() {
+  public void testIconOpacityAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-opacity");
     assertNotNull(layer);
@@ -1357,9 +1391,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       iconOpacity(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, iconOpacity(0.3f))
+          exponential(
+            0.5f,
+            stop(2, iconOpacity(0.3f))
+          )
         )
       )
     );
@@ -1367,9 +1402,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getIconOpacity());
     assertNotNull(layer.getIconOpacity().getFunction());
-    assertEquals(ZoomFunction.class, layer.getIconOpacity().getFunction().getClass());
-    assertEquals(1, layer.getIconOpacity().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getIconOpacity().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getIconOpacity().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getIconOpacity().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getIconOpacity().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getIconOpacity().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -1384,7 +1420,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testIconColorAsZoomFunction() {
+  public void testIconColorAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-color");
     assertNotNull(layer);
@@ -1393,9 +1429,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       iconColor(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, iconColor("rgba(0, 0, 0, 1)"))
+          exponential(
+            0.5f,
+            stop(2, iconColor("rgba(0, 0, 0, 1)"))
+          )
         )
       )
     );
@@ -1403,9 +1440,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getIconColor());
     assertNotNull(layer.getIconColor().getFunction());
-    assertEquals(ZoomFunction.class, layer.getIconColor().getFunction().getClass());
-    assertEquals(1, layer.getIconColor().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getIconColor().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getIconColor().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getIconColor().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getIconColor().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getIconColor().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -1431,7 +1469,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testIconHaloColorAsZoomFunction() {
+  public void testIconHaloColorAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-halo-color");
     assertNotNull(layer);
@@ -1440,9 +1478,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       iconHaloColor(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, iconHaloColor("rgba(0, 0, 0, 1)"))
+          exponential(
+            0.5f,
+            stop(2, iconHaloColor("rgba(0, 0, 0, 1)"))
+          )
         )
       )
     );
@@ -1450,9 +1489,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getIconHaloColor());
     assertNotNull(layer.getIconHaloColor().getFunction());
-    assertEquals(ZoomFunction.class, layer.getIconHaloColor().getFunction().getClass());
-    assertEquals(1, layer.getIconHaloColor().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getIconHaloColor().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getIconHaloColor().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getIconHaloColor().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getIconHaloColor().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getIconHaloColor().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -1478,7 +1518,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testIconHaloWidthAsZoomFunction() {
+  public void testIconHaloWidthAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-halo-width");
     assertNotNull(layer);
@@ -1487,9 +1527,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       iconHaloWidth(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, iconHaloWidth(0.3f))
+          exponential(
+            0.5f,
+            stop(2, iconHaloWidth(0.3f))
+          )
         )
       )
     );
@@ -1497,9 +1538,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getIconHaloWidth());
     assertNotNull(layer.getIconHaloWidth().getFunction());
-    assertEquals(ZoomFunction.class, layer.getIconHaloWidth().getFunction().getClass());
-    assertEquals(1, layer.getIconHaloWidth().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getIconHaloWidth().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getIconHaloWidth().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getIconHaloWidth().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getIconHaloWidth().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getIconHaloWidth().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -1514,7 +1556,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testIconHaloBlurAsZoomFunction() {
+  public void testIconHaloBlurAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-halo-blur");
     assertNotNull(layer);
@@ -1523,9 +1565,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       iconHaloBlur(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, iconHaloBlur(0.3f))
+          exponential(
+            0.5f,
+            stop(2, iconHaloBlur(0.3f))
+          )
         )
       )
     );
@@ -1533,9 +1576,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getIconHaloBlur());
     assertNotNull(layer.getIconHaloBlur().getFunction());
-    assertEquals(ZoomFunction.class, layer.getIconHaloBlur().getFunction().getClass());
-    assertEquals(1, layer.getIconHaloBlur().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getIconHaloBlur().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getIconHaloBlur().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getIconHaloBlur().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getIconHaloBlur().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getIconHaloBlur().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -1550,7 +1594,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testIconTranslateAsZoomFunction() {
+  public void testIconTranslateAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-translate");
     assertNotNull(layer);
@@ -1559,9 +1603,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       iconTranslate(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, iconTranslate(new Float[]{0f,0f}))
+          exponential(
+            0.5f,
+            stop(2, iconTranslate(new Float[]{0f,0f}))
+          )
         )
       )
     );
@@ -1569,9 +1614,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getIconTranslate());
     assertNotNull(layer.getIconTranslate().getFunction());
-    assertEquals(ZoomFunction.class, layer.getIconTranslate().getFunction().getClass());
-    assertEquals(1, layer.getIconTranslate().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getIconTranslate().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getIconTranslate().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getIconTranslate().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getIconTranslate().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getIconTranslate().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -1586,7 +1632,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testIconTranslateAnchorAsZoomFunction() {
+  public void testIconTranslateAnchorAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-translate-anchor");
     assertNotNull(layer);
@@ -1595,9 +1641,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       iconTranslateAnchor(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, iconTranslateAnchor(ICON_TRANSLATE_ANCHOR_MAP))
+          interval(
+            stop(2, iconTranslateAnchor(ICON_TRANSLATE_ANCHOR_MAP))
+          )
         )
       )
     );
@@ -1605,9 +1651,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getIconTranslateAnchor());
     assertNotNull(layer.getIconTranslateAnchor().getFunction());
-    assertEquals(ZoomFunction.class, layer.getIconTranslateAnchor().getFunction().getClass());
-    assertEquals(1, layer.getIconTranslateAnchor().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getIconTranslateAnchor().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getIconTranslateAnchor().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getIconTranslateAnchor().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getIconTranslateAnchor().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -1622,7 +1668,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextOpacityAsZoomFunction() {
+  public void testTextOpacityAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-opacity");
     assertNotNull(layer);
@@ -1631,9 +1677,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textOpacity(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, textOpacity(0.3f))
+          exponential(
+            0.5f,
+            stop(2, textOpacity(0.3f))
+          )
         )
       )
     );
@@ -1641,9 +1688,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextOpacity());
     assertNotNull(layer.getTextOpacity().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextOpacity().getFunction().getClass());
-    assertEquals(1, layer.getTextOpacity().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getTextOpacity().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getTextOpacity().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getTextOpacity().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getTextOpacity().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getTextOpacity().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -1658,7 +1706,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextColorAsZoomFunction() {
+  public void testTextColorAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-color");
     assertNotNull(layer);
@@ -1667,9 +1715,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textColor(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, textColor("rgba(0, 0, 0, 1)"))
+          exponential(
+            0.5f,
+            stop(2, textColor("rgba(0, 0, 0, 1)"))
+          )
         )
       )
     );
@@ -1677,9 +1726,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextColor());
     assertNotNull(layer.getTextColor().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextColor().getFunction().getClass());
-    assertEquals(1, layer.getTextColor().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getTextColor().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getTextColor().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getTextColor().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getTextColor().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getTextColor().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -1705,7 +1755,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextHaloColorAsZoomFunction() {
+  public void testTextHaloColorAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-halo-color");
     assertNotNull(layer);
@@ -1714,9 +1764,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textHaloColor(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, textHaloColor("rgba(0, 0, 0, 1)"))
+          exponential(
+            0.5f,
+            stop(2, textHaloColor("rgba(0, 0, 0, 1)"))
+          )
         )
       )
     );
@@ -1724,9 +1775,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextHaloColor());
     assertNotNull(layer.getTextHaloColor().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextHaloColor().getFunction().getClass());
-    assertEquals(1, layer.getTextHaloColor().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getTextHaloColor().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getTextHaloColor().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getTextHaloColor().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getTextHaloColor().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getTextHaloColor().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -1752,7 +1804,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextHaloWidthAsZoomFunction() {
+  public void testTextHaloWidthAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-halo-width");
     assertNotNull(layer);
@@ -1761,9 +1813,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textHaloWidth(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, textHaloWidth(0.3f))
+          exponential(
+            0.5f,
+            stop(2, textHaloWidth(0.3f))
+          )
         )
       )
     );
@@ -1771,9 +1824,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextHaloWidth());
     assertNotNull(layer.getTextHaloWidth().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextHaloWidth().getFunction().getClass());
-    assertEquals(1, layer.getTextHaloWidth().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getTextHaloWidth().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getTextHaloWidth().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getTextHaloWidth().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getTextHaloWidth().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getTextHaloWidth().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -1788,7 +1842,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextHaloBlurAsZoomFunction() {
+  public void testTextHaloBlurAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-halo-blur");
     assertNotNull(layer);
@@ -1797,9 +1851,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textHaloBlur(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, textHaloBlur(0.3f))
+          exponential(
+            0.5f,
+            stop(2, textHaloBlur(0.3f))
+          )
         )
       )
     );
@@ -1807,9 +1862,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextHaloBlur());
     assertNotNull(layer.getTextHaloBlur().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextHaloBlur().getFunction().getClass());
-    assertEquals(1, layer.getTextHaloBlur().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getTextHaloBlur().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getTextHaloBlur().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getTextHaloBlur().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getTextHaloBlur().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getTextHaloBlur().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -1824,7 +1880,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextTranslateAsZoomFunction() {
+  public void testTextTranslateAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-translate");
     assertNotNull(layer);
@@ -1833,9 +1889,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textTranslate(
         zoom(
-          //Exponential stops (implicit)
-          0.5f,
-          stop(2, textTranslate(new Float[]{0f,0f}))
+          exponential(
+            0.5f,
+            stop(2, textTranslate(new Float[]{0f,0f}))
+          )
         )
       )
     );
@@ -1843,9 +1900,10 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextTranslate());
     assertNotNull(layer.getTextTranslate().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextTranslate().getFunction().getClass());
-    assertEquals(1, layer.getTextTranslate().getFunction().getStops().length);
-    assertEquals((Float) 0.5f, layer.getTextTranslate().getFunction().getBase());
+    assertEquals(CameraFunction.class, layer.getTextTranslate().getFunction().getClass());
+    assertEquals(ExponentialStops.class, layer.getTextTranslate().getFunction().getStops().getClass());
+    assertEquals(0.5f, ((ExponentialStops) layer.getTextTranslate().getFunction().getStops()).getBase(), 0.001);
+    assertEquals(1, ((ExponentialStops) layer.getTextTranslate().getFunction().getStops()).stops.length);
   }
 
   @Test
@@ -1860,7 +1918,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testTextTranslateAnchorAsZoomFunction() {
+  public void testTextTranslateAnchorAsCameraFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("text-translate-anchor");
     assertNotNull(layer);
@@ -1869,9 +1927,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     layer.setProperties(
       textTranslateAnchor(
         zoom(
-          //Interval stops (explicit)
-          INTERVAL,
-          stop(2, textTranslateAnchor(TEXT_TRANSLATE_ANCHOR_MAP))
+          interval(
+            stop(2, textTranslateAnchor(TEXT_TRANSLATE_ANCHOR_MAP))
+          )
         )
       )
     );
@@ -1879,9 +1937,9 @@ public class SymbolLayerTest extends BaseStyleTest {
     //Verify
     assertNotNull(layer.getTextTranslateAnchor());
     assertNotNull(layer.getTextTranslateAnchor().getFunction());
-    assertEquals(ZoomFunction.class, layer.getTextTranslateAnchor().getFunction().getClass());
-    assertEquals(1, layer.getTextTranslateAnchor().getFunction().getStops().length);
-    assertEquals(INTERVAL, layer.getTextTranslateAnchor().getFunction().getType());
+    assertEquals(CameraFunction.class, layer.getTextTranslateAnchor().getFunction().getClass());
+    assertEquals(IntervalStops.class, layer.getTextTranslateAnchor().getFunction().getStops().getClass());
+    assertEquals(1, ((IntervalStops) layer.getTextTranslateAnchor().getFunction().getStops()).stops.length);
   }
 
 

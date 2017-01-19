@@ -9,7 +9,7 @@ import android.annotation.SuppressLint;
 import android.support.annotation.ColorInt;
 
 import com.mapbox.mapboxsdk.style.functions.Function;
-import com.mapbox.mapboxsdk.style.functions.ZoomFunction;
+import com.mapbox.mapboxsdk.style.functions.CameraFunction;
 
 /**
  * Constructs paint/layout properties for Layers
@@ -81,10 +81,10 @@ public class PropertyFactory {
      * <%- propertyFactoryMethodDoc(property) %>
      *
      * @param <ZOOM> the zoom parameter type
-     * @param function a wrapper {@link ZoomFunction} for <%- propertyType(property) %>
+     * @param function a wrapper {@link CameraFunction} for <%- propertyType(property) %>
      * @return property wrapper around a <%- propertyType(property) %> function
      */
-    public static <ZOOM extends Number> Property<ZoomFunction<ZOOM, <%- propertyType(property) %>>> <%- camelizeWithLeadingLowercase(property.name) %>(ZoomFunction<ZOOM, <%- propertyType(property) %>> function) {
+    public static <ZOOM extends Number> Property<CameraFunction<ZOOM, <%- propertyType(property) %>>> <%- camelizeWithLeadingLowercase(property.name) %>(CameraFunction<ZOOM, <%- propertyType(property) %>> function) {
         return new PaintProperty<>("<%-  property.name %>", function);
     }
 
@@ -121,10 +121,10 @@ public class PropertyFactory {
      * <%- propertyFactoryMethodDoc(property) %>
      *
      * @param <ZOOM> the zoom parameter type
-     * @param function a wrapper {@link ZoomFunction} for <%- propertyType(property) %>
+     * @param function a wrapper {@link CameraFunction} for <%- propertyType(property) %>
      * @return property wrapper around a <%- propertyType(property) %> function
      */
-    public static <ZOOM extends Number> Property<ZoomFunction<ZOOM, <%- propertyType(property) %>>> <%- camelizeWithLeadingLowercase(property.name) %>(ZoomFunction<ZOOM, <%- propertyType(property) %>> function) {
+    public static <ZOOM extends Number> Property<CameraFunction<ZOOM, <%- propertyType(property) %>>> <%- camelizeWithLeadingLowercase(property.name) %>(CameraFunction<ZOOM, <%- propertyType(property) %>> function) {
         return new LayoutProperty<>("<%-  property.name %>", function);
     }
 
