@@ -18,7 +18,7 @@ public class Stop<I, O> {
    * @param <T>    the output property type
    * @return the {@link Stop}
    */
-  public static <T> Stop<Float, T> stop(float in, Property<T> output) {
+  public static <I, T> Stop<I, T> stop(I in, Property<T> output) {
     return new Stop<>(in, output.value);
   }
 
