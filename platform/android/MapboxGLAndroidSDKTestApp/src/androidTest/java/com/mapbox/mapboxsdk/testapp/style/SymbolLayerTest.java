@@ -520,7 +520,6 @@ public class SymbolLayerTest extends BaseStyleTest {
 
   @Test
   public void testIconRotateAsIdentitySourceFunction() {
-    //Supports property function: true - true
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-rotate");
     assertNotNull(layer);
@@ -536,6 +535,33 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(SourceFunction.class, layer.getIconRotate().getFunction().getClass());
     assertEquals("FeaturePropertyA", ((SourceFunction) layer.getIconRotate().getFunction()).getProperty());
     assertEquals(IdentityStops.class, layer.getIconRotate().getFunction().getStops().getClass());
+  }
+
+  @Test
+  public void testIconRotateAsExponentialSourceFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("icon-rotate");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      iconRotate(
+        property(
+          "FeaturePropertyA",
+          exponential(
+            0.5f,
+            stop(0.3f, iconRotate(0.3f))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getIconRotate());
+    assertNotNull(layer.getIconRotate().getFunction());
+    assertEquals(SourceFunction.class, layer.getIconRotate().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getIconRotate().getFunction()).getProperty());
+    assertEquals(ExponentialStops.class, layer.getIconRotate().getFunction().getStops().getClass());
   }
 
   @Test
@@ -652,7 +678,6 @@ public class SymbolLayerTest extends BaseStyleTest {
 
   @Test
   public void testIconOffsetAsIdentitySourceFunction() {
-    //Supports property function: true - true
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-offset");
     assertNotNull(layer);
@@ -668,6 +693,33 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(SourceFunction.class, layer.getIconOffset().getFunction().getClass());
     assertEquals("FeaturePropertyA", ((SourceFunction) layer.getIconOffset().getFunction()).getProperty());
     assertEquals(IdentityStops.class, layer.getIconOffset().getFunction().getStops().getClass());
+  }
+
+  @Test
+  public void testIconOffsetAsExponentialSourceFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("icon-offset");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      iconOffset(
+        property(
+          "FeaturePropertyA",
+          exponential(
+            0.5f,
+            stop(new Float[]{0f,0f}, iconOffset(new Float[]{0f,0f}))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getIconOffset());
+    assertNotNull(layer.getIconOffset().getFunction());
+    assertEquals(SourceFunction.class, layer.getIconOffset().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getIconOffset().getFunction()).getProperty());
+    assertEquals(ExponentialStops.class, layer.getIconOffset().getFunction().getStops().getClass());
   }
 
   @Test

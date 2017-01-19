@@ -266,7 +266,6 @@ public class LineLayerTest extends BaseStyleTest {
 
   @Test
   public void testLineOpacityAsIdentitySourceFunction() {
-    //Supports property function: true - true
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-opacity");
     assertNotNull(layer);
@@ -282,6 +281,33 @@ public class LineLayerTest extends BaseStyleTest {
     assertEquals(SourceFunction.class, layer.getLineOpacity().getFunction().getClass());
     assertEquals("FeaturePropertyA", ((SourceFunction) layer.getLineOpacity().getFunction()).getProperty());
     assertEquals(IdentityStops.class, layer.getLineOpacity().getFunction().getStops().getClass());
+  }
+
+  @Test
+  public void testLineOpacityAsExponentialSourceFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("line-opacity");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      lineOpacity(
+        property(
+          "FeaturePropertyA",
+          exponential(
+            0.5f,
+            stop(0.3f, lineOpacity(0.3f))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getLineOpacity());
+    assertNotNull(layer.getLineOpacity().getFunction());
+    assertEquals(SourceFunction.class, layer.getLineOpacity().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getLineOpacity().getFunction()).getProperty());
+    assertEquals(ExponentialStops.class, layer.getLineOpacity().getFunction().getStops().getClass());
   }
 
   @Test
@@ -324,7 +350,6 @@ public class LineLayerTest extends BaseStyleTest {
 
   @Test
   public void testLineColorAsIdentitySourceFunction() {
-    //Supports property function: true - true
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-color");
     assertNotNull(layer);
@@ -340,6 +365,33 @@ public class LineLayerTest extends BaseStyleTest {
     assertEquals(SourceFunction.class, layer.getLineColor().getFunction().getClass());
     assertEquals("FeaturePropertyA", ((SourceFunction) layer.getLineColor().getFunction()).getProperty());
     assertEquals(IdentityStops.class, layer.getLineColor().getFunction().getStops().getClass());
+  }
+
+  @Test
+  public void testLineColorAsExponentialSourceFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("line-color");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      lineColor(
+        property(
+          "FeaturePropertyA",
+          exponential(
+            0.5f,
+            stop(Color.RED, lineColor(Color.RED))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getLineColor());
+    assertNotNull(layer.getLineColor().getFunction());
+    assertEquals(SourceFunction.class, layer.getLineColor().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getLineColor().getFunction()).getProperty());
+    assertEquals(ExponentialStops.class, layer.getLineColor().getFunction().getStops().getClass());
   }
 
   @Test
@@ -505,7 +557,6 @@ public class LineLayerTest extends BaseStyleTest {
 
   @Test
   public void testLineGapWidthAsIdentitySourceFunction() {
-    //Supports property function: true - true
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-gap-width");
     assertNotNull(layer);
@@ -521,6 +572,33 @@ public class LineLayerTest extends BaseStyleTest {
     assertEquals(SourceFunction.class, layer.getLineGapWidth().getFunction().getClass());
     assertEquals("FeaturePropertyA", ((SourceFunction) layer.getLineGapWidth().getFunction()).getProperty());
     assertEquals(IdentityStops.class, layer.getLineGapWidth().getFunction().getStops().getClass());
+  }
+
+  @Test
+  public void testLineGapWidthAsExponentialSourceFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("line-gap-width");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      lineGapWidth(
+        property(
+          "FeaturePropertyA",
+          exponential(
+            0.5f,
+            stop(0.3f, lineGapWidth(0.3f))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getLineGapWidth());
+    assertNotNull(layer.getLineGapWidth().getFunction());
+    assertEquals(SourceFunction.class, layer.getLineGapWidth().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getLineGapWidth().getFunction()).getProperty());
+    assertEquals(ExponentialStops.class, layer.getLineGapWidth().getFunction().getStops().getClass());
   }
 
   @Test
@@ -563,7 +641,6 @@ public class LineLayerTest extends BaseStyleTest {
 
   @Test
   public void testLineOffsetAsIdentitySourceFunction() {
-    //Supports property function: true - true
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-offset");
     assertNotNull(layer);
@@ -579,6 +656,33 @@ public class LineLayerTest extends BaseStyleTest {
     assertEquals(SourceFunction.class, layer.getLineOffset().getFunction().getClass());
     assertEquals("FeaturePropertyA", ((SourceFunction) layer.getLineOffset().getFunction()).getProperty());
     assertEquals(IdentityStops.class, layer.getLineOffset().getFunction().getStops().getClass());
+  }
+
+  @Test
+  public void testLineOffsetAsExponentialSourceFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("line-offset");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      lineOffset(
+        property(
+          "FeaturePropertyA",
+          exponential(
+            0.5f,
+            stop(0.3f, lineOffset(0.3f))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getLineOffset());
+    assertNotNull(layer.getLineOffset().getFunction());
+    assertEquals(SourceFunction.class, layer.getLineOffset().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getLineOffset().getFunction()).getProperty());
+    assertEquals(ExponentialStops.class, layer.getLineOffset().getFunction().getStops().getClass());
   }
 
   @Test
@@ -621,7 +725,6 @@ public class LineLayerTest extends BaseStyleTest {
 
   @Test
   public void testLineBlurAsIdentitySourceFunction() {
-    //Supports property function: true - true
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-blur");
     assertNotNull(layer);
@@ -637,6 +740,33 @@ public class LineLayerTest extends BaseStyleTest {
     assertEquals(SourceFunction.class, layer.getLineBlur().getFunction().getClass());
     assertEquals("FeaturePropertyA", ((SourceFunction) layer.getLineBlur().getFunction()).getProperty());
     assertEquals(IdentityStops.class, layer.getLineBlur().getFunction().getStops().getClass());
+  }
+
+  @Test
+  public void testLineBlurAsExponentialSourceFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("line-blur");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      lineBlur(
+        property(
+          "FeaturePropertyA",
+          exponential(
+            0.5f,
+            stop(0.3f, lineBlur(0.3f))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getLineBlur());
+    assertNotNull(layer.getLineBlur().getFunction());
+    assertEquals(SourceFunction.class, layer.getLineBlur().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getLineBlur().getFunction()).getProperty());
+    assertEquals(ExponentialStops.class, layer.getLineBlur().getFunction().getStops().getClass());
   }
 
   @Test

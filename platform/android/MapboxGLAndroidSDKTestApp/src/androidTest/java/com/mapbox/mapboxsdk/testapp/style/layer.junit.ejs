@@ -140,7 +140,6 @@ public class <%- camelize(type) %>LayerTest extends BaseStyleTest {
 
   @Test
   public void test<%- camelize(property.name) %>AsIdentitySourceFunction() {
-    //Supports property function: <%- property['property-function'] %> - <%- supportsPropertyFunction(property) %>
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("<%- property.name %>");
     assertNotNull(layer);
@@ -157,6 +156,69 @@ public class <%- camelize(type) %>LayerTest extends BaseStyleTest {
     assertEquals("FeaturePropertyA", ((SourceFunction) layer.get<%- camelize(property.name) %>().getFunction()).getProperty());
     assertEquals(IdentityStops.class, layer.get<%- camelize(property.name) %>().getFunction().getStops().getClass());
   }
+
+<% if (property.function == 'piecewise-constant') { -%>
+  @Test
+  public void test<%- camelize(property.name) %>AsIntervalSourceFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("<%- property.name %>");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      <%- camelizeWithLeadingLowercase(property.name) %>(
+        property(
+          "FeaturePropertyA",
+          interval(
+<% if (property.type == 'color') { -%>
+            stop(Color.RED, <%- camelizeWithLeadingLowercase(property.name) %>(Color.RED))
+<% } else {-%>
+            stop(<%- defaultValueJava(property) %>, <%- camelizeWithLeadingLowercase(property.name) %>(<%- defaultValueJava(property) %>))
+<% } -%>
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.get<%- camelize(property.name) %>());
+    assertNotNull(layer.get<%- camelize(property.name) %>().getFunction());
+    assertEquals(SourceFunction.class, layer.get<%- camelize(property.name) %>().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.get<%- camelize(property.name) %>().getFunction()).getProperty());
+    assertEquals(IdentityStops.class, layer.get<%- camelize(property.name) %>().getFunction().getStops().getClass());
+  }
+<% } else {-%>
+  @Test
+  public void test<%- camelize(property.name) %>AsExponentialSourceFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("<%- property.name %>");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      <%- camelizeWithLeadingLowercase(property.name) %>(
+        property(
+          "FeaturePropertyA",
+          exponential(
+            0.5f,
+<% if (property.type == 'color') { -%>
+            stop(Color.RED, <%- camelizeWithLeadingLowercase(property.name) %>(Color.RED))
+<% } else {-%>
+            stop(<%- defaultValueJava(property) %>, <%- camelizeWithLeadingLowercase(property.name) %>(<%- defaultValueJava(property) %>))
+<% } -%>
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.get<%- camelize(property.name) %>());
+    assertNotNull(layer.get<%- camelize(property.name) %>().getFunction());
+    assertEquals(SourceFunction.class, layer.get<%- camelize(property.name) %>().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.get<%- camelize(property.name) %>().getFunction()).getProperty());
+    assertEquals(ExponentialStops.class, layer.get<%- camelize(property.name) %>().getFunction().getStops().getClass());
+  }
+<% } -%>
 <% } -%>
 <% if (property.type == 'color') { -%>
 

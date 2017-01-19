@@ -154,7 +154,6 @@ public class FillLayerTest extends BaseStyleTest {
 
   @Test
   public void testFillOpacityAsIdentitySourceFunction() {
-    //Supports property function: true - true
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("fill-opacity");
     assertNotNull(layer);
@@ -170,6 +169,33 @@ public class FillLayerTest extends BaseStyleTest {
     assertEquals(SourceFunction.class, layer.getFillOpacity().getFunction().getClass());
     assertEquals("FeaturePropertyA", ((SourceFunction) layer.getFillOpacity().getFunction()).getProperty());
     assertEquals(IdentityStops.class, layer.getFillOpacity().getFunction().getStops().getClass());
+  }
+
+  @Test
+  public void testFillOpacityAsExponentialSourceFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("fill-opacity");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      fillOpacity(
+        property(
+          "FeaturePropertyA",
+          exponential(
+            0.5f,
+            stop(0.3f, fillOpacity(0.3f))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getFillOpacity());
+    assertNotNull(layer.getFillOpacity().getFunction());
+    assertEquals(SourceFunction.class, layer.getFillOpacity().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getFillOpacity().getFunction()).getProperty());
+    assertEquals(ExponentialStops.class, layer.getFillOpacity().getFunction().getStops().getClass());
   }
 
   @Test
@@ -212,7 +238,6 @@ public class FillLayerTest extends BaseStyleTest {
 
   @Test
   public void testFillColorAsIdentitySourceFunction() {
-    //Supports property function: true - true
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("fill-color");
     assertNotNull(layer);
@@ -228,6 +253,33 @@ public class FillLayerTest extends BaseStyleTest {
     assertEquals(SourceFunction.class, layer.getFillColor().getFunction().getClass());
     assertEquals("FeaturePropertyA", ((SourceFunction) layer.getFillColor().getFunction()).getProperty());
     assertEquals(IdentityStops.class, layer.getFillColor().getFunction().getStops().getClass());
+  }
+
+  @Test
+  public void testFillColorAsExponentialSourceFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("fill-color");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      fillColor(
+        property(
+          "FeaturePropertyA",
+          exponential(
+            0.5f,
+            stop(Color.RED, fillColor(Color.RED))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getFillColor());
+    assertNotNull(layer.getFillColor().getFunction());
+    assertEquals(SourceFunction.class, layer.getFillColor().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getFillColor().getFunction()).getProperty());
+    assertEquals(ExponentialStops.class, layer.getFillColor().getFunction().getStops().getClass());
   }
 
   @Test
@@ -281,7 +333,6 @@ public class FillLayerTest extends BaseStyleTest {
 
   @Test
   public void testFillOutlineColorAsIdentitySourceFunction() {
-    //Supports property function: true - true
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("fill-outline-color");
     assertNotNull(layer);
@@ -297,6 +348,33 @@ public class FillLayerTest extends BaseStyleTest {
     assertEquals(SourceFunction.class, layer.getFillOutlineColor().getFunction().getClass());
     assertEquals("FeaturePropertyA", ((SourceFunction) layer.getFillOutlineColor().getFunction()).getProperty());
     assertEquals(IdentityStops.class, layer.getFillOutlineColor().getFunction().getStops().getClass());
+  }
+
+  @Test
+  public void testFillOutlineColorAsExponentialSourceFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("fill-outline-color");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      fillOutlineColor(
+        property(
+          "FeaturePropertyA",
+          exponential(
+            0.5f,
+            stop(Color.RED, fillOutlineColor(Color.RED))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getFillOutlineColor());
+    assertNotNull(layer.getFillOutlineColor().getFunction());
+    assertEquals(SourceFunction.class, layer.getFillOutlineColor().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getFillOutlineColor().getFunction()).getProperty());
+    assertEquals(ExponentialStops.class, layer.getFillOutlineColor().getFunction().getStops().getClass());
   }
 
   @Test
