@@ -696,7 +696,7 @@ public class SymbolLayerTest extends BaseStyleTest {
   }
 
   @Test
-  public void testIconOffsetAsExponentialSourceFunction() {
+  public void testIconOffsetAsIntervalSourceFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("icon-offset");
     assertNotNull(layer);
@@ -706,9 +706,8 @@ public class SymbolLayerTest extends BaseStyleTest {
       iconOffset(
         property(
           "FeaturePropertyA",
-          exponential(
-            0.5f,
-            stop(new Float[]{0f,0f}, iconOffset(new Float[]{0f,0f}))
+          interval(
+            stop(1, iconOffset(new Float[]{0f,0f}))
           )
         )
       )
@@ -719,7 +718,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertNotNull(layer.getIconOffset().getFunction());
     assertEquals(SourceFunction.class, layer.getIconOffset().getFunction().getClass());
     assertEquals("FeaturePropertyA", ((SourceFunction) layer.getIconOffset().getFunction()).getProperty());
-    assertEquals(ExponentialStops.class, layer.getIconOffset().getFunction().getStops().getClass());
+    assertEquals(IntervalStops.class, layer.getIconOffset().getFunction().getStops().getClass());
   }
 
   @Test

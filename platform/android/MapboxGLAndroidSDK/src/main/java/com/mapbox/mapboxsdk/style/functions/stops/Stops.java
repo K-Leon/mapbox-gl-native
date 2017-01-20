@@ -21,7 +21,7 @@ public abstract class Stops<I, O> {
   }
 
   @SafeVarargs
-  public static <I, O> IntervalStops interval(@NonNull @Size(min = 1) Stop<I, O>... stops) {
+  public static <I extends Number, O> IntervalStops interval(@NonNull @Size(min = 1) Stop<I, O>... stops) {
     return new IntervalStops<>(stops);
   }
 
@@ -32,10 +32,6 @@ public abstract class Stops<I, O> {
   }
 
   protected abstract String getTypeName();
-
-  public <T> T as(Class<T> implementation) {
-    return (T) this;
-  }
 
   protected <I, O> Object[] convert(Stop<I, O>[] stops) {
     if (stops != null) {
