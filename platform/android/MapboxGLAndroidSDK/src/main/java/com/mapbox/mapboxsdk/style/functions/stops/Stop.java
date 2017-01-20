@@ -25,12 +25,12 @@ public class Stop<I, O> {
   /**
    * TODO
    *
-   * @param zoom
-   * @param value
-   * @param output
-   * @param <V>
-   * @param <T>
-   * @return
+   * @param zoom the zoom input
+   * @param value the feature property input
+   * @param output the output for the stop
+   * @param <V> the feature property input type
+   * @param <T> the output property type
+   * @return the {@link Stop}
    */
   public static <V, T> Stop<Stop.CompositeValue<V>, T> stop(Number zoom, V value, Property<T> output) {
     return new Stop<>(new Stop.CompositeValue<>(zoom, value), output.value);
