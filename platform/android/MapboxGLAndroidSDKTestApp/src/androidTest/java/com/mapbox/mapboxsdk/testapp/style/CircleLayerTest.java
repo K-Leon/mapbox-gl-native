@@ -9,9 +9,10 @@ import android.support.test.runner.AndroidJUnit4;
 import timber.log.Timber;
 
 import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapbox.mapboxsdk.style.functions.Function;
+import com.mapbox.mapboxsdk.style.functions.CompositeFunction;
 import com.mapbox.mapboxsdk.style.functions.CameraFunction;
 import com.mapbox.mapboxsdk.style.functions.SourceFunction;
+import com.mapbox.mapboxsdk.style.functions.stops.CompositeStops;
 import com.mapbox.mapboxsdk.style.functions.stops.ExponentialStops;
 import com.mapbox.mapboxsdk.style.functions.stops.IdentityStops;
 import com.mapbox.mapboxsdk.style.functions.stops.IntervalStops;
@@ -26,6 +27,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Map;
 
 import static com.mapbox.mapboxsdk.style.functions.Function.*;
 import static com.mapbox.mapboxsdk.style.functions.stops.Stop.stop;
@@ -164,6 +167,41 @@ public class CircleLayerTest extends BaseStyleTest {
   }
 
   @Test
+  public void testCircleRadiusAsCompositeFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("circle-radius");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      circleRadius(
+        composite(
+          "FeaturePropertyA",
+          exponential(
+            0.5f,
+            stop(0, 0.3f, circleRadius(0.3f))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getCircleRadius());
+    assertNotNull(layer.getCircleRadius().getFunction());
+    assertEquals(CompositeFunction.class, layer.getCircleRadius().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((CompositeFunction) layer.getCircleRadius().getFunction()).getProperty());
+    assertEquals(CompositeStops.class, layer.getCircleRadius().getFunction().getStops().getClass());
+    assertEquals(1, ((CompositeStops) layer.getCircleRadius().getFunction().getStops()).size());
+
+    CompositeStops<Float, Float, Float, ExponentialStops<Float, Float>> stops =
+      (CompositeStops<Float, Float, Float, ExponentialStops<Float, Float>>) layer.getCircleRadius().getFunction().getStops();
+    Map.Entry<Float, ExponentialStops<Float, Float>> stop = stops.iterator().next();
+    assertEquals(ExponentialStops.class, stop.getValue().getClass());
+    assertEquals(0f, stop.getKey(), 0.001);
+    assertEquals(1, stop.getValue().size());
+  }
+
+  @Test
   public void testCircleColorAsConstant() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("circle-color");
@@ -246,6 +284,7 @@ public class CircleLayerTest extends BaseStyleTest {
     assertEquals("FeaturePropertyA", ((SourceFunction) layer.getCircleColor().getFunction()).getProperty());
     assertEquals(ExponentialStops.class, layer.getCircleColor().getFunction().getStops().getClass());
   }
+
 
   @Test
   public void testCircleColorAsIntConstant() {
@@ -343,6 +382,41 @@ public class CircleLayerTest extends BaseStyleTest {
   }
 
   @Test
+  public void testCircleBlurAsCompositeFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("circle-blur");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      circleBlur(
+        composite(
+          "FeaturePropertyA",
+          exponential(
+            0.5f,
+            stop(0, 0.3f, circleBlur(0.3f))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getCircleBlur());
+    assertNotNull(layer.getCircleBlur().getFunction());
+    assertEquals(CompositeFunction.class, layer.getCircleBlur().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((CompositeFunction) layer.getCircleBlur().getFunction()).getProperty());
+    assertEquals(CompositeStops.class, layer.getCircleBlur().getFunction().getStops().getClass());
+    assertEquals(1, ((CompositeStops) layer.getCircleBlur().getFunction().getStops()).size());
+
+    CompositeStops<Float, Float, Float, ExponentialStops<Float, Float>> stops =
+      (CompositeStops<Float, Float, Float, ExponentialStops<Float, Float>>) layer.getCircleBlur().getFunction().getStops();
+    Map.Entry<Float, ExponentialStops<Float, Float>> stop = stops.iterator().next();
+    assertEquals(ExponentialStops.class, stop.getValue().getClass());
+    assertEquals(0f, stop.getKey(), 0.001);
+    assertEquals(1, stop.getValue().size());
+  }
+
+  @Test
   public void testCircleOpacityAsConstant() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("circle-opacity");
@@ -424,6 +498,41 @@ public class CircleLayerTest extends BaseStyleTest {
     assertEquals(SourceFunction.class, layer.getCircleOpacity().getFunction().getClass());
     assertEquals("FeaturePropertyA", ((SourceFunction) layer.getCircleOpacity().getFunction()).getProperty());
     assertEquals(ExponentialStops.class, layer.getCircleOpacity().getFunction().getStops().getClass());
+  }
+
+  @Test
+  public void testCircleOpacityAsCompositeFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("circle-opacity");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      circleOpacity(
+        composite(
+          "FeaturePropertyA",
+          exponential(
+            0.5f,
+            stop(0, 0.3f, circleOpacity(0.3f))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getCircleOpacity());
+    assertNotNull(layer.getCircleOpacity().getFunction());
+    assertEquals(CompositeFunction.class, layer.getCircleOpacity().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((CompositeFunction) layer.getCircleOpacity().getFunction()).getProperty());
+    assertEquals(CompositeStops.class, layer.getCircleOpacity().getFunction().getStops().getClass());
+    assertEquals(1, ((CompositeStops) layer.getCircleOpacity().getFunction().getStops()).size());
+
+    CompositeStops<Float, Float, Float, ExponentialStops<Float, Float>> stops =
+      (CompositeStops<Float, Float, Float, ExponentialStops<Float, Float>>) layer.getCircleOpacity().getFunction().getStops();
+    Map.Entry<Float, ExponentialStops<Float, Float>> stop = stops.iterator().next();
+    assertEquals(ExponentialStops.class, stop.getValue().getClass());
+    assertEquals(0f, stop.getKey(), 0.001);
+    assertEquals(1, stop.getValue().size());
   }
 
   @Test
@@ -621,6 +730,41 @@ public class CircleLayerTest extends BaseStyleTest {
   }
 
   @Test
+  public void testCircleStrokeWidthAsCompositeFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("circle-stroke-width");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      circleStrokeWidth(
+        composite(
+          "FeaturePropertyA",
+          exponential(
+            0.5f,
+            stop(0, 0.3f, circleStrokeWidth(0.3f))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getCircleStrokeWidth());
+    assertNotNull(layer.getCircleStrokeWidth().getFunction());
+    assertEquals(CompositeFunction.class, layer.getCircleStrokeWidth().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((CompositeFunction) layer.getCircleStrokeWidth().getFunction()).getProperty());
+    assertEquals(CompositeStops.class, layer.getCircleStrokeWidth().getFunction().getStops().getClass());
+    assertEquals(1, ((CompositeStops) layer.getCircleStrokeWidth().getFunction().getStops()).size());
+
+    CompositeStops<Float, Float, Float, ExponentialStops<Float, Float>> stops =
+      (CompositeStops<Float, Float, Float, ExponentialStops<Float, Float>>) layer.getCircleStrokeWidth().getFunction().getStops();
+    Map.Entry<Float, ExponentialStops<Float, Float>> stop = stops.iterator().next();
+    assertEquals(ExponentialStops.class, stop.getValue().getClass());
+    assertEquals(0f, stop.getKey(), 0.001);
+    assertEquals(1, stop.getValue().size());
+  }
+
+  @Test
   public void testCircleStrokeColorAsConstant() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("circle-stroke-color");
@@ -703,6 +847,7 @@ public class CircleLayerTest extends BaseStyleTest {
     assertEquals("FeaturePropertyA", ((SourceFunction) layer.getCircleStrokeColor().getFunction()).getProperty());
     assertEquals(ExponentialStops.class, layer.getCircleStrokeColor().getFunction().getStops().getClass());
   }
+
 
   @Test
   public void testCircleStrokeColorAsIntConstant() {
@@ -797,6 +942,41 @@ public class CircleLayerTest extends BaseStyleTest {
     assertEquals(SourceFunction.class, layer.getCircleStrokeOpacity().getFunction().getClass());
     assertEquals("FeaturePropertyA", ((SourceFunction) layer.getCircleStrokeOpacity().getFunction()).getProperty());
     assertEquals(ExponentialStops.class, layer.getCircleStrokeOpacity().getFunction().getStops().getClass());
+  }
+
+  @Test
+  public void testCircleStrokeOpacityAsCompositeFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("circle-stroke-opacity");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      circleStrokeOpacity(
+        composite(
+          "FeaturePropertyA",
+          exponential(
+            0.5f,
+            stop(0, 0.3f, circleStrokeOpacity(0.3f))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getCircleStrokeOpacity());
+    assertNotNull(layer.getCircleStrokeOpacity().getFunction());
+    assertEquals(CompositeFunction.class, layer.getCircleStrokeOpacity().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((CompositeFunction) layer.getCircleStrokeOpacity().getFunction()).getProperty());
+    assertEquals(CompositeStops.class, layer.getCircleStrokeOpacity().getFunction().getStops().getClass());
+    assertEquals(1, ((CompositeStops) layer.getCircleStrokeOpacity().getFunction().getStops()).size());
+
+    CompositeStops<Float, Float, Float, ExponentialStops<Float, Float>> stops =
+      (CompositeStops<Float, Float, Float, ExponentialStops<Float, Float>>) layer.getCircleStrokeOpacity().getFunction().getStops();
+    Map.Entry<Float, ExponentialStops<Float, Float>> stop = stops.iterator().next();
+    assertEquals(ExponentialStops.class, stop.getValue().getClass());
+    assertEquals(0f, stop.getKey(), 0.001);
+    assertEquals(1, stop.getValue().size());
   }
 
 

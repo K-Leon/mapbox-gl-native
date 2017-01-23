@@ -9,9 +9,10 @@ import android.support.test.runner.AndroidJUnit4;
 import timber.log.Timber;
 
 import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapbox.mapboxsdk.style.functions.Function;
+import com.mapbox.mapboxsdk.style.functions.CompositeFunction;
 import com.mapbox.mapboxsdk.style.functions.CameraFunction;
 import com.mapbox.mapboxsdk.style.functions.SourceFunction;
+import com.mapbox.mapboxsdk.style.functions.stops.CompositeStops;
 import com.mapbox.mapboxsdk.style.functions.stops.ExponentialStops;
 import com.mapbox.mapboxsdk.style.functions.stops.IdentityStops;
 import com.mapbox.mapboxsdk.style.functions.stops.IntervalStops;
@@ -26,6 +27,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Map;
 
 import static com.mapbox.mapboxsdk.style.functions.Function.*;
 import static com.mapbox.mapboxsdk.style.functions.stops.Stop.stop;
@@ -200,6 +203,41 @@ public class FillLayerTest extends BaseStyleTest {
   }
 
   @Test
+  public void testFillOpacityAsCompositeFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("fill-opacity");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      fillOpacity(
+        composite(
+          "FeaturePropertyA",
+          exponential(
+            0.5f,
+            stop(0, 0.3f, fillOpacity(0.3f))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getFillOpacity());
+    assertNotNull(layer.getFillOpacity().getFunction());
+    assertEquals(CompositeFunction.class, layer.getFillOpacity().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((CompositeFunction) layer.getFillOpacity().getFunction()).getProperty());
+    assertEquals(CompositeStops.class, layer.getFillOpacity().getFunction().getStops().getClass());
+    assertEquals(1, ((CompositeStops) layer.getFillOpacity().getFunction().getStops()).size());
+
+    CompositeStops<Float, Float, Float, ExponentialStops<Float, Float>> stops =
+      (CompositeStops<Float, Float, Float, ExponentialStops<Float, Float>>) layer.getFillOpacity().getFunction().getStops();
+    Map.Entry<Float, ExponentialStops<Float, Float>> stop = stops.iterator().next();
+    assertEquals(ExponentialStops.class, stop.getValue().getClass());
+    assertEquals(0f, stop.getKey(), 0.001);
+    assertEquals(1, stop.getValue().size());
+  }
+
+  @Test
   public void testFillColorAsConstant() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("fill-color");
@@ -282,6 +320,7 @@ public class FillLayerTest extends BaseStyleTest {
     assertEquals("FeaturePropertyA", ((SourceFunction) layer.getFillColor().getFunction()).getProperty());
     assertEquals(ExponentialStops.class, layer.getFillColor().getFunction().getStops().getClass());
   }
+
 
   @Test
   public void testFillColorAsIntConstant() {
@@ -377,6 +416,7 @@ public class FillLayerTest extends BaseStyleTest {
     assertEquals("FeaturePropertyA", ((SourceFunction) layer.getFillOutlineColor().getFunction()).getProperty());
     assertEquals(ExponentialStops.class, layer.getFillOutlineColor().getFunction().getStops().getClass());
   }
+
 
   @Test
   public void testFillOutlineColorAsIntConstant() {
