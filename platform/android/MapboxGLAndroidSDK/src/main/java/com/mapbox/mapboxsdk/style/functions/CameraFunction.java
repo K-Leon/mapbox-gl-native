@@ -9,12 +9,15 @@ import com.mapbox.mapboxsdk.style.functions.stops.Stop;
 import com.mapbox.mapboxsdk.style.functions.stops.Stops;
 
 /**
- * TODO
+ * Camera function. Functions that take camera properties as input (zoom for now)
+ *
+ * @param <I> the input type
+ * @param <O> the output type
  */
 public class CameraFunction<I extends Number, O> extends Function<I, O> {
 
   /**
-   * TODO
+   * Create an exponential camera function
    *
    * @param stops @see {@link com.mapbox.mapboxsdk.style.functions.stops.Stops#exponential(float, Stop[])}
    */
@@ -23,7 +26,7 @@ public class CameraFunction<I extends Number, O> extends Function<I, O> {
   }
 
   /**
-   * TODO
+   * Create an interval camera function
    *
    * @param stops @see {@link com.mapbox.mapboxsdk.style.functions.stops.Stops#interval(Stop[])}
    */

@@ -429,13 +429,13 @@ public class RuntimeStyleActivity extends AppCompatActivity {
     mapboxMap.animateCamera(CameraUpdateFactory.zoomTo(1), 1500);
 
     PropertyValue<String> fillColor = layer.getFillColor();
-    Function<?, String> function = fillColor.getFunction();
+    Function<Float, String> function = (Function<Float, String>) fillColor.getFunction();
     if (function != null) {
-      ExponentialStops stops = (ExponentialStops) function.getStops();
+      ExponentialStops<Float, String> stops = (ExponentialStops) function.getStops();
       Timber.d("Fill color base: " + stops.getBase());
-      Timber.d("Fill color #stops: " + stops.stops.length);
+      Timber.d("Fill color #stops: " + stops.size());
       if (function.getStops() != null) {
-        for (Stop<?, String> stop : stops.stops) {
+        for (Stop<Float, String> stop : stops) {
           Timber.d("Fill color #stops: " + stop);
         }
       }

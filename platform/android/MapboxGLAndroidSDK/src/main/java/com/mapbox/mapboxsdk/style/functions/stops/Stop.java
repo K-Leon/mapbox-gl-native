@@ -56,6 +56,11 @@ public class Stop<I, O> {
       this.value = value;
     }
 
+    /**
+     * INTERNAL USAGE ONLY
+     *
+     * @return the value object representation for core conversion
+     */
     Map<String, Object> toValueObject() {
       HashMap<String, Object> map = new HashMap<>();
       map.put("zoom", zoom);
@@ -69,7 +74,14 @@ public class Stop<I, O> {
     }
   }
 
+  /**
+   * The input type
+   */
   public final I in;
+
+  /**
+   * The output type
+   */
   public final O out;
 
   Stop(I in, O out) {
@@ -78,6 +90,8 @@ public class Stop<I, O> {
   }
 
   /**
+   * INTERNAL USAGE ONLY
+   *
    * @return an array representation of the Stop
    */
   Object[] toValueObject() {

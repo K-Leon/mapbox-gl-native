@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * TODO
+ * The {@link Stops} implementation for composite functions
  *
  * @param <Z> the zoom type (usually Float)
  * @param <I> the input type (the feature property type)
@@ -22,18 +22,6 @@ import java.util.Map;
  */
 public class CompositeStops<Z extends Number, I, O, S extends IterableStops<I, O, Stop<I, O>>>
   extends IterableStops<CompositeValue<Z, I>, O, Map.Entry<Z, S>> {
-
-  public static <Z extends Number, I, O> CompositeStops<Z, I, O, ? extends Stops<I, O>> convert(
-    IntervalStops<CompositeValue<Z, I>, O> stops) {
-
-    return new CompositeStops<>(stops);
-  }
-
-  public static <Z extends Number, I, O> CompositeStops<Z, I, O, ? extends Stops<I, O>> convert(
-    ExponentialStops<CompositeValue<Z, I>, O> stops) {
-
-    return new CompositeStops<>(stops);
-  }
 
   private final Map<Z, S> stops;
 
@@ -47,16 +35,29 @@ public class CompositeStops<Z extends Number, I, O, S extends IterableStops<I, O
     this.stops = stops;
   }
 
-  private CompositeStops(@NonNull ExponentialStops<Stop.CompositeValue<Z, I>, O> stops) {
+  /**
+   * Create composite stops for {@link ExponentialStops}. Use
+   * {@link com.mapbox.mapboxsdk.style.functions.Function#composite(String, ExponentialStops)}
+   *
+   * @param stops the stops
+   */
+  public CompositeStops(@NonNull ExponentialStops<Stop.CompositeValue<Z, I>, O> stops) {
     this.stops = new HashMap<>();
 
     for (Map.Entry<Z, List<Stop<I, O>>> entry : collect(stops).entrySet()) {
       //noinspection unchecked
-      this.stops.put(entry.getKey(), (S) new ExponentialStops<>(stops.base, entry.getValue().toArray(new Stop[0])));
+      this.stops.put(entry.getKey(),
+        (S) new ExponentialStops<>(stops.getBase(), entry.getValue().toArray(new Stop[0])));
     }
   }
 
-  private CompositeStops(@NonNull IntervalStops<Stop.CompositeValue<Z, I>, O> stops) {
+  /**
+   * Create composite stops for {@link IntervalStops}.
+   * Use {@link com.mapbox.mapboxsdk.style.functions.Function#composite(String, IntervalStops)}
+   *
+   * @param stops the stops
+   */
+  public CompositeStops(@NonNull IntervalStops<Stop.CompositeValue<Z, I>, O> stops) {
     this.stops = new HashMap<>();
 
     for (Map.Entry<Z, List<Stop<I, O>>> entry : collect(stops).entrySet()) {
@@ -65,18 +66,39 @@ public class CompositeStops<Z extends Number, I, O, S extends IterableStops<I, O
     }
   }
 
+  /**
+   * Create composite stops for {@link CategoricalStops}.
+   * Use {@link com.mapbox.mapboxsdk.style.functions.Function#composite(String, CategoricalStops)}
+   *
+   * @param stops the stops
+   */
+  public CompositeStops(@NonNull CategoricalStops<CompositeValue<Z, I>, O> stops) {
+    this.stops = new HashMap<>();
+
+    for (Map.Entry<Z, List<Stop<I, O>>> entry : collect(stops).entrySet()) {
+      //noinspection unchecked
+      this.stops.put(entry.getKey(), (S) new IntervalStops<>(entry.getValue().toArray(new Stop[0])));
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   @Override
   protected String getTypeName() {
     return stops.get(0).getTypeName();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Map<String, Object> toValueObject() {
     Map<String, Object> map = super.toValueObject();
 
-    //Flatten and convert stops
+    //Flatten and toValueObjects stops
     //noinspection unchecked
-    map.put("stops", convert(flatten(this.stops).toArray(new Stop[0])));
+    map.put("stops", toValueObjects(flatten(this.stops).toArray(new Stop[0])));
 
     return map;
   }
@@ -110,13 +132,20 @@ public class CompositeStops<Z extends Number, I, O, S extends IterableStops<I, O
     return converted;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Iterator<Map.Entry<Z, S>> iterator() {
     return stops.entrySet().iterator();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public int size() {
     return stops.size();
   }
+
 }

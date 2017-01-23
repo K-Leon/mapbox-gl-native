@@ -8,7 +8,7 @@ import com.mapbox.mapboxsdk.style.functions.stops.Stops;
 import java.util.Map;
 
 /**
- * TODO
+ * Composite functions combine {@link android.graphics.Camera} and {@link SourceFunction}s
  *
  * @param <Z> the zoom type (usually Float)
  * @param <I> the input type (the feature property type)
@@ -24,14 +24,23 @@ public class CompositeFunction<Z extends Number, I, O> extends Function<I, O> {
     this.property = property;
   }
 
+  /**
+   * INTERNAL USAGE ONLY
+   *
+   * @return the feature property name
+   */
   public String getProperty() {
     return property;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Map<String, Object> toValueObject() {
     Map<String, Object> valueObject = super.toValueObject();
     valueObject.put("property", property);
     return valueObject;
   }
+
 }

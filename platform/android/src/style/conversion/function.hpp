@@ -14,6 +14,35 @@ namespace mbgl {
 namespace android {
 namespace conversion {
 
+/**
+ * Conversion from core composite value to java type
+ */
+class CategoricalValueEvaluator {
+public:
+
+    CategoricalValueEvaluator(jni::JNIEnv& _env) : env(_env) {}
+
+    template <class T>
+    jni::jobject* operator()(const T &value) const {
+        return *convert<jni::jobject*, T>(env, value);
+    }
+
+private:
+    jni::JNIEnv& env;
+};
+
+/**
+ * Conversion from core composite value to java type
+ */
+template <>
+struct Converter<jni::jobject*, mbgl::style::CategoricalValue> {
+
+    Result<jni::jobject*> operator()(jni::JNIEnv& env, const mbgl::style::CategoricalValue& value) const {
+        CategoricalValueEvaluator evaluator(env);
+        return apply_visitor(evaluator, value);
+    }
+};
+
 template <class I, class O>
 inline jni::jobject* toFunctionStopJavaArray(jni::JNIEnv& env, std::map<I, O> value) {
     static jni::jclass* javaClass = jni::NewGlobalRef(env, &jni::FindClass(env, "com/mapbox/mapboxsdk/style/functions/stops/Stop")).release();
@@ -42,13 +71,11 @@ public:
 
     StopsEvaluator(jni::JNIEnv& _env) : env(_env) {}
 
-    jni::jobject* operator()(const mbgl::style::CategoricalStops<T> &) const {
-        return nullptr;
-        //static jni::jmethodID* constructor = &jni::GetMethodID(env, *this->javaClass(), "<init>", "(Ljava/lang/String)V");
+    jni::jobject* operator()(const mbgl::style::CategoricalStops<T> &value) const {
+        static jni::jclass* clazz = jni::NewGlobalRef(env, &jni::FindClass(env, "com/mapbox/mapboxsdk/style/functions/stops/CategoricalStops")).release();
+        static jni::jmethodID* constructor = &jni::GetMethodID(env, *clazz, "<init>", "([Lcom/mapbox/mapboxsdk/style/functions/stops/Stop;)V");
 
-        //return &jni::NewObject(env, *this->javaClass(), *constructor,
-        //    *convert<jni::jobject*>(env, value.defaultValue),
-        //    toFunctionStopJavaArray(env, value.stops));
+        return &jni::NewObject(env, *clazz, *constructor, toFunctionStopJavaArray(env, value.stops));
     }
 
     jni::jobject* operator()(const mbgl::style::ExponentialStops<T> &value) const {
