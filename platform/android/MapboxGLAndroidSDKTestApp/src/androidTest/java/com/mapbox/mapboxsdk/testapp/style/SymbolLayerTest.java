@@ -112,7 +112,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertNotNull(layer.getSymbolPlacement().getFunction());
     assertEquals(CameraFunction.class, layer.getSymbolPlacement().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getSymbolPlacement().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getSymbolPlacement().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getSymbolPlacement().getFunction().getStops()).size());
   }
 
   @Test
@@ -150,7 +150,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getSymbolSpacing().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getSymbolSpacing().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getSymbolSpacing().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getSymbolSpacing().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getSymbolSpacing().getFunction().getStops()).size());
   }
 
   @Test
@@ -186,7 +186,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertNotNull(layer.getSymbolAvoidEdges().getFunction());
     assertEquals(CameraFunction.class, layer.getSymbolAvoidEdges().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getSymbolAvoidEdges().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getSymbolAvoidEdges().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getSymbolAvoidEdges().getFunction().getStops()).size());
   }
 
   @Test
@@ -222,7 +222,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertNotNull(layer.getIconAllowOverlap().getFunction());
     assertEquals(CameraFunction.class, layer.getIconAllowOverlap().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getIconAllowOverlap().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getIconAllowOverlap().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getIconAllowOverlap().getFunction().getStops()).size());
   }
 
   @Test
@@ -258,7 +258,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertNotNull(layer.getIconIgnorePlacement().getFunction());
     assertEquals(CameraFunction.class, layer.getIconIgnorePlacement().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getIconIgnorePlacement().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getIconIgnorePlacement().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getIconIgnorePlacement().getFunction().getStops()).size());
   }
 
   @Test
@@ -294,7 +294,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertNotNull(layer.getIconOptional().getFunction());
     assertEquals(CameraFunction.class, layer.getIconOptional().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getIconOptional().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getIconOptional().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getIconOptional().getFunction().getStops()).size());
   }
 
   @Test
@@ -330,7 +330,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertNotNull(layer.getIconRotationAlignment().getFunction());
     assertEquals(CameraFunction.class, layer.getIconRotationAlignment().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getIconRotationAlignment().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getIconRotationAlignment().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getIconRotationAlignment().getFunction().getStops()).size());
   }
 
   @Test
@@ -368,7 +368,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getIconSize().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getIconSize().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getIconSize().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getIconSize().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getIconSize().getFunction().getStops()).size());
   }
 
   @Test
@@ -404,7 +404,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertNotNull(layer.getIconTextFit().getFunction());
     assertEquals(CameraFunction.class, layer.getIconTextFit().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getIconTextFit().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getIconTextFit().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getIconTextFit().getFunction().getStops()).size());
   }
 
   @Test
@@ -442,7 +442,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getIconTextFitPadding().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getIconTextFitPadding().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getIconTextFitPadding().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getIconTextFitPadding().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getIconTextFitPadding().getFunction().getStops()).size());
   }
 
   @Test
@@ -478,7 +478,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertNotNull(layer.getIconImage().getFunction());
     assertEquals(CameraFunction.class, layer.getIconImage().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getIconImage().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getIconImage().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getIconImage().getFunction().getStops()).size());
   }
 
   @Test
@@ -516,7 +516,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getIconRotate().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getIconRotate().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getIconRotate().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getIconRotate().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getIconRotate().getFunction().getStops()).size());
   }
 
   @Test
@@ -600,7 +600,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getIconPadding().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getIconPadding().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getIconPadding().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getIconPadding().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getIconPadding().getFunction().getStops()).size());
   }
 
   @Test
@@ -636,7 +636,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertNotNull(layer.getIconKeepUpright().getFunction());
     assertEquals(CameraFunction.class, layer.getIconKeepUpright().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getIconKeepUpright().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getIconKeepUpright().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getIconKeepUpright().getFunction().getStops()).size());
   }
 
   @Test
@@ -674,7 +674,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getIconOffset().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getIconOffset().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getIconOffset().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getIconOffset().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getIconOffset().getFunction().getStops()).size());
   }
 
   @Test
@@ -755,7 +755,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertNotNull(layer.getTextPitchAlignment().getFunction());
     assertEquals(CameraFunction.class, layer.getTextPitchAlignment().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getTextPitchAlignment().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getTextPitchAlignment().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getTextPitchAlignment().getFunction().getStops()).size());
   }
 
   @Test
@@ -791,7 +791,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertNotNull(layer.getTextRotationAlignment().getFunction());
     assertEquals(CameraFunction.class, layer.getTextRotationAlignment().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getTextRotationAlignment().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getTextRotationAlignment().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getTextRotationAlignment().getFunction().getStops()).size());
   }
 
   @Test
@@ -827,7 +827,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertNotNull(layer.getTextField().getFunction());
     assertEquals(CameraFunction.class, layer.getTextField().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getTextField().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getTextField().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getTextField().getFunction().getStops()).size());
   }
 
   @Test
@@ -863,7 +863,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertNotNull(layer.getTextFont().getFunction());
     assertEquals(CameraFunction.class, layer.getTextFont().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getTextFont().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getTextFont().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getTextFont().getFunction().getStops()).size());
   }
 
   @Test
@@ -901,7 +901,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getTextSize().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getTextSize().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getTextSize().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getTextSize().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getTextSize().getFunction().getStops()).size());
   }
 
   @Test
@@ -939,7 +939,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getTextMaxWidth().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getTextMaxWidth().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getTextMaxWidth().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getTextMaxWidth().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getTextMaxWidth().getFunction().getStops()).size());
   }
 
   @Test
@@ -977,7 +977,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getTextLineHeight().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getTextLineHeight().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getTextLineHeight().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getTextLineHeight().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getTextLineHeight().getFunction().getStops()).size());
   }
 
   @Test
@@ -1015,7 +1015,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getTextLetterSpacing().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getTextLetterSpacing().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getTextLetterSpacing().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getTextLetterSpacing().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getTextLetterSpacing().getFunction().getStops()).size());
   }
 
   @Test
@@ -1051,7 +1051,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertNotNull(layer.getTextJustify().getFunction());
     assertEquals(CameraFunction.class, layer.getTextJustify().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getTextJustify().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getTextJustify().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getTextJustify().getFunction().getStops()).size());
   }
 
   @Test
@@ -1087,7 +1087,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertNotNull(layer.getTextAnchor().getFunction());
     assertEquals(CameraFunction.class, layer.getTextAnchor().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getTextAnchor().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getTextAnchor().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getTextAnchor().getFunction().getStops()).size());
   }
 
   @Test
@@ -1125,7 +1125,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getTextMaxAngle().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getTextMaxAngle().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getTextMaxAngle().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getTextMaxAngle().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getTextMaxAngle().getFunction().getStops()).size());
   }
 
   @Test
@@ -1163,7 +1163,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getTextRotate().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getTextRotate().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getTextRotate().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getTextRotate().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getTextRotate().getFunction().getStops()).size());
   }
 
   @Test
@@ -1201,7 +1201,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getTextPadding().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getTextPadding().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getTextPadding().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getTextPadding().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getTextPadding().getFunction().getStops()).size());
   }
 
   @Test
@@ -1237,7 +1237,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertNotNull(layer.getTextKeepUpright().getFunction());
     assertEquals(CameraFunction.class, layer.getTextKeepUpright().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getTextKeepUpright().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getTextKeepUpright().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getTextKeepUpright().getFunction().getStops()).size());
   }
 
   @Test
@@ -1273,7 +1273,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertNotNull(layer.getTextTransform().getFunction());
     assertEquals(CameraFunction.class, layer.getTextTransform().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getTextTransform().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getTextTransform().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getTextTransform().getFunction().getStops()).size());
   }
 
   @Test
@@ -1311,7 +1311,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getTextOffset().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getTextOffset().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getTextOffset().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getTextOffset().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getTextOffset().getFunction().getStops()).size());
   }
 
   @Test
@@ -1347,7 +1347,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertNotNull(layer.getTextAllowOverlap().getFunction());
     assertEquals(CameraFunction.class, layer.getTextAllowOverlap().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getTextAllowOverlap().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getTextAllowOverlap().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getTextAllowOverlap().getFunction().getStops()).size());
   }
 
   @Test
@@ -1383,7 +1383,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertNotNull(layer.getTextIgnorePlacement().getFunction());
     assertEquals(CameraFunction.class, layer.getTextIgnorePlacement().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getTextIgnorePlacement().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getTextIgnorePlacement().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getTextIgnorePlacement().getFunction().getStops()).size());
   }
 
   @Test
@@ -1419,7 +1419,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertNotNull(layer.getTextOptional().getFunction());
     assertEquals(CameraFunction.class, layer.getTextOptional().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getTextOptional().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getTextOptional().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getTextOptional().getFunction().getStops()).size());
   }
 
   @Test
@@ -1457,7 +1457,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getIconOpacity().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getIconOpacity().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getIconOpacity().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getIconOpacity().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getIconOpacity().getFunction().getStops()).size());
   }
 
   @Test
@@ -1495,7 +1495,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getIconColor().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getIconColor().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getIconColor().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getIconColor().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getIconColor().getFunction().getStops()).size());
   }
 
   @Test
@@ -1544,7 +1544,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getIconHaloColor().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getIconHaloColor().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getIconHaloColor().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getIconHaloColor().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getIconHaloColor().getFunction().getStops()).size());
   }
 
   @Test
@@ -1593,7 +1593,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getIconHaloWidth().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getIconHaloWidth().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getIconHaloWidth().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getIconHaloWidth().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getIconHaloWidth().getFunction().getStops()).size());
   }
 
   @Test
@@ -1631,7 +1631,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getIconHaloBlur().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getIconHaloBlur().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getIconHaloBlur().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getIconHaloBlur().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getIconHaloBlur().getFunction().getStops()).size());
   }
 
   @Test
@@ -1669,7 +1669,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getIconTranslate().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getIconTranslate().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getIconTranslate().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getIconTranslate().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getIconTranslate().getFunction().getStops()).size());
   }
 
   @Test
@@ -1705,7 +1705,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertNotNull(layer.getIconTranslateAnchor().getFunction());
     assertEquals(CameraFunction.class, layer.getIconTranslateAnchor().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getIconTranslateAnchor().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getIconTranslateAnchor().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getIconTranslateAnchor().getFunction().getStops()).size());
   }
 
   @Test
@@ -1743,7 +1743,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getTextOpacity().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getTextOpacity().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getTextOpacity().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getTextOpacity().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getTextOpacity().getFunction().getStops()).size());
   }
 
   @Test
@@ -1781,7 +1781,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getTextColor().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getTextColor().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getTextColor().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getTextColor().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getTextColor().getFunction().getStops()).size());
   }
 
   @Test
@@ -1830,7 +1830,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getTextHaloColor().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getTextHaloColor().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getTextHaloColor().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getTextHaloColor().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getTextHaloColor().getFunction().getStops()).size());
   }
 
   @Test
@@ -1879,7 +1879,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getTextHaloWidth().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getTextHaloWidth().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getTextHaloWidth().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getTextHaloWidth().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getTextHaloWidth().getFunction().getStops()).size());
   }
 
   @Test
@@ -1917,7 +1917,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getTextHaloBlur().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getTextHaloBlur().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getTextHaloBlur().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getTextHaloBlur().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getTextHaloBlur().getFunction().getStops()).size());
   }
 
   @Test
@@ -1955,7 +1955,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getTextTranslate().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getTextTranslate().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getTextTranslate().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getTextTranslate().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getTextTranslate().getFunction().getStops()).size());
   }
 
   @Test
@@ -1991,7 +1991,7 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertNotNull(layer.getTextTranslateAnchor().getFunction());
     assertEquals(CameraFunction.class, layer.getTextTranslateAnchor().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getTextTranslateAnchor().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getTextTranslateAnchor().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getTextTranslateAnchor().getFunction().getStops()).size());
   }
 
 

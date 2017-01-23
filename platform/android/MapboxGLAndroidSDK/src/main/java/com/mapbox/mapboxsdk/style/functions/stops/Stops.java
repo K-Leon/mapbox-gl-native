@@ -33,7 +33,7 @@ public abstract class Stops<I, O> {
 
   protected abstract String getTypeName();
 
-  protected <I, O> Object[] convert(Stop<I, O>[] stops) {
+  protected Object[] convert(Stop<I, O>[] stops) {
     if (stops != null) {
       Object[] stopsValue = new Object[stops.length];
 

@@ -37,9 +37,8 @@ public:
         return *convert<jni::jobject*, mbgl::style::SourceFunction<T>>(env, value);
     }
 
-    jni::jobject* operator()(const mbgl::style::CompositeFunction<T> &) const {
-        //TODO
-        return nullptr;
+    jni::jobject* operator()(const mbgl::style::CompositeFunction<T> &value) const {
+      return *convert<jni::jobject*, mbgl::style::CompositeFunction<T>>(env, value);
     }
 
 private:

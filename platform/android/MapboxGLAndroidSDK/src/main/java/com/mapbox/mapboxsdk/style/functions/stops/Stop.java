@@ -3,15 +3,18 @@ package com.mapbox.mapboxsdk.style.functions.stops;
 import com.mapbox.mapboxsdk.style.functions.Function;
 import com.mapbox.mapboxsdk.style.layers.Property;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * A stop represents a certain point in the range of this function
  *
- * @param <I> input
- * @param <O> output
+ * @param <I> input the stop (function) input type
+ * @param <O> output the stop (function) output type
  */
 public class Stop<I, O> {
   /**
-   * Creates a stop to use in a {@link Function}
+   * Creates a {@link Stop} to use in a {@link Function}
    *
    * @param in     the input for the stop
    * @param output the output for the stop
@@ -23,26 +26,46 @@ public class Stop<I, O> {
   }
 
   /**
-   * TODO
+   * Create a composite {@link Stop} for use in a {@link com.mapbox.mapboxsdk.style.functions.CompositeFunction}
    *
-   * @param zoom the zoom input
-   * @param value the feature property input
+   * @param zoom   the zoom input
+   * @param value  the feature property input
    * @param output the output for the stop
-   * @param <V> the feature property input type
-   * @param <T> the output property type
+   * @param <Z>    the zoom type
+   * @param <I>    the feature property input type
+   * @param <O>    the output property type
    * @return the {@link Stop}
+   * @see Function#composite(String, ExponentialStops)
    */
-  public static <V, T> Stop<Stop.CompositeValue<V>, T> stop(Number zoom, V value, Property<T> output) {
+  public static <Z extends Number, I, O> Stop<Stop.CompositeValue<Z, I>, O> stop(Z zoom, I value, Property<O> output) {
     return new Stop<>(new Stop.CompositeValue<>(zoom, value), output.value);
   }
 
-  public static class CompositeValue<V> {
-    Number zoom;
+  /**
+   * Represents a composite input value for composite functions (eg zoom and feature property value)
+   *
+   * @param <Z> the zoom input type (typically Float)
+   * @param <V> the feature property input type
+   */
+  public static class CompositeValue<Z extends Number, V> {
+    Z zoom;
     V value;
 
-    CompositeValue(Number zoom, V value) {
+    CompositeValue(Z zoom, V value) {
       this.zoom = zoom;
       this.value = value;
+    }
+
+    Map<String, Object> toValueObject() {
+      HashMap<String, Object> map = new HashMap<>();
+      map.put("zoom", zoom);
+      map.put("value", value);
+      return map;
+    }
+
+    @Override
+    public String toString() {
+      return String.format("[zoom: %s, value: %s]", zoom, value);
     }
   }
 
@@ -58,7 +81,7 @@ public class Stop<I, O> {
    * @return an array representation of the Stop
    */
   Object[] toValueObject() {
-    return new Object[] {in, out};
+    return new Object[] {in instanceof CompositeValue ? ((CompositeValue) in).toValueObject() : in, out};
   }
 
   @Override

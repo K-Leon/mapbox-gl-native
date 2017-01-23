@@ -3,12 +3,14 @@ package com.mapbox.mapboxsdk.style.functions.stops;
 import android.support.annotation.NonNull;
 import android.support.annotation.Size;
 
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
  * TODO
  */
-public class ExponentialStops<I, O> extends Stops<I, O> {
+public class ExponentialStops<I, O> extends IterableStops<I, O, Stop<I, O>> {
   public final float base;
   public final Stop<I, O>[] stops;
   //TODO: colorSpace
@@ -41,7 +43,17 @@ public class ExponentialStops<I, O> extends Stops<I, O> {
   }
 
   @Override
-  protected String getTypeName() {
+  public String getTypeName() {
     return "exponential";
+  }
+
+  @Override
+  public Iterator<Stop<I, O>> iterator() {
+    return Arrays.asList(stops).iterator();
+  }
+
+  @Override
+  public int size() {
+    return stops.length;
   }
 }

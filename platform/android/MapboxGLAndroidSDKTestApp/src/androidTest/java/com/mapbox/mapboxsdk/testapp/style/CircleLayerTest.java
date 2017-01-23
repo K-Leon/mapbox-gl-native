@@ -114,7 +114,7 @@ public class CircleLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getCircleRadius().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getCircleRadius().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getCircleRadius().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getCircleRadius().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getCircleRadius().getFunction().getStops()).size());
   }
 
   @Test
@@ -198,7 +198,7 @@ public class CircleLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getCircleColor().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getCircleColor().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getCircleColor().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getCircleColor().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getCircleColor().getFunction().getStops()).size());
   }
 
   @Test
@@ -293,7 +293,7 @@ public class CircleLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getCircleBlur().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getCircleBlur().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getCircleBlur().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getCircleBlur().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getCircleBlur().getFunction().getStops()).size());
   }
 
   @Test
@@ -377,7 +377,7 @@ public class CircleLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getCircleOpacity().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getCircleOpacity().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getCircleOpacity().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getCircleOpacity().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getCircleOpacity().getFunction().getStops()).size());
   }
 
   @Test
@@ -461,7 +461,7 @@ public class CircleLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getCircleTranslate().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getCircleTranslate().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getCircleTranslate().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getCircleTranslate().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getCircleTranslate().getFunction().getStops()).size());
   }
 
   @Test
@@ -497,7 +497,7 @@ public class CircleLayerTest extends BaseStyleTest {
     assertNotNull(layer.getCircleTranslateAnchor().getFunction());
     assertEquals(CameraFunction.class, layer.getCircleTranslateAnchor().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getCircleTranslateAnchor().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getCircleTranslateAnchor().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getCircleTranslateAnchor().getFunction().getStops()).size());
   }
 
   @Test
@@ -533,7 +533,7 @@ public class CircleLayerTest extends BaseStyleTest {
     assertNotNull(layer.getCirclePitchScale().getFunction());
     assertEquals(CameraFunction.class, layer.getCirclePitchScale().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getCirclePitchScale().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getCirclePitchScale().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getCirclePitchScale().getFunction().getStops()).size());
   }
 
   @Test
@@ -571,7 +571,7 @@ public class CircleLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getCircleStrokeWidth().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getCircleStrokeWidth().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getCircleStrokeWidth().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getCircleStrokeWidth().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getCircleStrokeWidth().getFunction().getStops()).size());
   }
 
   @Test
@@ -655,7 +655,7 @@ public class CircleLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getCircleStrokeColor().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getCircleStrokeColor().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getCircleStrokeColor().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getCircleStrokeColor().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getCircleStrokeColor().getFunction().getStops()).size());
   }
 
   @Test
@@ -750,7 +750,7 @@ public class CircleLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getCircleStrokeOpacity().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getCircleStrokeOpacity().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getCircleStrokeOpacity().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getCircleStrokeOpacity().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getCircleStrokeOpacity().getFunction().getStops()).size());
   }
 
   @Test

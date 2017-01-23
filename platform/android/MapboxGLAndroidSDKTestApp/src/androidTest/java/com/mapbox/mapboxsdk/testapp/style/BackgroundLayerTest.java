@@ -108,7 +108,7 @@ public class BackgroundLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getBackgroundColor().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getBackgroundColor().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getBackgroundColor().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getBackgroundColor().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getBackgroundColor().getFunction().getStops()).size());
   }
 
   @Test
@@ -155,7 +155,7 @@ public class BackgroundLayerTest extends BaseStyleTest {
     assertNotNull(layer.getBackgroundPattern().getFunction());
     assertEquals(CameraFunction.class, layer.getBackgroundPattern().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getBackgroundPattern().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getBackgroundPattern().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getBackgroundPattern().getFunction().getStops()).size());
   }
 
   @Test
@@ -193,7 +193,7 @@ public class BackgroundLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getBackgroundOpacity().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getBackgroundOpacity().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getBackgroundOpacity().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getBackgroundOpacity().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getBackgroundOpacity().getFunction().getStops()).size());
   }
 
 

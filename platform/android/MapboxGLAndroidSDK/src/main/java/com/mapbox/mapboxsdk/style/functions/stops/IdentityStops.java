@@ -9,4 +9,5 @@ public class IdentityStops<T> extends Stops<T, T> {
   protected String getTypeName() {
     return "identity";
   }
+
 }

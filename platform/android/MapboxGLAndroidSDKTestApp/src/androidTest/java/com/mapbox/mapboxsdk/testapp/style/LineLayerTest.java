@@ -112,7 +112,7 @@ public class LineLayerTest extends BaseStyleTest {
     assertNotNull(layer.getLineCap().getFunction());
     assertEquals(CameraFunction.class, layer.getLineCap().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getLineCap().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getLineCap().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getLineCap().getFunction().getStops()).size());
   }
 
   @Test
@@ -148,7 +148,7 @@ public class LineLayerTest extends BaseStyleTest {
     assertNotNull(layer.getLineJoin().getFunction());
     assertEquals(CameraFunction.class, layer.getLineJoin().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getLineJoin().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getLineJoin().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getLineJoin().getFunction().getStops()).size());
   }
 
   @Test
@@ -186,7 +186,7 @@ public class LineLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getLineMiterLimit().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getLineMiterLimit().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getLineMiterLimit().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getLineMiterLimit().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getLineMiterLimit().getFunction().getStops()).size());
   }
 
   @Test
@@ -224,7 +224,7 @@ public class LineLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getLineRoundLimit().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getLineRoundLimit().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getLineRoundLimit().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getLineRoundLimit().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getLineRoundLimit().getFunction().getStops()).size());
   }
 
   @Test
@@ -262,7 +262,7 @@ public class LineLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getLineOpacity().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getLineOpacity().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getLineOpacity().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getLineOpacity().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getLineOpacity().getFunction().getStops()).size());
   }
 
   @Test
@@ -346,7 +346,7 @@ public class LineLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getLineColor().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getLineColor().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getLineColor().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getLineColor().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getLineColor().getFunction().getStops()).size());
   }
 
   @Test
@@ -441,7 +441,7 @@ public class LineLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getLineTranslate().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getLineTranslate().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getLineTranslate().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getLineTranslate().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getLineTranslate().getFunction().getStops()).size());
   }
 
   @Test
@@ -477,7 +477,7 @@ public class LineLayerTest extends BaseStyleTest {
     assertNotNull(layer.getLineTranslateAnchor().getFunction());
     assertEquals(CameraFunction.class, layer.getLineTranslateAnchor().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getLineTranslateAnchor().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getLineTranslateAnchor().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getLineTranslateAnchor().getFunction().getStops()).size());
   }
 
   @Test
@@ -515,7 +515,7 @@ public class LineLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getLineWidth().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getLineWidth().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getLineWidth().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getLineWidth().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getLineWidth().getFunction().getStops()).size());
   }
 
   @Test
@@ -553,7 +553,7 @@ public class LineLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getLineGapWidth().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getLineGapWidth().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getLineGapWidth().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getLineGapWidth().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getLineGapWidth().getFunction().getStops()).size());
   }
 
   @Test
@@ -637,7 +637,7 @@ public class LineLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getLineOffset().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getLineOffset().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getLineOffset().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getLineOffset().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getLineOffset().getFunction().getStops()).size());
   }
 
   @Test
@@ -721,7 +721,7 @@ public class LineLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getLineBlur().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getLineBlur().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getLineBlur().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getLineBlur().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getLineBlur().getFunction().getStops()).size());
   }
 
   @Test
@@ -803,7 +803,7 @@ public class LineLayerTest extends BaseStyleTest {
     assertNotNull(layer.getLineDasharray().getFunction());
     assertEquals(CameraFunction.class, layer.getLineDasharray().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getLineDasharray().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getLineDasharray().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getLineDasharray().getFunction().getStops()).size());
   }
 
   @Test
@@ -839,7 +839,7 @@ public class LineLayerTest extends BaseStyleTest {
     assertNotNull(layer.getLinePattern().getFunction());
     assertEquals(CameraFunction.class, layer.getLinePattern().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getLinePattern().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getLinePattern().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getLinePattern().getFunction().getStops()).size());
   }
 
 

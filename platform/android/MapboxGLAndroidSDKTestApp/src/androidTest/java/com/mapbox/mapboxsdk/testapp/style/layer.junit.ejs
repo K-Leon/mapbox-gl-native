@@ -129,11 +129,11 @@ public class <%- camelize(type) %>LayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.get<%- camelize(property.name) %>().getFunction().getClass());
 <% if (property.function == 'piecewise-constant') { -%>
     assertEquals(IntervalStops.class, layer.get<%- camelize(property.name) %>().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.get<%- camelize(property.name) %>().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.get<%- camelize(property.name) %>().getFunction().getStops()).size());
 <% } else { -%>
     assertEquals(ExponentialStops.class, layer.get<%- camelize(property.name) %>().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.get<%- camelize(property.name) %>().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.get<%- camelize(property.name) %>().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.get<%- camelize(property.name) %>().getFunction().getStops()).size());
 <% } -%>
   }
 <% } -%>

@@ -27,6 +27,7 @@ inline jni::jobject* toFunctionStopJavaArray(jni::JNIEnv& env, std::map<I, O> va
         jni::jobject* out = *convert<jni::jobject*, O>(env, stop.second);
         jni::SetObjectArrayElement(env, jarray, i, &jni::NewObject(env, *javaClass, *constructor, in, out));
         i++;
+        //TODO Release??
     }
 
     return &jarray;
@@ -77,6 +78,57 @@ private:
     jni::JNIEnv& env;
 };
 
+template <class T, typename X>
+inline jni::jobject* convertCompositeStopsArray(jni::JNIEnv& env, std::map<float, T> value) {
+    //Create Java Map
+    static jni::jclass* mapClass = jni::NewGlobalRef(env, &jni::FindClass(env, "java/util/HashMap")).release();
+    static jni::jmethodID* mapConstructor = &jni::GetMethodID(env, *mapClass, "<init>", "()V");
+    static jni::jmethodID* mapPutMethod = &jni::GetMethodID(env, *mapClass, "put", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;");
+    jni::jobject& map = jni::NewObject(env, *mapClass, *mapConstructor);
+
+    //Add converted Stops for each zoom value
+    StopsEvaluator<X> evaluator(env);
+    for (auto const& entry : value) {
+        jni::jobject* zoom = *convert<jni::jobject*, float>(env, entry.first);
+        jni::jobject* stops = evaluator(entry.second);
+        jni::CallMethod<jni::jobject*>(env, &map, *mapPutMethod, zoom, stops);
+        //TODO Release??
+    }
+
+    //Create CompositeStops from Java Map
+    static jni::jclass* compositeStopsClass = jni::NewGlobalRef(env, &jni::FindClass(env, "com/mapbox/mapboxsdk/style/functions/stops/CompositeStops")).release();
+    static jni::jmethodID* compositeStopsConstructor = &jni::GetMethodID(env, *compositeStopsClass, "<init>", "(Ljava/util/Map;)V");
+    jni::jobject& compositeStops = jni::NewObject(env, *compositeStopsClass, *compositeStopsConstructor, &map);
+    //TODO Release map??
+
+    return &compositeStops;
+}
+
+/**
+ * Conversion from core composite function stops to CompositeFunctionStops java type
+ */
+template <class T>
+class CompositeStopsEvaluator {
+public:
+
+    CompositeStopsEvaluator(jni::JNIEnv& _env) : env(_env) {}
+
+    jni::jobject* operator()(const std::map<float, mbgl::style::CategoricalStops<T>> &value) const {
+        return convertCompositeStopsArray<mbgl::style::CategoricalStops<T>, T>(env, value);
+    }
+
+    jni::jobject* operator()(const std::map<float, mbgl::style::ExponentialStops<T>> &value) const {
+        return convertCompositeStopsArray<mbgl::style::ExponentialStops<T>, T>(env, value);
+    }
+
+    jni::jobject* operator()(const std::map<float, mbgl::style::IntervalStops<T>> &value) const {
+        return convertCompositeStopsArray<mbgl::style::IntervalStops<T>, T>(env, value);
+    }
+
+private:
+    jni::JNIEnv& env;
+};
+
 template <class T>
 struct Converter<jni::jobject*, mbgl::style::CameraFunction<T>> {
 
@@ -100,6 +152,22 @@ struct Converter<jni::jobject*, mbgl::style::SourceFunction<T>> {
         static jni::jmethodID* constructor = &jni::GetMethodID(env, *clazz, "<init>", "(Ljava/lang/String;Lcom/mapbox/mapboxsdk/style/functions/stops/Stops;)V");
 
         StopsEvaluator<T> evaluator(env);
+        jni::jobject* stops = apply_visitor(evaluator, value.stops);
+
+        jni::jobject* converted = &jni::NewObject(env, *clazz, *constructor, jni::Make<jni::String>(env, value.property).Get(), stops);
+
+        return { converted };
+    }
+};
+
+template <class T>
+struct Converter<jni::jobject*, mbgl::style::CompositeFunction<T>> {
+
+    Result<jni::jobject*> operator()(jni::JNIEnv& env, const mbgl::style::CompositeFunction<T>& value) const {
+        static jni::jclass* clazz = jni::NewGlobalRef(env, &jni::FindClass(env, "com/mapbox/mapboxsdk/style/functions/CompositeFunction")).release();
+        static jni::jmethodID* constructor = &jni::GetMethodID(env, *clazz, "<init>", "(Ljava/lang/String;Lcom/mapbox/mapboxsdk/style/functions/stops/CompositeStops;)V");
+
+        CompositeStopsEvaluator<T> evaluator(env);
         jni::jobject* stops = apply_visitor(evaluator, value.stops);
 
         jni::jobject* converted = &jni::NewObject(env, *clazz, *constructor, jni::Make<jni::String>(env, value.property).Get(), stops);

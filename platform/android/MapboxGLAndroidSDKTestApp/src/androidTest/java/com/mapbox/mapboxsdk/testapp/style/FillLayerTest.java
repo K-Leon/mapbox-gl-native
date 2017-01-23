@@ -112,7 +112,7 @@ public class FillLayerTest extends BaseStyleTest {
     assertNotNull(layer.getFillAntialias().getFunction());
     assertEquals(CameraFunction.class, layer.getFillAntialias().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getFillAntialias().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getFillAntialias().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getFillAntialias().getFunction().getStops()).size());
   }
 
   @Test
@@ -150,7 +150,7 @@ public class FillLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getFillOpacity().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getFillOpacity().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getFillOpacity().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getFillOpacity().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getFillOpacity().getFunction().getStops()).size());
   }
 
   @Test
@@ -234,7 +234,7 @@ public class FillLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getFillColor().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getFillColor().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getFillColor().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getFillColor().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getFillColor().getFunction().getStops()).size());
   }
 
   @Test
@@ -329,7 +329,7 @@ public class FillLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getFillOutlineColor().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getFillOutlineColor().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getFillOutlineColor().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getFillOutlineColor().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getFillOutlineColor().getFunction().getStops()).size());
   }
 
   @Test
@@ -424,7 +424,7 @@ public class FillLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getFillTranslate().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getFillTranslate().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getFillTranslate().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getFillTranslate().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getFillTranslate().getFunction().getStops()).size());
   }
 
   @Test
@@ -460,7 +460,7 @@ public class FillLayerTest extends BaseStyleTest {
     assertNotNull(layer.getFillTranslateAnchor().getFunction());
     assertEquals(CameraFunction.class, layer.getFillTranslateAnchor().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getFillTranslateAnchor().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getFillTranslateAnchor().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getFillTranslateAnchor().getFunction().getStops()).size());
   }
 
   @Test
@@ -496,7 +496,7 @@ public class FillLayerTest extends BaseStyleTest {
     assertNotNull(layer.getFillPattern().getFunction());
     assertEquals(CameraFunction.class, layer.getFillPattern().getFunction().getClass());
     assertEquals(IntervalStops.class, layer.getFillPattern().getFunction().getStops().getClass());
-    assertEquals(1, ((IntervalStops) layer.getFillPattern().getFunction().getStops()).stops.length);
+    assertEquals(1, ((IntervalStops) layer.getFillPattern().getFunction().getStops()).size());
   }
 
 

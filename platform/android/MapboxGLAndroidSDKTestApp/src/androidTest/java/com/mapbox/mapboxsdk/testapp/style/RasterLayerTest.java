@@ -114,7 +114,7 @@ public class RasterLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getRasterOpacity().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getRasterOpacity().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getRasterOpacity().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getRasterOpacity().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getRasterOpacity().getFunction().getStops()).size());
   }
 
   @Test
@@ -152,7 +152,7 @@ public class RasterLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getRasterHueRotate().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getRasterHueRotate().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getRasterHueRotate().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getRasterHueRotate().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getRasterHueRotate().getFunction().getStops()).size());
   }
 
   @Test
@@ -190,7 +190,7 @@ public class RasterLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getRasterBrightnessMin().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getRasterBrightnessMin().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getRasterBrightnessMin().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getRasterBrightnessMin().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getRasterBrightnessMin().getFunction().getStops()).size());
   }
 
   @Test
@@ -228,7 +228,7 @@ public class RasterLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getRasterBrightnessMax().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getRasterBrightnessMax().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getRasterBrightnessMax().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getRasterBrightnessMax().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getRasterBrightnessMax().getFunction().getStops()).size());
   }
 
   @Test
@@ -266,7 +266,7 @@ public class RasterLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getRasterSaturation().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getRasterSaturation().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getRasterSaturation().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getRasterSaturation().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getRasterSaturation().getFunction().getStops()).size());
   }
 
   @Test
@@ -304,7 +304,7 @@ public class RasterLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getRasterContrast().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getRasterContrast().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getRasterContrast().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getRasterContrast().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getRasterContrast().getFunction().getStops()).size());
   }
 
   @Test
@@ -342,7 +342,7 @@ public class RasterLayerTest extends BaseStyleTest {
     assertEquals(CameraFunction.class, layer.getRasterFadeDuration().getFunction().getClass());
     assertEquals(ExponentialStops.class, layer.getRasterFadeDuration().getFunction().getStops().getClass());
     assertEquals(0.5f, ((ExponentialStops) layer.getRasterFadeDuration().getFunction().getStops()).getBase(), 0.001);
-    assertEquals(1, ((ExponentialStops) layer.getRasterFadeDuration().getFunction().getStops()).stops.length);
+    assertEquals(1, ((ExponentialStops) layer.getRasterFadeDuration().getFunction().getStops()).size());
   }
 
 
