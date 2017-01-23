@@ -12,6 +12,7 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.style.functions.CompositeFunction;
 import com.mapbox.mapboxsdk.style.functions.CameraFunction;
 import com.mapbox.mapboxsdk.style.functions.SourceFunction;
+import com.mapbox.mapboxsdk.style.functions.stops.CategoricalStops;
 import com.mapbox.mapboxsdk.style.functions.stops.CompositeStops;
 import com.mapbox.mapboxsdk.style.functions.stops.ExponentialStops;
 import com.mapbox.mapboxsdk.style.functions.stops.IdentityStops;
@@ -315,6 +316,32 @@ public class LineLayerTest extends BaseStyleTest {
   }
 
   @Test
+  public void testLineOpacityAsCategoricalSourceFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("line-opacity");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      lineOpacity(
+        property(
+          "FeaturePropertyA",
+          categorical(
+            stop(1.0f, lineOpacity(0.3f))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getLineOpacity());
+    assertNotNull(layer.getLineOpacity().getFunction());
+    assertEquals(SourceFunction.class, layer.getLineOpacity().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getLineOpacity().getFunction()).getProperty());
+    assertEquals(CategoricalStops.class, layer.getLineOpacity().getFunction().getStops().getClass());
+  }
+
+  @Test
   public void testLineOpacityAsCompositeFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-opacity");
@@ -433,6 +460,31 @@ public class LineLayerTest extends BaseStyleTest {
     assertEquals(ExponentialStops.class, layer.getLineColor().getFunction().getStops().getClass());
   }
 
+  @Test
+  public void testLineColorAsCategoricalSourceFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("line-color");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      lineColor(
+        property(
+          "FeaturePropertyA",
+          categorical(
+            stop("valueA", lineColor(Color.RED))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getLineColor());
+    assertNotNull(layer.getLineColor().getFunction());
+    assertEquals(SourceFunction.class, layer.getLineColor().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getLineColor().getFunction()).getProperty());
+    assertEquals(CategoricalStops.class, layer.getLineColor().getFunction().getStops().getClass());
+  }
 
   @Test
   public void testLineColorAsIntConstant() {
@@ -642,6 +694,32 @@ public class LineLayerTest extends BaseStyleTest {
   }
 
   @Test
+  public void testLineGapWidthAsCategoricalSourceFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("line-gap-width");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      lineGapWidth(
+        property(
+          "FeaturePropertyA",
+          categorical(
+            stop(1.0f, lineGapWidth(0.3f))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getLineGapWidth());
+    assertNotNull(layer.getLineGapWidth().getFunction());
+    assertEquals(SourceFunction.class, layer.getLineGapWidth().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getLineGapWidth().getFunction()).getProperty());
+    assertEquals(CategoricalStops.class, layer.getLineGapWidth().getFunction().getStops().getClass());
+  }
+
+  @Test
   public void testLineGapWidthAsCompositeFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-gap-width");
@@ -761,6 +839,32 @@ public class LineLayerTest extends BaseStyleTest {
   }
 
   @Test
+  public void testLineOffsetAsCategoricalSourceFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("line-offset");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      lineOffset(
+        property(
+          "FeaturePropertyA",
+          categorical(
+            stop(1.0f, lineOffset(0.3f))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getLineOffset());
+    assertNotNull(layer.getLineOffset().getFunction());
+    assertEquals(SourceFunction.class, layer.getLineOffset().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getLineOffset().getFunction()).getProperty());
+    assertEquals(CategoricalStops.class, layer.getLineOffset().getFunction().getStops().getClass());
+  }
+
+  @Test
   public void testLineOffsetAsCompositeFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("line-offset");
@@ -877,6 +981,32 @@ public class LineLayerTest extends BaseStyleTest {
     assertEquals(SourceFunction.class, layer.getLineBlur().getFunction().getClass());
     assertEquals("FeaturePropertyA", ((SourceFunction) layer.getLineBlur().getFunction()).getProperty());
     assertEquals(ExponentialStops.class, layer.getLineBlur().getFunction().getStops().getClass());
+  }
+
+  @Test
+  public void testLineBlurAsCategoricalSourceFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("line-blur");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      lineBlur(
+        property(
+          "FeaturePropertyA",
+          categorical(
+            stop(1.0f, lineBlur(0.3f))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getLineBlur());
+    assertNotNull(layer.getLineBlur().getFunction());
+    assertEquals(SourceFunction.class, layer.getLineBlur().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getLineBlur().getFunction()).getProperty());
+    assertEquals(CategoricalStops.class, layer.getLineBlur().getFunction().getStops().getClass());
   }
 
   @Test

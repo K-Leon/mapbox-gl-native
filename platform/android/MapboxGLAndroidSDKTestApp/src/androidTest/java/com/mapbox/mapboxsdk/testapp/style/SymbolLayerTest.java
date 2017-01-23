@@ -12,6 +12,7 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.style.functions.CompositeFunction;
 import com.mapbox.mapboxsdk.style.functions.CameraFunction;
 import com.mapbox.mapboxsdk.style.functions.SourceFunction;
+import com.mapbox.mapboxsdk.style.functions.stops.CategoricalStops;
 import com.mapbox.mapboxsdk.style.functions.stops.CompositeStops;
 import com.mapbox.mapboxsdk.style.functions.stops.ExponentialStops;
 import com.mapbox.mapboxsdk.style.functions.stops.IdentityStops;
@@ -566,6 +567,32 @@ public class SymbolLayerTest extends BaseStyleTest {
     assertEquals(SourceFunction.class, layer.getIconRotate().getFunction().getClass());
     assertEquals("FeaturePropertyA", ((SourceFunction) layer.getIconRotate().getFunction()).getProperty());
     assertEquals(ExponentialStops.class, layer.getIconRotate().getFunction().getStops().getClass());
+  }
+
+  @Test
+  public void testIconRotateAsCategoricalSourceFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("icon-rotate");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      iconRotate(
+        property(
+          "FeaturePropertyA",
+          categorical(
+            stop(1.0f, iconRotate(0.3f))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getIconRotate());
+    assertNotNull(layer.getIconRotate().getFunction());
+    assertEquals(SourceFunction.class, layer.getIconRotate().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getIconRotate().getFunction()).getProperty());
+    assertEquals(CategoricalStops.class, layer.getIconRotate().getFunction().getStops().getClass());
   }
 
   @Test

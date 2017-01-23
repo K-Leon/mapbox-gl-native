@@ -397,7 +397,7 @@ public class PropertyFactory {
   }
 
   /**
-   * Specifies the lengths of the alternating dashes and gaps that form the dash pattern. The lengths are later scaled by the line width. To toValueObjects a dash length to pixels, multiply the length by the current line width.
+   * Specifies the lengths of the alternating dashes and gaps that form the dash pattern. The lengths are later scaled by the line width. To convert a dash length to pixels, multiply the length by the current line width.
    *
    * @param value a Float[] value
    * @return property wrapper around Float[]
@@ -408,7 +408,7 @@ public class PropertyFactory {
 
 
   /**
-   * Specifies the lengths of the alternating dashes and gaps that form the dash pattern. The lengths are later scaled by the line width. To toValueObjects a dash length to pixels, multiply the length by the current line width.
+   * Specifies the lengths of the alternating dashes and gaps that form the dash pattern. The lengths are later scaled by the line width. To convert a dash length to pixels, multiply the length by the current line width.
    *
    * @param <ZOOM> the zoom parameter type
    * @param function a wrapper {@link CameraFunction} for Float[]
@@ -1305,7 +1305,7 @@ public class PropertyFactory {
   }
 
   /**
-   * Used to automatically toValueObjects miter joins to bevel joins for sharp angles.
+   * Used to automatically convert miter joins to bevel joins for sharp angles.
    *
    * @param value a Float value
    * @return property wrapper around Float
@@ -1317,7 +1317,7 @@ public class PropertyFactory {
 
 
   /**
-   * Used to automatically toValueObjects miter joins to bevel joins for sharp angles.
+   * Used to automatically convert miter joins to bevel joins for sharp angles.
    *
    * @param <ZOOM> the zoom parameter type
    * @param function a wrapper {@link CameraFunction} for Float
@@ -1328,7 +1328,7 @@ public class PropertyFactory {
   }
 
   /**
-   * Used to automatically toValueObjects round joins to miter joins for shallow angles.
+   * Used to automatically convert round joins to miter joins for shallow angles.
    *
    * @param value a Float value
    * @return property wrapper around Float
@@ -1340,7 +1340,7 @@ public class PropertyFactory {
 
 
   /**
-   * Used to automatically toValueObjects round joins to miter joins for shallow angles.
+   * Used to automatically convert round joins to miter joins for shallow angles.
    *
    * @param <ZOOM> the zoom parameter type
    * @param function a wrapper {@link CameraFunction} for Float

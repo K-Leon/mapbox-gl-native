@@ -12,6 +12,7 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.style.functions.CompositeFunction;
 import com.mapbox.mapboxsdk.style.functions.CameraFunction;
 import com.mapbox.mapboxsdk.style.functions.SourceFunction;
+import com.mapbox.mapboxsdk.style.functions.stops.CategoricalStops;
 import com.mapbox.mapboxsdk.style.functions.stops.CompositeStops;
 import com.mapbox.mapboxsdk.style.functions.stops.ExponentialStops;
 import com.mapbox.mapboxsdk.style.functions.stops.IdentityStops;
@@ -203,6 +204,32 @@ public class FillLayerTest extends BaseStyleTest {
   }
 
   @Test
+  public void testFillOpacityAsCategoricalSourceFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("fill-opacity");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      fillOpacity(
+        property(
+          "FeaturePropertyA",
+          categorical(
+            stop(1.0f, fillOpacity(0.3f))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getFillOpacity());
+    assertNotNull(layer.getFillOpacity().getFunction());
+    assertEquals(SourceFunction.class, layer.getFillOpacity().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getFillOpacity().getFunction()).getProperty());
+    assertEquals(CategoricalStops.class, layer.getFillOpacity().getFunction().getStops().getClass());
+  }
+
+  @Test
   public void testFillOpacityAsCompositeFunction() {
     checkViewIsDisplayed(R.id.mapView);
     Timber.i("fill-opacity");
@@ -321,6 +348,31 @@ public class FillLayerTest extends BaseStyleTest {
     assertEquals(ExponentialStops.class, layer.getFillColor().getFunction().getStops().getClass());
   }
 
+  @Test
+  public void testFillColorAsCategoricalSourceFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("fill-color");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      fillColor(
+        property(
+          "FeaturePropertyA",
+          categorical(
+            stop("valueA", fillColor(Color.RED))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getFillColor());
+    assertNotNull(layer.getFillColor().getFunction());
+    assertEquals(SourceFunction.class, layer.getFillColor().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getFillColor().getFunction()).getProperty());
+    assertEquals(CategoricalStops.class, layer.getFillColor().getFunction().getStops().getClass());
+  }
 
   @Test
   public void testFillColorAsIntConstant() {
@@ -417,6 +469,31 @@ public class FillLayerTest extends BaseStyleTest {
     assertEquals(ExponentialStops.class, layer.getFillOutlineColor().getFunction().getStops().getClass());
   }
 
+  @Test
+  public void testFillOutlineColorAsCategoricalSourceFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("fill-outline-color");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      fillOutlineColor(
+        property(
+          "FeaturePropertyA",
+          categorical(
+            stop("valueA", fillOutlineColor(Color.RED))
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.getFillOutlineColor());
+    assertNotNull(layer.getFillOutlineColor().getFunction());
+    assertEquals(SourceFunction.class, layer.getFillOutlineColor().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.getFillOutlineColor().getFunction()).getProperty());
+    assertEquals(CategoricalStops.class, layer.getFillOutlineColor().getFunction().getStops().getClass());
+  }
 
   @Test
   public void testFillOutlineColorAsIntConstant() {

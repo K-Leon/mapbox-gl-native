@@ -16,6 +16,7 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.style.functions.CompositeFunction;
 import com.mapbox.mapboxsdk.style.functions.CameraFunction;
 import com.mapbox.mapboxsdk.style.functions.SourceFunction;
+import com.mapbox.mapboxsdk.style.functions.stops.CategoricalStops;
 import com.mapbox.mapboxsdk.style.functions.stops.CompositeStops;
 import com.mapbox.mapboxsdk.style.functions.stops.ExponentialStops;
 import com.mapbox.mapboxsdk.style.functions.stops.IdentityStops;
@@ -255,7 +256,37 @@ public class <%- camelize(type) %>LayerTest extends BaseStyleTest {
     assertEquals(ExponentialStops.class, layer.get<%- camelize(property.name) %>().getFunction().getStops().getClass());
   }
 
+  @Test
+  public void test<%- camelize(property.name) %>AsCategoricalSourceFunction() {
+    checkViewIsDisplayed(R.id.mapView);
+    Timber.i("<%- property.name %>");
+    assertNotNull(layer);
+
+    //Set
+    layer.setProperties(
+      <%- camelizeWithLeadingLowercase(property.name) %>(
+        property(
+          "FeaturePropertyA",
+          categorical(
+<% if (property.type == 'color') { -%>
+            stop("valueA", <%- camelizeWithLeadingLowercase(property.name) %>(Color.RED))
+<% } else {-%>
+            stop(1.0f, <%- camelizeWithLeadingLowercase(property.name) %>(<%- defaultValueJava(property) %>))
+<% } -%>
+          )
+        )
+      )
+    );
+
+    //Verify
+    assertNotNull(layer.get<%- camelize(property.name) %>());
+    assertNotNull(layer.get<%- camelize(property.name) %>().getFunction());
+    assertEquals(SourceFunction.class, layer.get<%- camelize(property.name) %>().getFunction().getClass());
+    assertEquals("FeaturePropertyA", ((SourceFunction) layer.get<%- camelize(property.name) %>().getFunction()).getProperty());
+    assertEquals(CategoricalStops.class, layer.get<%- camelize(property.name) %>().getFunction().getStops().getClass());
+  }
 <% if (property.type !== 'color') { -%>
+
   @Test
   public void test<%- camelize(property.name) %>AsCompositeFunction() {
     checkViewIsDisplayed(R.id.mapView);
