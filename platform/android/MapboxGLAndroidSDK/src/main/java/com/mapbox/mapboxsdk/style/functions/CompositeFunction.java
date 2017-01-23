@@ -10,15 +10,16 @@ import java.util.Map;
 /**
  * TODO
  *
- * @param <Z>
- * @param <I>
- * @param <O>
+ * @param <Z> the zoom type (usually Float)
+ * @param <I> the input type (the feature property type)
+ * @param <O> the output type (the property type)
  */
 public class CompositeFunction<Z extends Number, I, O> extends Function<I, O> {
 
   private final String property;
 
-  CompositeFunction(@NonNull String property, @NonNull CompositeStops<Z, I, O, ? extends Stops<I, O>> stops) {
+  CompositeFunction(@NonNull String property,
+                    @NonNull CompositeStops<Z, I, O, ? extends Stops<I, O>> stops) {
     super(stops);
     this.property = property;
   }

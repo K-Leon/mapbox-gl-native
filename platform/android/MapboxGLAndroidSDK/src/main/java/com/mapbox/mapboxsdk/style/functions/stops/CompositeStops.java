@@ -1,5 +1,6 @@
 package com.mapbox.mapboxsdk.style.functions.stops;
 
+import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import android.support.annotation.Size;
 
@@ -22,18 +23,26 @@ import java.util.Map;
 public class CompositeStops<Z extends Number, I, O, S extends IterableStops<I, O, Stop<I, O>>>
   extends IterableStops<CompositeValue<Z, I>, O, Map.Entry<Z, S>> {
 
-  public static <Z extends Number, I, O> CompositeStops<Z, I, O, ? extends Stops<I, O>>
-  convert(IntervalStops<CompositeValue<Z, I>, O> stops) {
+  public static <Z extends Number, I, O> CompositeStops<Z, I, O, ? extends Stops<I, O>> convert(
+    IntervalStops<CompositeValue<Z, I>, O> stops) {
+
     return new CompositeStops<>(stops);
   }
 
-  public static <Z extends Number, I, O> CompositeStops<Z, I, O, ? extends Stops<I, O>>
-  convert(ExponentialStops<CompositeValue<Z, I>, O> stops) {
+  public static <Z extends Number, I, O> CompositeStops<Z, I, O, ? extends Stops<I, O>> convert(
+    ExponentialStops<CompositeValue<Z, I>, O> stops) {
+
     return new CompositeStops<>(stops);
   }
 
   private final Map<Z, S> stops;
 
+  /**
+   * JNI Constructor
+   *
+   * @param stops the stops {@link Map}
+   */
+  @Keep
   private CompositeStops(@NonNull @Size(min = 1) Map<Z, S> stops) {
     this.stops = stops;
   }
