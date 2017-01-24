@@ -84,7 +84,7 @@ public abstract class Stops<I, O> {
    * @see IntervalStops
    */
   @SafeVarargs
-  public static <I extends Number, O> IntervalStops interval(@NonNull @Size(min = 1) Stop<I, O>... stops) {
+  public static <I, O> IntervalStops<I, O> interval(@NonNull @Size(min = 1) Stop<I, O>... stops) {
     return new IntervalStops<>(stops);
   }
 

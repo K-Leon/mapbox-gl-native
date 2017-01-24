@@ -45,7 +45,7 @@ public class Function<I, O> {
    * @see Stop#stop
    */
   public static <Z extends Number, O> CameraFunction<Z, O> zoom(@NonNull ExponentialStops<Z, O> stops) {
-    return new CameraFunction<Z, O>(stops);
+    return new CameraFunction<>(stops);
   }
 
   /**
@@ -65,7 +65,7 @@ public class Function<I, O> {
    * @see Stop#stop
    */
   public static <Z extends Number, O> CameraFunction<Z, O> zoom(@NonNull IntervalStops<Z, O> stops) {
-    return new CameraFunction<Z, O>(stops);
+    return new CameraFunction<>(stops);
   }
 
   /**
