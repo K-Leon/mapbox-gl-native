@@ -60,6 +60,11 @@ UniqueShader Context::createShader(ShaderType type, const std::string& source) {
         Log::Error(Event::Shader, "Shader failed to compile: %s", log.get());
     }
 
+    Log::Error(Event::Shader, "GL_RENDERER   = %s", (char *) glGetString(GL_RENDERER));
+    Log::Error(Event::Shader, "GL_VERSION    = %s", (char *) glGetString(GL_VERSION));
+    Log::Error(Event::Shader, "GL_VENDOR     = %s", (char *) glGetString(GL_VENDOR));
+    Log::Error(Event::Shader, "GL_EXTENSIONS = %s", (char *) glGetString(GL_EXTENSIONS));
+
     throw std::runtime_error("shader failed to compile");
 }
 
