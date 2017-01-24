@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:mapbox="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_add_exponential_zoom_function"
+        android:title="Add an exponential zoom function"
+        mapbox:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_add_interval_zoom_function"
+        android:title="Add an interval zoom function"
+        mapbox:showAsAction="never"/>
+
+
+    <item
+        android:id="@+id/action_add_categorical_source_function"
+        android:title="Add an categorical source function"
+        mapbox:showAsAction="never"/>
+    
+    <item
+        android:id="@+id/action_add_exponential_source_function"
+        android:title="Add an exponential source function"
+        mapbox:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_add_interval_source_function"
+        android:title="Add an interval source function"
+        mapbox:showAsAction="never"/>
+
+</menu>
