@@ -25,8 +25,8 @@ public class PropertyFactory {
    * @param value the visibility value
    * @return property wrapper around visibility
    */
-  public static Property<String> visibility(@Property.VISIBILITY String value) {
-    return new LayoutProperty<>("visibility", value);
+  public static PropertyValue<String> visibility(@Property.VISIBILITY String value) {
+    return new LayoutPropertyValue<>("visibility", value);
   }
 
   /**
@@ -36,8 +36,8 @@ public class PropertyFactory {
    * @param function the visibility function
    * @return property wrapper around a String function
    */
-  public static <T> Property<Function<T, String>> visibility(Function<T, String> function) {
-    return new LayoutProperty<>("visibility", function);
+  public static <T> PropertyValue<Function<T, String>> visibility(Function<T, String> function) {
+    return new LayoutPropertyValue<>("visibility", function);
   }
 
 <% for (const property of paintProperties) { -%>
@@ -48,8 +48,8 @@ public class PropertyFactory {
    * @param value a int color value
    * @return property wrapper around String color
    */
-  public static Property<String> <%- camelizeWithLeadingLowercase(property.name) %>(@ColorInt int value) {
-    return new PaintProperty<>("<%-  property.name %>", colorToRgbaString(value));
+  public static PropertyValue<String> <%- camelizeWithLeadingLowercase(property.name) %>(@ColorInt int value) {
+    return new PaintPropertyValue<>("<%-  property.name %>", colorToRgbaString(value));
   }
 
 <% } -%>
@@ -59,8 +59,8 @@ public class PropertyFactory {
    * @param value a <%- propertyType(property) %> value
    * @return property wrapper around <%- propertyType(property) %>
    */
-  public static Property<<%- propertyType(property) %>> <%- camelizeWithLeadingLowercase(property.name) %>(<%- propertyTypeAnnotation(property) %><%- iff(() => propertyTypeAnnotation(property), " ") %><%- propertyType(property) %> value) {
-    return new PaintProperty<>("<%-  property.name %>", value);
+  public static PropertyValue<<%- propertyType(property) %>> <%- camelizeWithLeadingLowercase(property.name) %>(<%- propertyTypeAnnotation(property) %><%- iff(() => propertyTypeAnnotation(property), " ") %><%- propertyType(property) %> value) {
+    return new PaintPropertyValue<>("<%-  property.name %>", value);
   }
 
 <% if (supportsPropertyFunction(property)) { -%>
@@ -72,8 +72,8 @@ public class PropertyFactory {
    * @param function a wrapper function for <%- propertyType(property) %>
    * @return property wrapper around a <%- propertyType(property) %> function
    */
-  public static <T> Property<Function<T, <%- propertyType(property) %>>> <%- camelizeWithLeadingLowercase(property.name) %>(Function<T, <%- propertyType(property) %>> function) {
-    return new PaintProperty<>("<%-  property.name %>", function);
+  public static <T> PropertyValue<Function<T, <%- propertyType(property) %>>> <%- camelizeWithLeadingLowercase(property.name) %>(Function<T, <%- propertyType(property) %>> function) {
+    return new PaintPropertyValue<>("<%-  property.name %>", function);
   }
 
 <% } else if (supportsZoomFunction(property)) { -%>
@@ -81,12 +81,12 @@ public class PropertyFactory {
   /**
    * <%- propertyFactoryMethodDoc(property) %>
    *
-   * @param <ZOOM> the zoom parameter type
+   * @param <Z> the zoom parameter type
    * @param function a wrapper {@link CameraFunction} for <%- propertyType(property) %>
    * @return property wrapper around a <%- propertyType(property) %> function
    */
-  public static <ZOOM extends Number> Property<CameraFunction<ZOOM, <%- propertyType(property) %>>> <%- camelizeWithLeadingLowercase(property.name) %>(CameraFunction<ZOOM, <%- propertyType(property) %>> function) {
-    return new PaintProperty<>("<%-  property.name %>", function);
+  public static <Z extends Number> PropertyValue<CameraFunction<Z, <%- propertyType(property) %>>> <%- camelizeWithLeadingLowercase(property.name) %>(CameraFunction<Z, <%- propertyType(property) %>> function) {
+    return new PaintPropertyValue<>("<%-  property.name %>", function);
   }
 
 <% } -%>
@@ -98,8 +98,8 @@ public class PropertyFactory {
    * @param value a <%- propertyType(property) %> value
    * @return property wrapper around <%- propertyType(property) %>
    */
-  public static Property<<%- propertyType(property) %>> <%- camelizeWithLeadingLowercase(property.name) %>(<%- propertyTypeAnnotation(property) %><%- iff(() => propertyTypeAnnotation(property), " ") %><%- propertyType(property) %> value) {
-    return new LayoutProperty<>("<%-  property.name %>", value);
+  public static PropertyValue<<%- propertyType(property) %>> <%- camelizeWithLeadingLowercase(property.name) %>(<%- propertyTypeAnnotation(property) %><%- iff(() => propertyTypeAnnotation(property), " ") %><%- propertyType(property) %> value) {
+    return new LayoutPropertyValue<>("<%-  property.name %>", value);
   }
 
 
@@ -112,8 +112,8 @@ public class PropertyFactory {
    * @param function a wrapper function for <%- propertyType(property) %>
    * @return property wrapper around a <%- propertyType(property) %> function
    */
-  public static <T> Property<Function<T, <%- propertyType(property) %>>> <%- camelizeWithLeadingLowercase(property.name) %>(Function<T, <%- propertyType(property) %>> function) {
-    return new LayoutProperty<>("<%-  property.name %>", function);
+  public static <T> PropertyValue<Function<T, <%- propertyType(property) %>>> <%- camelizeWithLeadingLowercase(property.name) %>(Function<T, <%- propertyType(property) %>> function) {
+    return new LayoutPropertyValue<>("<%-  property.name %>", function);
   }
 
 <% } else if (supportsZoomFunction(property)) { -%>
@@ -121,12 +121,12 @@ public class PropertyFactory {
   /**
    * <%- propertyFactoryMethodDoc(property) %>
    *
-   * @param <ZOOM> the zoom parameter type
+   * @param <Z> the zoom parameter type
    * @param function a wrapper {@link CameraFunction} for <%- propertyType(property) %>
    * @return property wrapper around a <%- propertyType(property) %> function
    */
-  public static <ZOOM extends Number> Property<CameraFunction<ZOOM, <%- propertyType(property) %>>> <%- camelizeWithLeadingLowercase(property.name) %>(CameraFunction<ZOOM, <%- propertyType(property) %>> function) {
-    return new LayoutProperty<>("<%-  property.name %>", function);
+  public static <Z extends Number> PropertyValue<CameraFunction<Z, <%- propertyType(property) %>>> <%- camelizeWithLeadingLowercase(property.name) %>(CameraFunction<Z, <%- propertyType(property) %>> function) {
+    return new LayoutPropertyValue<>("<%-  property.name %>", function);
   }
 
 <% } -%>

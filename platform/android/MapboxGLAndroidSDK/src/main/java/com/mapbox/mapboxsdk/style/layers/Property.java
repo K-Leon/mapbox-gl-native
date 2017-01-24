@@ -10,7 +10,7 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * Paint/Layout properties for Layer
  */
-public abstract class Property<T> {
+public final class Property {
 
   //VISIBILITY: Whether this layer is displayed.
 
@@ -447,13 +447,6 @@ public abstract class Property<T> {
   public @interface CIRCLE_PITCH_SCALE {}
 
 
-  //Class definition
-  public final String name;
-  public final T value;
-
-  /* package */ Property(String name, T value) {
-    this.name = name;
-    this.value = value;
+  private Property() {
   }
-
 }

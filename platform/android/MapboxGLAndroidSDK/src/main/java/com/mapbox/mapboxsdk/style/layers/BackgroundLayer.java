@@ -42,7 +42,7 @@ public class BackgroundLayer extends Layer {
    * @param properties the var-args properties
    * @return This
    */
-  public BackgroundLayer withProperties(@NonNull Property<?>... properties) {
+  public BackgroundLayer withProperties(@NonNull PropertyValue<?>... properties) {
     setProperties(properties);
     return this;
   }
@@ -56,7 +56,7 @@ public class BackgroundLayer extends Layer {
    */
   @SuppressWarnings("unchecked")
   public PropertyValue<String> getBackgroundColor() {
-    return (PropertyValue<String>) new PropertyValue(nativeGetBackgroundColor());
+    return (PropertyValue<String>) new PropertyValue("background-color", nativeGetBackgroundColor());
   }
 
   /**
@@ -83,7 +83,7 @@ public class BackgroundLayer extends Layer {
    */
   @SuppressWarnings("unchecked")
   public PropertyValue<String> getBackgroundPattern() {
-    return (PropertyValue<String>) new PropertyValue(nativeGetBackgroundPattern());
+    return (PropertyValue<String>) new PropertyValue("background-pattern", nativeGetBackgroundPattern());
   }
 
   /**
@@ -93,7 +93,7 @@ public class BackgroundLayer extends Layer {
    */
   @SuppressWarnings("unchecked")
   public PropertyValue<Float> getBackgroundOpacity() {
-    return (PropertyValue<Float>) new PropertyValue(nativeGetBackgroundOpacity());
+    return (PropertyValue<Float>) new PropertyValue("background-opacity", nativeGetBackgroundOpacity());
   }
 
   private native Object nativeGetBackgroundColor();

@@ -63,7 +63,7 @@ public class RasterLayer extends Layer {
    * @param properties the var-args properties
    * @return This
    */
-  public RasterLayer withProperties(@NonNull Property<?>... properties) {
+  public RasterLayer withProperties(@NonNull PropertyValue<?>... properties) {
     setProperties(properties);
     return this;
   }
@@ -77,7 +77,7 @@ public class RasterLayer extends Layer {
    */
   @SuppressWarnings("unchecked")
   public PropertyValue<Float> getRasterOpacity() {
-    return (PropertyValue<Float>) new PropertyValue(nativeGetRasterOpacity());
+    return (PropertyValue<Float>) new PropertyValue("raster-opacity", nativeGetRasterOpacity());
   }
 
   /**
@@ -87,7 +87,7 @@ public class RasterLayer extends Layer {
    */
   @SuppressWarnings("unchecked")
   public PropertyValue<Float> getRasterHueRotate() {
-    return (PropertyValue<Float>) new PropertyValue(nativeGetRasterHueRotate());
+    return (PropertyValue<Float>) new PropertyValue("raster-hue-rotate", nativeGetRasterHueRotate());
   }
 
   /**
@@ -97,7 +97,7 @@ public class RasterLayer extends Layer {
    */
   @SuppressWarnings("unchecked")
   public PropertyValue<Float> getRasterBrightnessMin() {
-    return (PropertyValue<Float>) new PropertyValue(nativeGetRasterBrightnessMin());
+    return (PropertyValue<Float>) new PropertyValue("raster-brightness-min", nativeGetRasterBrightnessMin());
   }
 
   /**
@@ -107,7 +107,7 @@ public class RasterLayer extends Layer {
    */
   @SuppressWarnings("unchecked")
   public PropertyValue<Float> getRasterBrightnessMax() {
-    return (PropertyValue<Float>) new PropertyValue(nativeGetRasterBrightnessMax());
+    return (PropertyValue<Float>) new PropertyValue("raster-brightness-max", nativeGetRasterBrightnessMax());
   }
 
   /**
@@ -117,7 +117,7 @@ public class RasterLayer extends Layer {
    */
   @SuppressWarnings("unchecked")
   public PropertyValue<Float> getRasterSaturation() {
-    return (PropertyValue<Float>) new PropertyValue(nativeGetRasterSaturation());
+    return (PropertyValue<Float>) new PropertyValue("raster-saturation", nativeGetRasterSaturation());
   }
 
   /**
@@ -127,7 +127,7 @@ public class RasterLayer extends Layer {
    */
   @SuppressWarnings("unchecked")
   public PropertyValue<Float> getRasterContrast() {
-    return (PropertyValue<Float>) new PropertyValue(nativeGetRasterContrast());
+    return (PropertyValue<Float>) new PropertyValue("raster-contrast", nativeGetRasterContrast());
   }
 
   /**
@@ -137,7 +137,7 @@ public class RasterLayer extends Layer {
    */
   @SuppressWarnings("unchecked")
   public PropertyValue<Float> getRasterFadeDuration() {
-    return (PropertyValue<Float>) new PropertyValue(nativeGetRasterFadeDuration());
+    return (PropertyValue<Float>) new PropertyValue("raster-fade-duration", nativeGetRasterFadeDuration());
   }
 
   private native Object nativeGetRasterOpacity();

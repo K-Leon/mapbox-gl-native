@@ -1,7 +1,7 @@
 package com.mapbox.mapboxsdk.style.functions.stops;
 
 import com.mapbox.mapboxsdk.style.functions.Function;
-import com.mapbox.mapboxsdk.style.layers.Property;
+import com.mapbox.mapboxsdk.style.layers.PropertyValue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +23,7 @@ public class Stop<I, O> {
    * @param <O>    the output property type
    * @return the {@link Stop}
    */
-  public static <I, O> Stop<I, O> stop(I in, Property<O> output) {
+  public static <I, O> Stop<I, O> stop(I in, PropertyValue<O> output) {
     return new Stop<>(in, output.value);
   }
 
@@ -39,7 +39,7 @@ public class Stop<I, O> {
    * @return the {@link Stop}
    * @see Function#composite(String, ExponentialStops)
    */
-  public static <Z extends Number, I, O> Stop<Stop.CompositeValue<Z, I>, O> stop(Z zoom, I value, Property<O> output) {
+  public static <Z extends Number, I, O> Stop<Stop.CompositeValue<Z, I>, O> stop(Z zoom, I value, PropertyValue<O> output) {
     return new Stop<>(new Stop.CompositeValue<>(zoom, value), output.value);
   }
 

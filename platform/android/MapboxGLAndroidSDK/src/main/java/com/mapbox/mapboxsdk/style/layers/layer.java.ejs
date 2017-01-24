@@ -124,7 +124,7 @@ public class <%- camelize(type) %>Layer extends Layer {
    * @param properties the var-args properties
    * @return This
    */
-  public <%- camelize(type) %>Layer withProperties(@NonNull Property<?>... properties) {
+  public <%- camelize(type) %>Layer withProperties(@NonNull PropertyValue<?>... properties) {
     setProperties(properties);
     return this;
   }
@@ -139,7 +139,7 @@ public class <%- camelize(type) %>Layer extends Layer {
    */
   @SuppressWarnings("unchecked")
   public PropertyValue<<%- propertyType(property) %>> get<%- camelize(property.name) %>() {
-    return (PropertyValue<<%- propertyType(property) %>>) new PropertyValue(nativeGet<%- camelize(property.name) %>());
+    return (PropertyValue<<%- propertyType(property) %>>) new PropertyValue("<%- property.name %>", nativeGet<%- camelize(property.name) %>());
   }
 <% if (property.type == 'color') { -%>
 
