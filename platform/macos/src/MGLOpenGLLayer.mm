@@ -30,6 +30,7 @@
         NSOpenGLPFADepthSize, 16,
         NSOpenGLPFAStencilSize, 8,
         NSOpenGLPFAScreenMask, mask,
+        NSOpenGLPFAAllowOfflineRenderers, // Allows GPU switching
         0
     };
     return [[NSOpenGLPixelFormat alloc] initWithAttributes:pfas];
