@@ -3,7 +3,6 @@ package com.mapbox.mapboxsdk.style.functions;
 import android.support.annotation.NonNull;
 
 import com.mapbox.mapboxsdk.style.functions.stops.CompositeStops;
-import com.mapbox.mapboxsdk.style.functions.stops.ExponentialStops;
 import com.mapbox.mapboxsdk.style.functions.stops.Stops;
 
 import java.util.Map;

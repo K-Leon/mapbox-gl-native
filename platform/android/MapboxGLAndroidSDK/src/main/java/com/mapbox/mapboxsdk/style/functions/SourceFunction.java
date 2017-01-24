@@ -2,7 +2,6 @@ package com.mapbox.mapboxsdk.style.functions;
 
 import android.support.annotation.NonNull;
 
-import com.mapbox.mapboxsdk.style.functions.stops.CategoricalStops;
 import com.mapbox.mapboxsdk.style.functions.stops.Stops;
 
 import java.util.Map;

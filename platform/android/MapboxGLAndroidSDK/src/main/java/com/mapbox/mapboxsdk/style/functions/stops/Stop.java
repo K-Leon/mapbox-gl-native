@@ -39,7 +39,9 @@ public class Stop<I, O> {
    * @return the {@link Stop}
    * @see Function#composite(String, ExponentialStops)
    */
-  public static <Z extends Number, I, O> Stop<Stop.CompositeValue<Z, I>, O> stop(Z zoom, I value, PropertyValue<O> output) {
+  public static <Z extends Number, I, O> Stop<Stop.CompositeValue<Z, I>, O> stop(Z zoom,
+                                                                                 I value,
+                                                                                 PropertyValue<O> output) {
     return new Stop<>(new Stop.CompositeValue<>(zoom, value), output.value);
   }
 
