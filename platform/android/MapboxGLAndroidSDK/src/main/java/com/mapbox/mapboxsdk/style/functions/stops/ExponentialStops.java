@@ -17,12 +17,13 @@ public class ExponentialStops<I, O> extends IterableStops<I, O, Stop<I, O>> {
 
   private final float base;
   private final Stop<I, O>[] stops;
-  //TODO: colorSpace
 
   /**
    * Create exponential stops with an explicit base. Use through {@link Stops#exponential(float, Stop[])}
    *
-   * @param base  the exponential base
+   * @param base  The exponential base of the interpolation curve. It controls the rate at which the function output
+   *              increases. Higher values make the output increase more towards the high end of the range.
+   *              With values close to 1 the output increases linearly.
    * @param stops the stops
    */
   @SafeVarargs

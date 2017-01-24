@@ -17,14 +17,19 @@ import timber.log.Timber;
 
 /**
  * Functions are used to change properties in relation to the state of the map.
+ * <p>
+ * The value for any layout or paint property may be specified as a function. Functions allow you to
+ * make the appearance of a map feature change with the current zoom level and/or the feature's properties.
  *
  * @param <I> the function's input type
  * @param <O> the target property's value type. Make sure it matches.
- * @see <a href="https://www.mapbox.com/mapbox-gl-style-spec/#types-function">The online documentation</a>
+ * @see <a href="https://www.mapbox.com/mapbox-gl-style-spec/#types-function">The style specification</a>
  */
 public class Function<I, O> {
 
   /**
+   * Create an exponential {@link CameraFunction}
+   * <p>
    * Zoom functions allow the appearance of a map feature to change with map’s zoom.
    * Zoom functions can be used to create the illusion of depth and control data density.
    * Each stop is an array with two elements, the first is a zoom and the second is a function output value.
@@ -33,6 +38,8 @@ public class Function<I, O> {
    * @param <O>   the property type
    * @param stops the stops implementation that define the function. @see {@link Stops#exponential(float, Stop[])}
    * @return the {@link CameraFunction}
+   * @see CameraFunction
+   * @see ExponentialStops
    * @see Stops#exponential(float, Stop[])
    * @see Stops#exponential(Stop[])
    * @see Stop#stop
@@ -42,6 +49,8 @@ public class Function<I, O> {
   }
 
   /**
+   * Create an interval {@link CameraFunction}
+   * <p>
    * Zoom functions allow the appearance of a map feature to change with map’s zoom.
    * Zoom functions can be used to create the illusion of depth and control data density.
    * Each stop is an array with two elements, the first is a zoom and the second is a function output value.
@@ -50,6 +59,8 @@ public class Function<I, O> {
    * @param <O>   the property type
    * @param stops the stops implementation that define the function. @see {@link Stops#interval(Stop[])}
    * @return the {@link CameraFunction}
+   * @see CameraFunction
+   * @see IntervalStops
    * @see Stops#interval(Stop[])
    * @see Stop#stop
    */
@@ -58,13 +69,23 @@ public class Function<I, O> {
   }
 
   /**
-   * Create an exponential {@link SourceFunction]}
+   * Create an exponential {@link SourceFunction}
+   * <p>
+   * Source functions allow the appearance of a map feature to change with
+   * its properties. Source functions can be used to visually differentiate
+   * types of features within the same layer or create data visualizations.
+   * Each stop is an array with two elements, the first is a property input
+   * value and the second is a function output value. Note that support for
+   * property functions is not available across all properties and platforms
+   * at this time.
    *
    * @param property the feature property name
    * @param stops    the stops
    * @param <I>      the function input type
    * @param <O>      the function output type
    * @return the {@link SourceFunction}
+   * @see SourceFunction
+   * @see ExponentialStops
    * @see Stops#exponential(float, Stop[])
    * @see Stop#stop
    */
@@ -73,12 +94,22 @@ public class Function<I, O> {
   }
 
   /**
-   * Create an identity {@link SourceFunction]}
+   * Create an identity {@link SourceFunction}
+   * <p>
+   * Source functions allow the appearance of a map feature to change with
+   * its properties. Source functions can be used to visually differentiate
+   * types of features within the same layer or create data visualizations.
+   * Each stop is an array with two elements, the first is a property input
+   * value and the second is a function output value. Note that support for
+   * property functions is not available across all properties and platforms
+   * at this time.
    *
    * @param property the feature property name
    * @param stops    the stops
    * @param <T>      the function input/output type
    * @return the {@link SourceFunction}
+   * @see SourceFunction
+   * @see IdentityStops
    * @see Stops#identity()
    * @see Stop#stop
    */
@@ -87,13 +118,23 @@ public class Function<I, O> {
   }
 
   /**
-   * Create an interval {@link SourceFunction]}
+   * Create an interval {@link SourceFunction}
+   * <p>
+   * Source functions allow the appearance of a map feature to change with
+   * its properties. Source functions can be used to visually differentiate
+   * types of features within the same layer or create data visualizations.
+   * Each stop is an array with two elements, the first is a property input
+   * value and the second is a function output value. Note that support for
+   * property functions is not available across all properties and platforms
+   * at this time.
    *
    * @param property the feature property name
    * @param stops    the stops
    * @param <I>      the function input type
    * @param <O>      the function output type
    * @return the {@link SourceFunction}
+   * @see SourceFunction
+   * @see IntervalStops
    * @see Stops#interval(Stop[])
    * @see Stop#stop
    */
@@ -102,13 +143,23 @@ public class Function<I, O> {
   }
 
   /**
-   * Create an categorical {@link SourceFunction]}
+   * Create an categorical {@link SourceFunction}
+   * <p>
+   * Source functions allow the appearance of a map feature to change with
+   * its properties. Source functions can be used to visually differentiate
+   * types of features within the same layer or create data visualizations.
+   * Each stop is an array with two elements, the first is a property input
+   * value and the second is a function output value. Note that support for
+   * property functions is not available across all properties and platforms
+   * at this time.
    *
    * @param property the feature property name
    * @param stops    the stops
    * @param <I>      the function input type
    * @param <O>      the function output type
    * @return the {@link SourceFunction}
+   * @see SourceFunction
+   * @see CategoricalStops
    * @see Stops#categorical(Stop[])
    * @see Stop#stop
    */
@@ -118,6 +169,11 @@ public class Function<I, O> {
 
   /**
    * Create a composite, categorical function.
+   * <p>
+   * Composite functions allow the appearance of a map feature to change with both its
+   * properties and zoom. Each stop is an array with two elements, the first is an object
+   * with a property input value and a zoom, and the second is a function output value. Note
+   * that support for property functions is not yet complete.
    *
    * @param property the feature property name for the source part of the function
    * @param stops    the stops
@@ -125,6 +181,8 @@ public class Function<I, O> {
    * @param <I>      the function input type for the source part of the function
    * @param <O>      the function output type
    * @return the {@link CompositeFunction}
+   * @see CompositeFunction
+   * @see CategoricalStops
    * @see Stops#categorical(Stop[])
    * @see Stop#stop
    */
@@ -137,6 +195,11 @@ public class Function<I, O> {
 
   /**
    * Create a composite, exponential function.
+   * <p>
+   * Composite functions allow the appearance of a map feature to change with both its
+   * properties and zoom. Each stop is an array with two elements, the first is an object
+   * with a property input value and a zoom, and the second is a function output value. Note
+   * that support for property functions is not yet complete.
    *
    * @param property the feature property name for the source part of the function
    * @param stops    the stops
@@ -144,6 +207,8 @@ public class Function<I, O> {
    * @param <I>      the function input type for the source part of the function
    * @param <O>      the function output type
    * @return the {@link CompositeFunction}
+   * @see CompositeFunction
+   * @see ExponentialStops
    * @see Stops#exponential(float, Stop[])
    * @see Stop#stop
    */
@@ -156,6 +221,11 @@ public class Function<I, O> {
 
   /**
    * Create a composite, interval function.
+   * <p>
+   * Composite functions allow the appearance of a map feature to change with both its
+   * properties and zoom. Each stop is an array with two elements, the first is an object
+   * with a property input value and a zoom, and the second is a function output value. Note
+   * that support for property functions is not yet complete.
    *
    * @param property the feature property name for the source part of the function
    * @param stops    the stops
@@ -163,6 +233,8 @@ public class Function<I, O> {
    * @param <I>      the function input type for the source part of the function
    * @param <O>      the function output type
    * @return the {@link CompositeFunction}
+   * @see CompositeFunction
+   * @see IntervalStops
    * @see Stops#interval(Stop[])
    * @see Stop#stop
    */

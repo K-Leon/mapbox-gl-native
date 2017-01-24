@@ -11,6 +11,7 @@ import java.util.Map;
  *
  * @param <I> input the stop (function) input type
  * @param <O> output the stop (function) output type
+ * @see <a href="https://www.mapbox.com/mapbox-gl-style-spec/#types-function">The style specification</a>
  */
 public class Stop<I, O> {
   /**
@@ -18,10 +19,11 @@ public class Stop<I, O> {
    *
    * @param in     the input for the stop
    * @param output the output for the stop
-   * @param <T>    the output property type
+   * @param <I>    the input property type
+   * @param <O>    the output property type
    * @return the {@link Stop}
    */
-  public static <I, T> Stop<I, T> stop(I in, Property<T> output) {
+  public static <I, O> Stop<I, O> stop(I in, Property<O> output) {
     return new Stop<>(in, output.value);
   }
 

@@ -11,6 +11,7 @@ import java.util.Map;
  *
  * @param <I> the input type
  * @param <O> the output type
+ * @see <a href="https://www.mapbox.com/mapbox-gl-style-spec/#types-function">The style specification</a>
  */
 public abstract class Stops<I, O> {
 
@@ -21,6 +22,8 @@ public abstract class Stops<I, O> {
    * @param <I>   the Stops input type
    * @param <O>   the Stops output type
    * @return the {@link Stops} implementation
+   * @see Stop#stop
+   * @see CategoricalStops
    */
   @SafeVarargs
   public static <I, O> CategoricalStops<I, O> categorical(@NonNull @Size(min = 1) Stop<I, O>... stops) {
@@ -35,6 +38,8 @@ public abstract class Stops<I, O> {
    * @param <I>   the Stops input type
    * @param <O>   the Stops output type
    * @return the {@link Stops} implementation
+   * @see Stop#stop
+   * @see ExponentialStops
    */
   @SafeVarargs
   public static <I, O> ExponentialStops<I, O> exponential(float base, @NonNull @Size(min = 1) Stop<I, O>... stops) {
@@ -48,6 +53,8 @@ public abstract class Stops<I, O> {
    * @param <I>   the Stops input type
    * @param <O>   the Stops output type
    * @return the {@link Stops} implementation
+   * @see Stop#stop
+   * @see ExponentialStops
    */
   @SafeVarargs
   public static <I, O> ExponentialStops<I, O> exponential(@NonNull @Size(min = 1) Stop<I, O>... stops) {
@@ -59,6 +66,8 @@ public abstract class Stops<I, O> {
    *
    * @param <T> the Stops input/output type
    * @return the {@link IdentityStops} implementation
+   * @see Stop#stop
+   * @see IdentityStops
    */
   public static <T> IdentityStops<T> identity() {
     return new IdentityStops<>();
@@ -71,6 +80,8 @@ public abstract class Stops<I, O> {
    * @param <I>   the Stops input type
    * @param <O>   the Stops output type
    * @return the {@link Stops} implementation
+   * @see Stop#stop
+   * @see IntervalStops
    */
   @SafeVarargs
   public static <I extends Number, O> IntervalStops interval(@NonNull @Size(min = 1) Stop<I, O>... stops) {
