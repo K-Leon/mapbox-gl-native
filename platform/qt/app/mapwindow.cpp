@@ -203,6 +203,49 @@ void MapWindow::keyPressEvent(QKeyEvent *ev)
             m_map->setLayoutProperty("road-label-small", "text-size", 30.0);
         }
         break;
+    case Qt::Key_1: {
+            if (m_symbolAnnotationId.isNull()) {
+                QMapbox::SymbolAnnotation symbol { { 0, 0 }, "default_marker" };
+                m_map->addAnnotationIcon("default_marker", QImage(":default_marker.svg"));
+                m_symbolAnnotationId = m_map->addAnnotation(QVariant::fromValue<QMapbox::SymbolAnnotation>(symbol));
+            } else {
+                m_map->removeAnnotation(m_symbolAnnotationId.toUInt());
+                m_symbolAnnotationId.clear();
+            }
+        }
+        break;
+    case Qt::Key_2: {
+            if (m_lineAnnotationId.isNull()) {
+                QMapbox::CoordinatesCollections geometry { { { { -1, -1 }, { 1, 1 } } } };
+                QMapbox::LineAnnotation line { { QMapbox::ShapeAnnotationGeometry::Type::LineStringType, geometry }, 0.5f, 1.0f, Qt::red };
+                m_lineAnnotationId = m_map->addAnnotation(QVariant::fromValue<QMapbox::LineAnnotation>(line));
+            } else {
+                m_map->removeAnnotation(m_lineAnnotationId.toUInt());
+                m_lineAnnotationId.clear();
+            }
+        }
+        break;
+    case Qt::Key_3: {
+            if (m_fillAnnotationId.isNull()) {
+                QMapbox::CoordinatesCollections geometry { { { { -1, -1 }, { -1, 1 }, { 1, 1 }, { 1, -1 }, { -1, -1 } } } };
+                QMapbox::FillAnnotation fill { { QMapbox::ShapeAnnotationGeometry::Type::PolygonType, geometry }, 0.5f, Qt::green, QVariant::fromValue<QColor>(Qt::black) };
+                m_fillAnnotationId = m_map->addAnnotation(QVariant::fromValue<QMapbox::FillAnnotation>(fill));
+            } else {
+                m_map->removeAnnotation(m_fillAnnotationId.toUInt());
+                m_fillAnnotationId.clear();
+            }
+        }
+        break;
+    case Qt::Key_4: {
+            if (m_styleSourcedAnnotationId.isNull()) {
+                QMapbox::CoordinatesCollections geometry { { { { -2, -2 }, { -2, 2 }, { 2, 2 }, { 2, -2 }, { -2, -2 } } } };
+                QMapbox::StyleSourcedAnnotation styleSourced { { QMapbox::ShapeAnnotationGeometry::Type::PolygonType, geometry }, "road-trunk" };
+            } else {
+                m_map->removeAnnotation(m_styleSourcedAnnotationId.toUInt());
+                m_styleSourcedAnnotationId.clear();
+            }
+        }
+        break;
     case Qt::Key_Tab:
         m_map->cycleDebugOptions();
         break;
