@@ -26,6 +26,8 @@
 #include <mbgl/util/logging.hpp>
 #include <mbgl/math/log2.hpp>
 
+#include <iostream>
+
 namespace mbgl {
 
 using namespace style;
@@ -150,9 +152,12 @@ Map::Impl::Impl(Map& map_,
               renderStill();
           }
       }) {
+    std::cout << "Map() " << this << std::endl;
 }
 
 Map::~Map() {
+    std::cout << "~Map() " << impl.get() << std::endl;
+
     BackendScope guard(impl->backend);
 
     impl->styleRequest = nullptr;
@@ -198,6 +203,8 @@ void Map::Impl::renderStill() {
     if (!stillImageRequest) {
         return;
     }
+
+    std::cout << "renderStill " << this << std::endl;
 
     // TODO: determine whether we need activate/deactivate
     BackendScope guard(backend);
@@ -258,6 +265,7 @@ void Map::Impl::render(View& view) {
     updateFlags = Update::Nothing;
 
     if (!painter) {
+        std::cout << "creating painter " << this << std::endl;
         painter = std::make_unique<Painter>(backend.getContext(), transform.getState(), pixelRatio);
     }
 
