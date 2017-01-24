@@ -290,4 +290,9 @@ public class Function<I, O> {
   public Map<String, Object> toValueObject() {
     return stops.toValueObject();
   }
+
+  @Override
+  public String toString() {
+    return String.format("%s: %s", getClass().getSimpleName(), stops);
+  }
 }

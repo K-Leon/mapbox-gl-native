@@ -106,4 +106,8 @@ public abstract class Stops<I, O> {
    */
   protected abstract String getTypeName();
 
+  @Override
+  public String toString() {
+    return getTypeName();
+  }
 }

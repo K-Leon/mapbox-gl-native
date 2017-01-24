@@ -1,5 +1,7 @@
 package com.mapbox.mapboxsdk.style.functions.stops;
 
+import java.util.Iterator;
+
 /**
  * Base class for {@link Stops} implementations with a collection of stops
  *
@@ -34,4 +36,17 @@ public abstract class IterableStops<I, O, S> extends Stops<I, O> implements Iter
     return null;
   }
 
+  @Override
+  public String toString() {
+    StringBuilder buffer = new StringBuilder();
+    Iterator<S> iterator = iterator();
+    while (iterator.hasNext()) {
+      S stop = iterator.next();
+      buffer.append(stop);
+      if (iterator.hasNext()) {
+        buffer.append(",");
+      }
+    }
+    return String.format("%s: [%s]", super.toString(), buffer.toString());
+  }
 }
